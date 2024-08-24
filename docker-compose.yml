@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  hobby-log-front:
+    container_name: hobby-log-front
+    volumes:
+      - ./html:/var/www/html
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: hobby-log-front
+    environment:
+      - NODE_ENV:${NODE_ENV}
+    ports:
+      - "3021:3021"
+    tty: true
+
+networks:
+  default:
+    external: true
+    name: grayfield
