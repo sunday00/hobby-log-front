@@ -1,0 +1,46 @@
+scalar Long
+scalar DateTime
+
+enum Category {
+    MOVIE,
+    GALLERY,
+    WALK,
+    DRAW,
+    READ,
+    ESSAY,
+}
+
+enum Status {
+    ACTIVE,
+    DRAFT,
+    DEPRECATED,
+}
+
+interface BaseSchema {
+    id: String
+    userId: String
+    category: Category
+    title: String
+    thumbnail: String
+    ratings: Int
+    logAt: DateTime
+    status: Status
+}
+
+type Result {
+    id: String
+    success: Boolean
+    message: String
+    status: Int
+}
+
+type Hobby implements BaseSchema {
+    id: String
+    userId: String
+    category: Category
+    title: String
+    thumbnail: String
+    ratings: Int
+    logAt: DateTime
+    status: Status
+}

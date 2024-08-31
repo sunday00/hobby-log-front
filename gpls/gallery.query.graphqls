@@ -1,0 +1,26 @@
+extend type Query {
+    getOneGallery(id: String): Gallery
+}
+
+enum GalleryType {
+    SOLO
+    ORGANIZATION
+    STUDENT
+    SPECIAL
+    CLASSIC
+}
+
+type Gallery implements BaseSchema {
+    id: String
+    userId: String
+    title: String
+    category: Category
+    galleryType: GalleryType
+    location: String
+    thumbnail: String
+    overview: String
+    content: String
+    ratings: Int
+    logAt: DateTime
+    status: Status
+}
