@@ -1,38 +1,45 @@
 'use client'
 
-import {useSearchParams} from 'next/navigation'
-import {Suspense} from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
+import { useQuery } from '@apollo/client'
+import { signQuery } from '@/gql/auth/auth.query.gql'
+import { decodeBase64 } from '@/libs/conv.util'
 
 const AuthCallbackRaw = () => {
   const q = useSearchParams()
-  const code = q.get("code")
+  const code = q.get('code')
 
-  const redirectUrl = encodeURIComponent(process.env.NEXT_PUBLIC_FRONT_HOST ?? 'http://localhost:3021');
-  const url = "https://kauth.kakao.com/oauth/authorize" +
-    "?response_type=code" +
-    "&client_id=c3359f9b1c78173adb140522ddaeca54" +
-    `&redirect_uri=${redirectUrl}/auth/callback` +
-    "&scope=profile_nickname,profile_image,account_email"
+  const { data, loading, error } = useQuery(signQuery, {
+    variables: { code },
+  })
 
-  return <div>
-      <p><a href={url}>login</a></p>
+  if (loading) {
+    return <>Loading...</>
+  }
 
-      <br />
-      <br />
+  if (error) {
+    return <>Error...</>
+  }
 
-      <div>
-      <textarea
-        style={{ fontSize: "2em", marginTop: "1em", marginLeft: "1em", padding: "0.5em" }}
-        rows={4}
-        cols={80}
-        defaultValue={code ?? ''}
-      ></textarea>
-      </div>
-    </div>
+  const accessToken = data.sign.accessToken
+  const {
+    name,
+    sub: userId,
+    exp,
+  }: { name: string; sub: string; exp: number } = decodeBase64(accessToken)
+
+  localStorage.setItem('accessToken', accessToken)
+  localStorage.setItem('userName', name)
+  localStorage.setItem('accessTokenExpired', String(exp))
+
+  location.href = '/'
 }
 
 export default function AuthCallback() {
-  return <Suspense fallback={<div>...</div>}>
-    <AuthCallbackRaw />
-  </Suspense>
+  return (
+    <Suspense fallback={<div>...</div>}>
+      <AuthCallbackRaw />
+    </Suspense>
+  )
 }
