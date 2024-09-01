@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { Providers } from '@/app/providers'
 import { Navigation } from '@/app/(global)/(components)/navigation'
 import style from '@/app/(global)/(style)/global.module.scss'
+import { theme } from '@chakra-ui/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +26,7 @@ export default function RootLayout({
       >
         <Providers>
           <Navigation />
-          {children}
+          <main style={{ padding: theme.space['4'] }}>{children}</main>
         </Providers>
       </body>
     </html>

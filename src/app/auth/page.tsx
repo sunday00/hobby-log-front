@@ -1,6 +1,9 @@
-import { LoginForm } from '@/app/auth/(components)/LoginForm'
+'use client'
 
-const Auth = async () => {
+import { LoginForm } from '@/app/auth/(components)/loginForm'
+import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
+
+const Auth = () => {
   const redirectUrl = encodeURIComponent(
     process.env.NEXT_PUBLIC_FRONT_HOST ?? 'http://localhost:3021',
   )
@@ -14,7 +17,7 @@ const Auth = async () => {
 
   return (
     <div>
-      {/*<a href={url}>login</a>*/}
+      <BreadcrumbWarp name="auth" />
       <LoginForm url={url} />
     </div>
   )

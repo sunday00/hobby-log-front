@@ -1,20 +1,34 @@
 'use client'
 
-import { useQuery } from '@apollo/client'
-import { searchMoviesQuery } from '@/gql/domain/movie/movie.query.gql'
+import { Flex, theme } from '@chakra-ui/react'
+import { Category } from '@/gql/types'
+import Link from 'next/link'
+import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 
 const HobbyCreatePage = () => {
-  const { data, loading, error } = useQuery(searchMoviesQuery, {
-    variables: { search: '방황', page: 1 },
+  const categories = Object.keys(Category)
+  const list = categories.map((c) => {
+    return (
+      <li
+        key={c}
+        style={{ marginBottom: theme.space['4'], textAlign: 'center' }}
+      >
+        <Link href={`/hobby/category/${c.toLowerCase()}/create`}>{c}</Link>
+      </li>
+    )
   })
 
   return (
     <>
-      todo
-      <ul>
-        <li>select log type</li>
-        category...
-      </ul>
+      <BreadcrumbWarp name="create" />
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+        h="85vh"
+      >
+        <ul>{list}</ul>
+      </Flex>
     </>
   )
 }
