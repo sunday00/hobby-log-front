@@ -11,14 +11,14 @@ import {
   theme,
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/input'
-import { Status } from '@/gql/types'
+import { MovieInput, Status } from '@/gql/types'
 import GlobalContext from '@/libs/store.context'
 import { useMutation } from '@apollo/client'
 import { logMovieMutation } from '@/gql/domain/movie/movie.mutation.gql'
 
 const MovieInputForm = () => {
   const today = new Date()
-  const [rating, setRating] = useState<number>(75)
+  const [ratings, setRatings] = useState<number>(75)
   const [content, setContent] = useState<string>('')
   const [logAtStrDate, setLogAtStrDate] = useState<string>(
     `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`,
@@ -34,18 +34,23 @@ const MovieInputForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    global.movie.movieInput.content = content as unknown as undefined
-    global.movie.movieInput.ratings = rating as unknown as undefined
-    global.movie.movieInput.status = status as unknown as undefined
-    global.movie.movieInput.logAtStr =
-      `${logAtStrDate}T${logAtStrHH.toString().padStart(2, '0')}:${logAtStrMM.toString().padStart(2, '0')}:00.000Z` as unknown as undefined
-
-    global.update(global)
+    const currentInput: MovieInput = {
+      movieId: global.movie.movieInput.movieId,
+      content,
+      ratings,
+      status,
+      logAtStr: `${logAtStrDate}T${logAtStrHH.toString().padStart(2, '0')}:${logAtStrMM.toString().padStart(2, '0')}:00.000Z`,
+    }
 
     const result = await logMovie({
-      variables: { input: global.movie.movieInput },
+      variables: { input: currentInput },
     })
+
+    // TODO
     console.log(result)
+    // TODO
+    // success -> redirect to /hobby/movie/read/id
+    // failed -> show error
   }
 
   return (
@@ -58,8 +63,8 @@ const MovieInputForm = () => {
               id="rating"
               name="rating"
               type="number"
-              value={rating}
-              onChange={(e) => setRating(Number(e.target.value ?? 0))}
+              value={ratings}
+              onChange={(e) => setRatings(Number(e.target.value ?? 0))}
             />
             <FormHelperText>0-100, 5 step</FormHelperText>
           </FormControl>
