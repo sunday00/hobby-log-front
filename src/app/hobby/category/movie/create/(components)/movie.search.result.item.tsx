@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  Badge,
   Box,
   Button,
   Center,
@@ -20,8 +19,11 @@ import GlobalContext from '@/libs/store.context'
 const MovieSearchResultItem = ({ movie }: { movie: MovieRaw }) => {
   const global = useContext(GlobalContext)
 
-  const setLogMovieId = (id: number) => {
+  const setLogMovie = (id: number, title: string) => {
     global.movie.movieInput.movieId = id as unknown as undefined
+    global.movie.inputTitle = title
+
+    global.update(global)
   }
 
   return (
@@ -98,9 +100,9 @@ const MovieSearchResultItem = ({ movie }: { movie: MovieRaw }) => {
               _focus={{
                 bg: 'blue.500',
               }}
-              onClick={() => setLogMovieId(movie.id)}
+              onClick={() => setLogMovie(movie.id, movie.title!)}
             >
-              Log
+              Select
             </Button>
           </Stack>
         </Stack>

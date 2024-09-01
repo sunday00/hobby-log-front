@@ -1,18 +1,12 @@
-import { Button } from '@chakra-ui/react'
-import { useContext } from 'react'
-import GlobalContext from '@/libs/store.context'
+import { MovieInputInfo } from '@/app/hobby/category/movie/create/(components)/movie.input.info'
+import { MovieInputForm } from '@/app/hobby/category/movie/create/(components)/movie.input.form'
 
 const MovieInputBase = () => {
-  const global = useContext(GlobalContext)
-
-  const checkDevContext = () => {
-    console.log(global)
-  }
-
   return (
-    <div>
-      <Button onClick={checkDevContext}>check</Button>
-    </div>
+    <section>
+      <MovieInputInfo />
+      <MovieInputForm />
+    </section>
   )
 }
 

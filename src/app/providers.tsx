@@ -5,18 +5,17 @@ import { ChakraProvider } from '@chakra-ui/react'
 import React, { ReactNode, useState } from 'react'
 import { ApolloProvider } from '@apollo/client'
 import { client } from '@/gql/client'
-import GlobalContext from '@/libs/store.context'
-import { movieInput } from '@/gql/types'
+import GlobalContext, { initialState } from '@/libs/store.context'
 
 export function Providers({ children }: { children: ReactNode }) {
   const [state, setState] = useState({
-    // update(data: any) {
-    //   setState(Object.assign({}, state, data))
-    // },
-    movie: {
-      movieInput: movieInput,
-    },
+    ...initialState,
+    update,
   })
+
+  function update(data: any) {
+    setState(Object.assign({}, state, data))
+  }
 
   return (
     <CacheProvider>

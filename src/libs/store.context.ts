@@ -1,11 +1,14 @@
 import React from 'react'
 import { movieInput } from '@/gql/types'
 
-const GlobalContext = React.createContext({
-  // update: (data: any) => {},
+export const initialState = {
+  update: (date: any) => {},
   movie: {
+    inputTitle: '',
     movieInput: movieInput,
   },
-})
+}
+
+const GlobalContext = React.createContext(initialState)
 
 export default GlobalContext
