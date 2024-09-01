@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { searchMoviesQuery } from '@/gql/domain/movie/movie.query.gql'
 import { useState } from 'react'
-import { Box, Stack, theme } from '@chakra-ui/react'
+import { Box, Spinner, Stack, theme } from '@chakra-ui/react'
 import { MovieRaw } from '@/gql/types'
 import { MovieSearchResultItem } from '@/app/hobby/category/movie/create/(components)/movie.search.result.item'
 
@@ -15,9 +15,7 @@ const MovieSearchResults = ({ search }: { search: string }) => {
     },
   })
 
-  if (loading) {
-    return <>Loading...</>
-  }
+  if (loading) return <Spinner />
 
   if (error) {
     return (

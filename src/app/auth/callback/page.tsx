@@ -5,6 +5,7 @@ import { Suspense } from 'react'
 import { useQuery } from '@apollo/client'
 import { signQuery } from '@/gql/auth/auth.query.gql'
 import { decodeBase64 } from '@/libs/conv.util'
+import { Spinner } from '@chakra-ui/react'
 
 const AuthCallbackRaw = () => {
   const q = useSearchParams()
@@ -14,9 +15,7 @@ const AuthCallbackRaw = () => {
     variables: { code },
   })
 
-  if (loading) {
-    return <>Loading...</>
-  }
+  if (loading) return <Spinner />
 
   if (error) {
     return <>Error...</>

@@ -1,7 +1,7 @@
 'use client'
 
 import { gql } from '@apollo/client'
-import { movieRaw } from '@/gql/types'
+import { casting, crew, movie, movieRaw } from '@/gql/types'
 
 export const searchMoviesQuery = gql`
     query MovieSearch($search: String, $page: Long = 1) {
@@ -12,6 +12,22 @@ export const searchMoviesQuery = gql`
           }
           totalPages
           totalResults
+        }
+    }
+`
+
+const { directors: _d, actors: _a, ...movieFields } = movie
+
+export const getOneMovieQuery = gql`
+    query GetMovieQuery($id: String) {
+        getOneMovie(id: $id) {
+            ${Object.keys(movieFields).join(' ')}
+            directors {
+                ${Object.keys(crew).join(' ')}
+            }
+            actors {
+                ${Object.keys(casting).join(' ')}
+            }
         }
     }
 `

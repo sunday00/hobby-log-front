@@ -42,15 +42,23 @@ const MovieInputForm = () => {
       logAtStr: `${logAtStrDate}T${logAtStrHH.toString().padStart(2, '0')}:${logAtStrMM.toString().padStart(2, '0')}:00.000Z`,
     }
 
-    const result = await logMovie({
+    const { data, errors } = await logMovie({
       variables: { input: currentInput },
     })
 
-    // TODO
-    console.log(result)
-    // TODO
-    // success -> redirect to /hobby/movie/read/id
-    // failed -> show error
+    //TODO: more elegant handle error
+    if (errors) {
+      console.error(errors)
+    }
+
+    //TODO: more elegant handle error
+    if (!data?.logMovie?.success) {
+      console.error(data?.logMovie?.message ?? 'something went wrong')
+    }
+
+    if (data?.logMovie?.success) {
+      location.href = `/hobby/category/movie/detail/${data.logMovie.id}`
+    }
   }
 
   return (
