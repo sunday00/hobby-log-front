@@ -4,6 +4,8 @@ import { MovieDetailContent } from '@/app/hobby/category/movie/detail/[id]/(comp
 import style from '@/app/(global)/(style)/movie.module.scss'
 import { MovieDetailInfo } from '@/app/hobby/category/movie/detail/[id]/(components)/movie.detail.info'
 import { theme } from '@chakra-ui/react'
+import { MovieDetailOverview } from '@/app/hobby/category/movie/detail/[id]/(components)/movie.detail.overview'
+import { MovieDetailPresentation } from '@/app/hobby/category/movie/detail/[id]/presentation'
 
 const MovieDetail = async ({ params }: { params: { id: string } }) => {
   const { data, loading, error } = await client.query({
@@ -11,18 +13,26 @@ const MovieDetail = async ({ params }: { params: { id: string } }) => {
     variables: { id: params.id },
   })
 
-  console.log(data)
-
-  const { contents, ...info } = data.getOneMovie
+  const { contents, synopsis, originalSynopsis, userId, status, ...info } =
+    data.getOneMovie
 
   return (
     <>
-      <section className="info" style={{ marginBottom: theme.space['8'] }}>
-        <MovieDetailInfo movie={info} />
-      </section>
-      <section className={style['markdown-body']}>
-        <MovieDetailContent content={contents}></MovieDetailContent>
-      </section>
+      <MovieDetailPresentation
+        logAt={info.logAt}
+        userId={userId}
+        status={status}
+      >
+        <section className="info" style={{ marginBottom: theme.space['8'] }}>
+          <MovieDetailInfo movie={info} />
+        </section>
+        <section>
+          <MovieDetailOverview overviews={{ synopsis, originalSynopsis }} />
+        </section>
+        <section className={style['markdown-body']}>
+          <MovieDetailContent content={contents}></MovieDetailContent>
+        </section>
+      </MovieDetailPresentation>
     </>
   )
 }

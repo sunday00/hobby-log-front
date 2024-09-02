@@ -6,7 +6,14 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { Icon } from '@chakra-ui/icons'
-import { MdHome, MdMenu, MdPerson, MdStar } from 'react-icons/md'
+import {
+  MdCalendarMonth,
+  MdHome,
+  MdMenu,
+  MdNote,
+  MdPerson,
+  MdStar,
+} from 'react-icons/md'
 import { IconType } from 'react-icons'
 
 type CrumbMapItem = {
@@ -29,20 +36,34 @@ const crumbMap: { [k: string]: CrumbMapItem } = {
     icon: MdMenu,
     path: ['create'],
   },
+  monthly: {
+    name: 'monthly',
+    href: '/hobby/monthly/{%dddd%}',
+    icon: MdCalendarMonth,
+    path: ['monthly'],
+  },
   'category.create': {
     name: '{%name%} Create',
     href: '/hobby/category/{%category%}/create',
     icon: MdStar,
     path: ['create', 'category.create'],
   },
+  'category.detail': {
+    name: '{%name%} Read',
+    href: '/hobby/category/{%category%}/detail',
+    icon: MdNote,
+    path: ['monthly', 'category.detail'],
+  },
 }
 
 const BreadcrumbWarp = ({
   name,
   category,
+  dddd,
 }: {
   name: string
   category?: string
+  dddd?: string
 }) => {
   const target = crumbMap[name]
   const [items, setItems] = useState<CrumbMapItem[]>([])
@@ -67,10 +88,9 @@ const BreadcrumbWarp = ({
         items.map((item, i) => (
           <BreadcrumbItem key={i} isCurrentPage={name === item.name}>
             <BreadcrumbLink
-              href={item.href.replace(
-                '{%category%}',
-                category?.toLowerCase() ?? '',
-              )}
+              href={item.href
+                .replace('{%category%}', category?.toLowerCase() ?? '')
+                .replace('{%dddd%}', dddd ?? '')}
             >
               <Icon as={item.icon} fontSize={theme.fontSizes.lg} />{' '}
               <span style={{ verticalAlign: 'text-bottom' }}>

@@ -146,15 +146,21 @@ const MovieDetailInfo = ({ movie }: { movie: Movie }) => {
 
           <Flex
             flexDirection="column"
-            gap={theme.space['2']}
             px={theme.space['8']}
             py={theme.space['2']}
+            justifyContent="space-between"
           >
-            <Stack gap={theme.space['2']} direction="row">
-              {movie.genres?.map((g) => <span key={g}>{g}</span>)}
-            </Stack>
-            <Box gap={theme.space['2']}>
-              <p>{movie.keywords?.join(' / ')}</p>
+            <Flex flexDirection="column" gap={theme.space['2']}>
+              <Stack gap={theme.space['2']} direction="row">
+                {movie.genres?.map((g) => <span key={g}>{g}</span>)}
+              </Stack>
+              <Box gap={theme.space['2']}>
+                <p>{movie.keywords?.join(' / ')}</p>
+              </Box>
+            </Flex>
+            <Box>
+              <p>Logged : </p>
+              <p>{movie.logAt.replace('T', ' ')}</p>
             </Box>
           </Flex>
         </Grid>
