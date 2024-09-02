@@ -4,7 +4,13 @@ import { LoginButton } from '@/app/(global)/(components)/login.button'
 
 export const Navigation = () => {
   return (
-    <Flex as="nav" p={theme.space['2']} justify="space-between">
+    <Flex
+      as="nav"
+      p={theme.space['2']}
+      justify="space-between"
+      alignItems="center"
+      h="60px"
+    >
       <h1>
         <a href={process.env.NEXT_PUBLIC_FRONT_HOST}>HobbyLog</a>
       </h1>

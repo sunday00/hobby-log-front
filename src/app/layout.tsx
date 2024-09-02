@@ -26,7 +26,15 @@ export default function RootLayout({
       >
         <Providers>
           <Navigation />
-          <main style={{ padding: theme.space['4'] }}>{children}</main>
+          <main
+            style={{
+              padding: theme.space['4'],
+              height: 'calc(100vh - 60px)',
+              overflowY: 'scroll',
+            }}
+          >
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

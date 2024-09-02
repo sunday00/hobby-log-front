@@ -12,9 +12,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { MovieRaw } from '@/gql/types'
-import style from '@/app/(global)/(style)/movie.module.scss'
 import { useContext } from 'react'
 import GlobalContext from '@/libs/store.context'
+import style from '@/app/(global)/(style)/global.module.scss'
 
 const MovieSearchResultItem = ({ movie }: { movie: MovieRaw }) => {
   const global = useContext(GlobalContext)
@@ -66,7 +66,7 @@ const MovieSearchResultItem = ({ movie }: { movie: MovieRaw }) => {
             {movie.originalTitle}
           </Text>
           <Text
-            className={style['movie-raw-item-overview']}
+            className={style['ellipsis-three']}
             textAlign={'center'}
             // eslint-disable-next-line react-hooks/rules-of-hooks
             color={useColorModeValue('gray.700', 'gray.400')}

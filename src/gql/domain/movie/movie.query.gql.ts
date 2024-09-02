@@ -1,5 +1,3 @@
-'use client'
-
 import { gql } from '@apollo/client'
 import { casting, crew, movie, movieRaw } from '@/gql/types'
 
