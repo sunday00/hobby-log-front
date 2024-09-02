@@ -4,11 +4,12 @@ import { MovieSearchResults } from '@/app/hobby/category/movie/create/(component
 
 const MovieSearchBase = () => {
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState<number>(1)
   const [searchSubmit, setSearchSubmit] = useState('')
-  const [movieRaws, setMovieRaws] = useState([])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    setPage(1)
     setSearchSubmit(search)
   }
 
@@ -21,7 +22,11 @@ const MovieSearchBase = () => {
       />
 
       {searchSubmit.length ? (
-        <MovieSearchResults search={searchSubmit} />
+        <MovieSearchResults
+          search={searchSubmit}
+          page={page}
+          setPage={setPage}
+        />
       ) : (
         <></>
       )}

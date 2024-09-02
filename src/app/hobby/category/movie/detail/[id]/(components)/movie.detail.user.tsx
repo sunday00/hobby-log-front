@@ -5,6 +5,12 @@ import { IoMdTrash } from 'react-icons/io'
 import { Status } from '@/gql/types'
 
 const MovieDetailUserButton = ({ status }: { status: Status }) => {
+  // TODO
+  // link to button
+  // activate
+  // edit
+  // delete
+
   return (
     <>
       <Flex

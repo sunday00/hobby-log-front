@@ -23,7 +23,13 @@ const MovieDetailPresentation = ({
 
   useEffect(() => {
     const at = LocalStorage.getItem('accessToken')
-    const { sub } = decodeBase64(at ?? '')
+
+    if (!at || at === '') {
+      setMy(false)
+      return
+    }
+
+    const { sub } = decodeBase64(at ?? '.')
 
     setMy(sub === userId)
   }, [userId])

@@ -1,6 +1,7 @@
 import { Box, Flex, theme } from '@chakra-ui/react'
 import Link from 'next/link'
 import { LoginButton } from '@/app/(global)/(components)/login.button'
+import { DarkModeButton } from '@/app/(global)/(components)/darkmode.button'
 
 export const Navigation = () => {
   return (
@@ -29,6 +30,8 @@ export const Navigation = () => {
         </Box>
 
         <LoginButton />
+
+        <DarkModeButton />
       </Flex>
     </Flex>
   )
