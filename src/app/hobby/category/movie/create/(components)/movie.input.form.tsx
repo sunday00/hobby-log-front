@@ -20,7 +20,7 @@ import {
 } from '@/gql/domain/movie/movie.mutation.gql'
 
 const MovieInputForm = ({ movie }: { movie?: Movie }) => {
-  const today = new Date(movie?.logAt ?? null)
+  const today = movie ? new Date(movie?.logAt ?? null) : new Date()
   const [ratings, setRatings] = useState<number>(movie?.ratings ?? 75)
   const [content, setContent] = useState<string>(movie?.contents ?? '')
   const [logAtStrDate, setLogAtStrDate] = useState<string>(
@@ -32,7 +32,7 @@ const MovieInputForm = ({ movie }: { movie?: Movie }) => {
 
   const global = useContext(GlobalContext)
 
-  const [logMovie] = useMutation(movie ? logMovieMutation : updateMovieMutation)
+  const [logMovie] = useMutation(movie ? updateMovieMutation : logMovieMutation)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -64,12 +64,15 @@ const MovieInputForm = ({ movie }: { movie?: Movie }) => {
     }
 
     //TODO: more elegant handle error
-    if (!data?.logMovie?.success) {
-      console.error(data?.logMovie?.message ?? 'something went wrong')
+    if (!data?.[movie ? 'updateMovie' : 'logMovie']?.success) {
+      console.error(
+        data?.[movie ? 'updateMovie' : 'logMovie']?.message ??
+          'something went wrong',
+      )
     }
 
-    if (data?.logMovie?.success) {
-      location.href = `/hobby/category/movie/detail/${data.logMovie.id}`
+    if (data?.[movie ? 'updateMovie' : 'logMovie']?.success) {
+      location.href = `/hobby/category/movie/detail/${data?.[movie ? 'updateMovie' : 'logMovie'].id}`
     }
   }
 

@@ -4,7 +4,10 @@ import { FaPencil, FaPlay, FaPowerOff } from 'react-icons/fa6'
 import { IoMdTrash } from 'react-icons/io'
 import { Category, Status, UpdateStatusInput } from '@/gql/types'
 import { useMutation } from '@apollo/client'
-import { updateStatusMutation } from '@/gql/common/common.mutation.gql'
+import {
+  deleteLogMutation,
+  updateStatusMutation,
+} from '@/gql/common/common.mutation.gql'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -16,12 +19,10 @@ const MovieDetailUserButton = ({
   status: Status
 }) => {
   const [updateStatus] = useMutation(updateStatusMutation)
+  const [deleteLog] = useMutation(deleteLogMutation)
   const router = useRouter()
 
-  // TODO
-  // link to button
-  // edit
-  // delete
+  const today = new Date()
 
   const handleUpdateStatus = async (status: Status) => {
     const currentInput: UpdateStatusInput = {
@@ -45,6 +46,34 @@ const MovieDetailUserButton = ({
     }
 
     router.refresh()
+  }
+
+  const handleDelete = async (withRemote = false) => {
+    const { data, errors } = await deleteLog({
+      variables: {
+        category: Category.Movie,
+        id,
+        flag: withRemote ? '' : 'skipRemote',
+      },
+    })
+
+    //TODO: more elegant handle error
+    if (errors) {
+      console.error(errors)
+    }
+
+    //TODO: more elegant handle error
+    if (!data?.deleteLog?.success) {
+      console.error(data?.deleteLog?.message ?? 'something went wrong')
+    }
+
+    location.href =
+      '/hobby/monthly/' +
+      today.getFullYear() +
+      '-' +
+      (today.getMonth() + 1).toString().padStart(2, '0')
+
+    return
   }
 
   return (
@@ -84,9 +113,23 @@ const MovieDetailUserButton = ({
           <span>EDIT</span>
         </Button>
 
-        <Button colorScheme={'red'} gap={theme.space['1']}>
+        <Button
+          colorScheme={'red'}
+          gap={theme.space['1']}
+          onClick={() => handleDelete()}
+        >
           <Icon as={IoMdTrash} />
           <span>DELETE</span>
+        </Button>
+
+        {/* TODO : check TMDB token user */}
+        <Button
+          colorScheme={'red'}
+          gap={theme.space['1']}
+          onClick={() => handleDelete(true)}
+        >
+          <Icon as={IoMdTrash} />
+          <span>DELETE with Remote</span>
         </Button>
       </Flex>
     </>

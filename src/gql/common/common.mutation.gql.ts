@@ -8,3 +8,12 @@ export const updateStatusMutation = gql`
     }
   }
 `
+
+export const deleteLogMutation = gql`
+  mutation DeleteLog($category: Category, $id: String, $flag: String) {
+    deleteLog(category: $category, id: $id, flag: $flag) {
+      id
+      success
+    }
+  }
+`

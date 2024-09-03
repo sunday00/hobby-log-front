@@ -9,7 +9,7 @@ async function download(info) {
     await Promise.all(children.map(download))
   } else if (info.type === 'file') {
     const url = info.download_url
-    const file = fs.createWriteStream('./gpls/' + info.name)
+    const file = fs.createWriteStream('./gpls/' + info.name, { flags: 'w' })
     http.get(url, (res) => {
       res.pipe(file)
 

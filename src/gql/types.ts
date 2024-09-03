@@ -309,6 +309,7 @@ export type MutationCreateWalkLogArgs = {
 
 export type MutationDeleteLogArgs = {
   category?: InputMaybe<Category>;
+  flag?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
 };
 
