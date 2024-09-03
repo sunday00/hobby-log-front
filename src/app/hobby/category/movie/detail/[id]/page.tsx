@@ -7,6 +7,8 @@ import { theme } from '@chakra-ui/react'
 import { MovieDetailOverview } from '@/app/hobby/category/movie/detail/[id]/(components)/movie.detail.overview'
 import { MovieDetailPresentation } from '@/app/hobby/category/movie/detail/[id]/presentation'
 
+export const fetchCache = 'force-no-store'
+
 const MovieDetail = async ({ params }: { params: { id: string } }) => {
   const { data, loading, error } = await client.query({
     query: getOneMovieQuery,
@@ -19,12 +21,13 @@ const MovieDetail = async ({ params }: { params: { id: string } }) => {
   return (
     <>
       <MovieDetailPresentation
+        id={params.id}
         logAt={info.logAt}
         userId={userId}
         status={status}
       >
         <section className="info" style={{ marginBottom: theme.space['8'] }}>
-          <MovieDetailInfo movie={info} />
+          <MovieDetailInfo movie={info} status={status} />
         </section>
         <section>
           <MovieDetailOverview overviews={{ synopsis, originalSynopsis }} />

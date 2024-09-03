@@ -10,11 +10,13 @@ import { Status } from '@/gql/types'
 
 const MovieDetailPresentation = ({
   children,
+  id,
   logAt,
   userId,
   status,
 }: {
   children: ReactNode
+  id: string
   logAt: string
   userId: string
   status: Status
@@ -42,7 +44,7 @@ const MovieDetailPresentation = ({
         dddd={dateFormat(logAt, 'YYYY-MM')}
       />
       <Box mt={theme.space['8']}>{children}</Box>
-      {my && <MovieDetailUserButton status={status} />}
+      {my && <MovieDetailUserButton id={id} status={status} />}
     </>
   )
 }

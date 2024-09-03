@@ -1,6 +1,6 @@
 'use client'
 
-import { Movie } from '@/gql/types'
+import { Movie, Status } from '@/gql/types'
 import {
   Box,
   Card,
@@ -17,7 +17,13 @@ import {
 import style from '@/app/(global)/(style)/global.module.scss'
 import { FaClock } from 'react-icons/fa6'
 
-const MovieDetailInfo = ({ movie }: { movie: Movie }) => {
+const MovieDetailInfo = ({
+  movie,
+  status,
+}: {
+  movie: Movie
+  status: Status
+}) => {
   const ratingColor = (rating: number) => {
     if (rating >= 80) return 'green'
     if (rating >= 60) return 'yellow'
@@ -161,6 +167,7 @@ const MovieDetailInfo = ({ movie }: { movie: Movie }) => {
             <Box>
               <p>Logged : </p>
               <p>{movie.logAt.replace('T', ' ')}</p>
+              <p>Status: {status}</p>
             </Box>
           </Flex>
         </Grid>

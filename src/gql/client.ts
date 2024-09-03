@@ -18,6 +18,16 @@ const client = new ApolloClient({
   uri: `${process.env.NEXT_PUBLIC_BACKEND_HOST}/graphql`,
   cache: new InMemoryCache(),
   headers: headers,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'ignore',
+    },
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all',
+    },
+  },
 })
 
 export { client }
