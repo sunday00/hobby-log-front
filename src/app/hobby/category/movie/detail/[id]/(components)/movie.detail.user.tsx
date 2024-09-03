@@ -44,9 +44,6 @@ const MovieDetailUserButton = ({
       console.error(data?.updateStatus?.message ?? 'something went wrong')
     }
 
-    await client.resetStore()
-    await client.clearStore()
-
     router.refresh()
   }
 
