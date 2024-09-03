@@ -201,6 +201,7 @@ export type Movie = BaseSchema & {
   keywords?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   language?: Maybe<Scalars['String']['output']>;
   logAt?: Maybe<Scalars['DateTime']['output']>;
+  movieId?: Maybe<Scalars['Long']['output']>;
   originalCountry?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   originalSynopsis?: Maybe<Scalars['String']['output']>;
   originalTagline?: Maybe<Scalars['String']['output']>;
@@ -667,6 +668,7 @@ export const hobby = {
 
 export const movie = {
   id: undefined,
+  movieId: undefined,
   userId: undefined,
   category: undefined,
   title: undefined,

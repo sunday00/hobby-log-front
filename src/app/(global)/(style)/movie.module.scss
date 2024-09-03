@@ -9,7 +9,7 @@
 }
 
 
-  [data-theme="dark"] .markdown-body{
+  [data-theme="dark"] .markdown-body {
     /*dark*/
     color-scheme: dark;
     --focus-outlineColor: #1f6feb;
@@ -436,9 +436,9 @@
 .markdown-body blockquote {
   margin: 0;
   padding: 1em 1em;
-  color: var(--fgColor-muted);
-  border-left: .25em solid var(--borderColor-default);
-  background-color: var(--bgColor-neutral-muted);
+  color: var(--fgColor-attention);
+  border-left: .25em solid var(--borderColor-attention-emphasis);
+  background-color: var(--bgColor-attention-muted);
 }
 
 .markdown-body ul,
@@ -1225,4 +1225,9 @@
 
 .markdown-body>*:first-child>.heading-element:first-child {
   margin-top: 0 !important;
+}
+
+.movie-search-button {
+  background-color: var(--bgColor-neutral-muted);
+  color: var(--fgColor-muted);
 }

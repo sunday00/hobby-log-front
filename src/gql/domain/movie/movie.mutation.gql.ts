@@ -8,3 +8,12 @@ export const logMovieMutation = gql`
     }
   }
 `
+
+export const updateMovieMutation = gql`
+  mutation UpdateMovie($input: MovieInput) {
+    updateMovie(movieInput: $input) {
+      id
+      success
+    }
+  }
+`

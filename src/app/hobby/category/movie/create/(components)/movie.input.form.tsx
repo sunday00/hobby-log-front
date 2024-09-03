@@ -11,36 +11,48 @@ import {
   theme,
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/input'
-import { MovieInput, Status } from '@/gql/types'
+import { Movie, MovieInput, Status } from '@/gql/types'
 import GlobalContext from '@/libs/store.context'
 import { useMutation } from '@apollo/client'
-import { logMovieMutation } from '@/gql/domain/movie/movie.mutation.gql'
+import {
+  logMovieMutation,
+  updateMovieMutation,
+} from '@/gql/domain/movie/movie.mutation.gql'
 
-const MovieInputForm = () => {
-  const today = new Date()
-  const [ratings, setRatings] = useState<number>(75)
-  const [content, setContent] = useState<string>('')
+const MovieInputForm = ({ movie }: { movie?: Movie }) => {
+  const today = new Date(movie?.logAt ?? null)
+  const [ratings, setRatings] = useState<number>(movie?.ratings ?? 75)
+  const [content, setContent] = useState<string>(movie?.contents ?? '')
   const [logAtStrDate, setLogAtStrDate] = useState<string>(
     `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`,
   )
-  const [logAtStrHH, setLogAtStrHH] = useState<number>(0)
-  const [logAtStrMM, setLogAtStrMM] = useState<number>(0)
-  const [status, setStatus] = useState<Status>(Status.Draft)
+  const [logAtStrHH, setLogAtStrHH] = useState<number>(today.getHours())
+  const [logAtStrMM, setLogAtStrMM] = useState<number>(today.getMinutes())
+  const [status, setStatus] = useState<Status>(movie?.status ?? Status.Draft)
 
   const global = useContext(GlobalContext)
 
-  const [logMovie] = useMutation(logMovieMutation)
+  const [logMovie] = useMutation(movie ? logMovieMutation : updateMovieMutation)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const currentInput: MovieInput = {
-      movieId: global.movie.movieInput.movieId,
-      content,
-      ratings,
-      status,
-      logAtStr: `${logAtStrDate}T${logAtStrHH.toString().padStart(2, '0')}:${logAtStrMM.toString().padStart(2, '0')}:00.000Z`,
-    }
+    const currentInput: MovieInput = movie
+      ? {
+          id: movie.id,
+          movieId: movie.movieId,
+          content,
+          ratings,
+          status,
+          logAtStr: `${logAtStrDate}T${logAtStrHH.toString().padStart(2, '0')}:${logAtStrMM.toString().padStart(2, '0')}:00.000Z`,
+        }
+      : {
+          movieId: global.movie.movieInput.movieId,
+          content,
+          ratings,
+          status,
+          logAtStr: `${logAtStrDate}T${logAtStrHH.toString().padStart(2, '0')}:${logAtStrMM.toString().padStart(2, '0')}:00.000Z`,
+        }
 
     const { data, errors } = await logMovie({
       variables: { input: currentInput },
@@ -144,7 +156,7 @@ const MovieInputForm = () => {
           </FormControl>
 
           <Button type="submit" colorScheme="blue">
-            LOG MY HOBBY
+            {movie ? 'UPDATE' : 'LOG MY HOBBY'}
           </Button>
         </Stack>
       </form>

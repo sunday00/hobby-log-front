@@ -1,7 +1,6 @@
 import React from 'react'
 import { Input } from '@chakra-ui/input'
-import { Button, Flex, theme } from '@chakra-ui/react'
-import { Icon } from '@chakra-ui/icons'
+import { Flex, IconButton, theme } from '@chakra-ui/react'
 import { MdSearch } from 'react-icons/md'
 
 const MovieSearchForm = ({
@@ -22,9 +21,11 @@ const MovieSearchForm = ({
           onChange={(e) => setSearch(e.target.value)}
           value={search}
         />
-        <Button type="submit">
-          <Icon as={MdSearch} />
-        </Button>
+        <IconButton
+          type="submit"
+          aria-label="Search"
+          icon={<MdSearch />}
+        ></IconButton>
       </Flex>
     </form>
   )

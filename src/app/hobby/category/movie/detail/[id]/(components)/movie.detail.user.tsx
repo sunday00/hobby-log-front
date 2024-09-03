@@ -6,7 +6,7 @@ import { Category, Status, UpdateStatusInput } from '@/gql/types'
 import { useMutation } from '@apollo/client'
 import { updateStatusMutation } from '@/gql/common/common.mutation.gql'
 import { useRouter } from 'next/navigation'
-import { client } from '@/gql/client'
+import Link from 'next/link'
 
 const MovieDetailUserButton = ({
   id,
@@ -74,7 +74,12 @@ const MovieDetailUserButton = ({
           </Button>
         )}
 
-        <Button colorScheme={'blue'} gap={theme.space['1']}>
+        <Button
+          colorScheme={'blue'}
+          gap={theme.space['1']}
+          as={Link}
+          href={`/hobby/category/movie/edit/${id}`}
+        >
           <Icon as={FaPencil} />
           <span>EDIT</span>
         </Button>
