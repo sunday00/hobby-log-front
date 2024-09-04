@@ -8,3 +8,11 @@ export const monthlyHobbyQuery = gql`
         }
     }
 `
+
+export const monthlyNonActivateQuery = gql`
+    query NonActivate($yyyy: String, $mm: String) {
+        monthNonActiveHobby (yyyy: $yyyy, mm: $mm) {
+            ${Object.keys(hobby).join(' ')}
+        }
+    }
+`

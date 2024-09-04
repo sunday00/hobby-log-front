@@ -15,6 +15,7 @@ import {
   MdStar,
 } from 'react-icons/md'
 import { IconType } from 'react-icons'
+import { FaPowerOff } from 'react-icons/fa6'
 
 type CrumbMapItem = {
   name: string
@@ -42,6 +43,12 @@ const crumbMap: { [k: string]: CrumbMapItem } = {
     icon: MdCalendarMonth,
     path: ['monthly'],
   },
+  nonActivate: {
+    name: 'nonActivate',
+    href: '/hobby/non-activate/{%dddd%}',
+    icon: FaPowerOff,
+    path: ['nonActivate'],
+  },
   'category.create': {
     name: '{%name%} Create',
     href: '/hobby/category/{%category%}/create',
@@ -56,12 +63,14 @@ const crumbMap: { [k: string]: CrumbMapItem } = {
   },
 }
 
+type breadName = keyof typeof crumbMap
+
 const BreadcrumbWarp = ({
   name,
   category,
   dddd,
 }: {
-  name: string
+  name: breadName
   category?: string
   dddd?: string
 }) => {

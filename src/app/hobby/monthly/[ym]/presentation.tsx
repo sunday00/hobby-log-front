@@ -1,7 +1,7 @@
 'use client'
 
 import { Hobby } from '@/gql/types'
-import { Flex, Stack, theme, useBreakpointValue } from '@chakra-ui/react'
+import { Stack, theme } from '@chakra-ui/react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { MonthlyItem } from '@/app/hobby/monthly/[ym]/(components)/monthly.item'
 import { MonthlyNavControl } from '@/app/hobby/monthly/[ym]/(components)/nav.control'
@@ -21,13 +21,6 @@ const HobbyMonthlyPresentation = ({
         today.getFullYear().toString(),
         (today.getMonth() + 1).toString().padStart(2, '0'),
       ]
-
-  const brJustify = useBreakpointValue({ md: 'center' })
-
-  const brMargin = useBreakpointValue({
-    md: (Math.random() * 150).toFixed(0) + 'px',
-    base: 0,
-  })
 
   const elementList = hobbies.map((hobby, i) => {
     return (

@@ -7,7 +7,7 @@ const MonthlyItemWarp = ({
   justify,
 }: {
   children: ReactNode
-  justify: 'start' | 'end'
+  justify: 'start' | 'end' | 'center'
 }) => {
   const brJustify = useBreakpointValue({ base: 'center', md: justify })
 
