@@ -1,4 +1,4 @@
-import { Category } from '@/gql/types'
+import { Category, GalleryType } from '@/gql/types'
 
 export const decodeBase64 = (token: string) => {
   const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
@@ -61,4 +61,18 @@ export const categoryToEmoji = (category: Category) => {
     default:
       return ''
   }
+}
+
+export const galleryTypeToKor = (galleryType: string | GalleryType) => {
+  const kors: { [k: string]: string } = {
+    classic: '고전',
+    organization: '단체전',
+    solo: '개인전',
+    special: '기획전/특별전',
+    student: '학생/아마추어/비예술가/기타',
+  }
+
+  const key = galleryType.toString().toLowerCase() as string
+
+  return kors[key]
 }
