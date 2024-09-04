@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "node ./download-graphql-from-git.js"
   },
   "dependencies": {
     "@apollo/client": "^3.11.5",
     "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/input": "^2.1.2",
     "@chakra-ui/modal": "^2.3.1",
     "@chakra-ui/next-js": "^2.2.0",
     "@chakra-ui/react": "^2.8.2",
@@ -19,11 +21,14 @@
     "framer-motion": "^11.3.31",
     "graphql": "^16.9.0",
     "next": "14.2.5",
+    "next-mdx-remote": "^5.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/client-preset": "4.3.3",
     "@types/node": "^20.14.14",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

@@ -1,0 +1,16 @@
+type Query {
+    monthHobby(yyyy: String, mm: String): [Hobby]
+    monthNonActiveHobby(yyyy: String, mm: String): [Hobby]
+    yearByCategory(yyyy: String, category:Category): [Hobby]
+}
+
+type Mutation {
+    updateStatus(updateStatusInput: UpdateStatusInput): Result
+    deleteLog(category: Category, id: String, flag: String): Result
+}
+
+input UpdateStatusInput {
+    category: Category,
+    id: String,
+    status: Status
+}

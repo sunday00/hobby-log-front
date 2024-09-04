@@ -1,0 +1,14 @@
+extend type Query {
+    sign(code: String): Auth
+}
+
+type Auth {
+    accessToken: String
+    #TODO: refresh token
+}
+
+enum Role {
+    ROLE_GUEST
+    ROLE_USER
+    ROLE_ADMIN
+}

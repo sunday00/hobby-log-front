@@ -1,3 +1,9 @@
+import { HomePresentation } from '@/app/(home)/presentation'
+
 export default function Home() {
-  return <div></div>
+  return (
+    <>
+      <HomePresentation />
+    </>
+  )
 }

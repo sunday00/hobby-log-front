@@ -1,5 +1,3 @@
-'use client'
-
 import { gql } from '@apollo/client'
 
 export const signQuery = gql`

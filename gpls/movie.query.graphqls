@@ -1,0 +1,89 @@
+extend type Query {
+    searchMovies(search: String, page: Long = 1): MovieRawPge
+    getOneMovie(id: String): Movie
+}
+
+type MovieRawPge {
+    page: Long
+    results: [MovieRaw]
+    totalPages: Long
+    totalResults: Long
+}
+
+type MovieRaw {
+    id: Long
+    title: String
+    originalTitle: String
+    adult: Boolean
+    video: Boolean
+    backdropPath: String
+    posterPath: String
+    genreIds:  [Long]
+    originalLanguage: String
+    overview: String
+    popularity: Float
+    releaseDate: String
+    voteAverage: Float
+    voteCount: Long
+}
+
+type Movie implements BaseSchema {
+    id: String
+    movieId: Long
+    userId: String
+    category: Category
+    title: String
+    thumbnail: String
+    ratings: Int
+    logAt: DateTime
+    status: Status
+    adult: Boolean
+    originalTitle: String
+    budget: Long
+    revenue: Long
+    originalCountry: [String]
+    language: String
+    directors: [Crew]
+    actors: [Casting]
+    genres: [String]
+    keywords: [String]
+    synopsis: String
+    originalSynopsis: String
+    contents: String
+    popularity: Float
+    voteAverage: Float
+    voteCount: Long
+    productions: [String]
+    releaseDate: String
+    runtime: Int
+    tagline: String
+    originalTagline: String
+}
+
+type Crew {
+    id: Long
+    adult: Boolean
+    gender: Int
+    name: String
+    originalName: String
+    popularity: Float
+    profilePath: String
+    creditId: String
+    department: String
+    job: String
+}
+
+type Casting {
+    id: Long
+    adult: Boolean
+    gender: Int
+    department: String
+    name: String
+    originalName: String
+    popularity: Float
+    profilePath: String
+    castId: Long
+    character: String
+    creditId: String
+    order: Int
+}

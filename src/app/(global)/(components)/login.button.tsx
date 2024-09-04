@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Icon } from '@chakra-ui/icons'
-import { MdDeveloperMode, MdLogin, MdLogout } from 'react-icons/md'
+import { MdDeveloperMode, MdLogin, MdLogout, MdStar } from 'react-icons/md'
 import { DevHeaderHelperModal } from '@/app/(global)/(components)/dev-helper-sub/header.modal'
 
 export const LoginButton = () => {
@@ -61,6 +61,17 @@ export const LoginButton = () => {
               >
                 <Icon as={MdLogout} />
                 <span>Logout</span>
+              </MenuItem>
+
+              <MenuItem
+                as={Link}
+                href="/hobby/create"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Icon as={MdStar} />
+                <span>Logging Hobby</span>
               </MenuItem>
 
               {isDev ? (
