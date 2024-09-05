@@ -11,44 +11,27 @@ import {
   theme,
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/input'
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
+import React, { ChangeEvent, useContext, useState } from 'react'
 import GlobalContext from '@/libs/store.context'
+import { LogStrs, splitDDHHMM, updateLogAtStr } from '@/libs/conv.util'
 
 const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
   const global = useContext(GlobalContext)
 
-  let defaultDate, defaultHH, defaultMM
+  const { DD, HH, MM } = splitDDHHMM(gallery?.logAt)
 
-  if (gallery) {
-    const [prevDate, prevTime] = gallery.logAt.split('T')
-    const [prevHH, prevMM, _prevSS] = prevTime.split(':')
-
-    defaultDate = prevDate
-    defaultHH = Number(prevHH)
-    defaultMM = Number(prevMM)
-  }
-
-  const today = new Date()
-  const [localInput, setLocalInput] = useState<
-    Partial<GalleryInput> & {
-      logAtStrDate: string
-      logAtStrHH: number
-      logAtStrMM: number
-    }
-  >({
-    title: gallery?.title ?? '',
-    location: gallery?.location ?? '',
-    overview: gallery?.overview ?? '',
-    content: gallery?.content ?? '',
-    status: gallery?.status ?? Status.Draft,
-    logAtStrDate:
-      defaultDate ??
-      `${today.getFullYear()}` +
-        `-${(today.getMonth() + 1).toString().padStart(2, '0')}` +
-        `-${today.getDate().toString().padStart(2, '0')}`,
-    logAtStrHH: defaultHH ?? today.getHours(),
-    logAtStrMM: defaultMM ?? today.getMinutes(),
-  })
+  const [localInput, setLocalInput] = useState<Partial<GalleryInput> & LogStrs>(
+    {
+      title: gallery?.title ?? '',
+      location: gallery?.location ?? '',
+      overview: gallery?.overview ?? '',
+      content: gallery?.content ?? '',
+      status: gallery?.status ?? Status.Draft,
+      logAtStrDD: DD,
+      logAtStrHH: Number(HH),
+      logAtStrMM: Number(MM),
+    },
+  )
 
   const handleFormChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -65,44 +48,19 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
 
   const handleDateTimeChange = (
     v: string | number,
-    part: 'date' | 'HH' | 'mm',
+    part: 'DD' | 'HH' | 'MM',
   ) => {
     const curr = { ...localInput }
-    const [rawDate, rawTime] = (
-      global.gallery.galleryInput.logAtStr as unknown as string
-    )?.split('T') ?? [null, '00:00:00.000Z']
-    const [rawHH, rawMM, _rawSS] = rawTime.split(':')
-    let dt = ''
-
-    switch (part) {
-      case 'date':
-        curr.logAtStrDate = v as string
-        dt = v + 'T' + rawTime
-        break
-      case 'HH':
-        curr.logAtStrHH = Number(v)
-        dt =
-          rawDate +
-          'T' +
-          v.toString().padStart(2, '0') +
-          ':' +
-          rawMM +
-          ':00.000Z'
-        break
-      case 'mm':
-        curr.logAtStrMM = Number(v)
-        dt =
-          rawDate +
-          'T' +
-          rawHH +
-          ':' +
-          v.toString().padStart(2, '0') +
-          ':00.000Z'
-        break
-    }
-
+    curr[('logAtStr' + part) as keyof LogStrs] = (
+      part === 'DD' ? String(v) : Number(v)
+    ) as never
     setLocalInput(curr)
-    global.gallery.galleryInput.logAtStr = dt as unknown as undefined
+
+    global.gallery.galleryInput.logAtStr = updateLogAtStr(
+      global.gallery.galleryInput.logAtStr as unknown as string,
+      part,
+      v,
+    ) as unknown as undefined
     global.update(global)
   }
 
@@ -163,10 +121,10 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
             <Input
               id="log-str-date"
               flex={3}
-              name="logStrDate"
+              name="logStrDD"
               type="date"
-              value={localInput.logAtStrDate}
-              onChange={(e) => handleDateTimeChange(e.target.value, 'date')}
+              value={localInput.logAtStrDD}
+              onChange={(e) => handleDateTimeChange(e.target.value, 'DD')}
             />
             <Input
               id="log-str-hh"
@@ -189,7 +147,7 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
               max={59}
               value={localInput.logAtStrMM}
               onChange={(e) =>
-                handleDateTimeChange(Number(e.target.value ?? 0), 'mm')
+                handleDateTimeChange(Number(e.target.value ?? 0), 'MM')
               }
             />
           </Flex>

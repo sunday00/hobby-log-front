@@ -1,5 +1,5 @@
 import React from 'react'
-import { galleryInput, movieInput } from '@/gql/types'
+import { essayInput, galleryInput, movieInput } from '@/gql/types'
 
 export const initialState = {
   update: (date: any) => {},
@@ -9,6 +9,9 @@ export const initialState = {
   },
   gallery: {
     galleryInput: galleryInput,
+  },
+  essay: {
+    essayInput: essayInput,
   },
 }
 

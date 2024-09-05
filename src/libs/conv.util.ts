@@ -1,5 +1,11 @@
 import { Category, GalleryType } from '@/gql/types'
 
+export type LogStrs = {
+  logAtStrDD: string
+  logAtStrHH: number
+  logAtStrMM: number
+}
+
 export const decodeBase64 = (token: string) => {
   const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
   const jsonPayload = decodeURIComponent(
@@ -26,6 +32,42 @@ export const dateFormat = (
       return d.slice(0, 7)
     default:
       return yyyyMMDDTHHmmss.replace('T', ' ')
+  }
+}
+
+export const splitDDHHMM = (logAtStr?: string) => {
+  const today = new Date()
+  const tDD =
+    `${today.getFullYear()}` +
+    `-${(today.getMonth() + 1).toString().padStart(2, '0')}` +
+    `-${today.getDate().toString().padStart(2, '0')}`
+
+  const tHH = today.getHours().toString().padStart(2, '0')
+  const tMM = today.getMinutes().toString().padStart(2, '0')
+
+  if (!logAtStr) return { DD: tDD, HH: tHH, MM: tMM }
+
+  const [DD, TT] = logAtStr.split('T')
+  const [HH, MM, _SS] = TT.split(':')
+
+  return { DD: DD, HH: HH, MM: MM }
+}
+
+export const updateLogAtStr = (
+  logAtStr: string,
+  k: 'DD' | 'HH' | 'MM',
+  v: string | number,
+) => {
+  const [prevDD, prevTT] = (logAtStr ?? new Date().toISOString()).split('T')
+  const [prevHH, prevMM] = prevTT.split(':')
+
+  switch (k) {
+    case 'DD':
+      return `${v}T${prevTT}`
+    case 'HH':
+      return `${prevDD}T${Number(v).toString().padStart(2, '0')}:${prevMM}:00.000Z`
+    case 'MM':
+      return `${prevDD}T${prevHH}:${Number(v).toString().padStart(2, '0')}:00.000Z`
   }
 }
 

@@ -7,10 +7,7 @@ import { GalleryCreateRight } from '@/app/hobby/category/gallery/create/(compone
 import { FormEvent, useContext } from 'react'
 import GlobalContext from '@/libs/store.context'
 import { useMutation } from '@apollo/client'
-import {
-  logGalleryMutation,
-  updateGalleryMutation,
-} from '@/gql/domain/gallery/gallery.mutation.gql'
+import { logGalleryMutation } from '@/gql/domain/gallery/gallery.mutation.gql'
 import { GalleryType, Status } from '@/gql/types'
 
 const GalleryCreatePresentation = () => {
