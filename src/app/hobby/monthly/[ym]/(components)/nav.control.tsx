@@ -13,7 +13,20 @@ import { Input } from '@chakra-ui/input'
 import { FaSearch } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 
-const MonthlyNavControl = ({ yyyy, mm }: { yyyy: string; mm: string }) => {
+const prefixes = {
+  publicUrl: '/hobby/monthly',
+  manageNonActive: '/hobby/non-activate',
+}
+
+const MonthlyNavControl = ({
+  yyyy,
+  mm,
+  manage = false,
+}: {
+  yyyy: string
+  mm: string
+  manage?: boolean
+}) => {
   const today = new Date()
   const year = Number(yyyy)
   const month = Number(mm)
@@ -21,12 +34,13 @@ const MonthlyNavControl = ({ yyyy, mm }: { yyyy: string; mm: string }) => {
   const [currentMonth, setCurrentMonth] = useState(month)
 
   const router = useRouter()
+  const prefix = manage ? prefixes.manageNonActive : prefixes.publicUrl
 
   const moveToSpecific = (e: FormEvent) => {
     e.preventDefault()
 
     router.push(
-      `/hobby/monthly/${currentYear}-${currentMonth.toString().padStart(2, '0')}`,
+      `${prefix}/${currentYear}-${currentMonth.toString().padStart(2, '0')}`,
     )
   }
 
@@ -35,17 +49,19 @@ const MonthlyNavControl = ({ yyyy, mm }: { yyyy: string; mm: string }) => {
       <Flex>
         <Button
           as={Link}
-          href={`/hobby/monthly/${year - 1}-${mm}`}
+          href={`${prefix}/${year - 1}-${mm}`}
           aria-label={'go to one year ago'}
-          isDisabled={year <= 2024}
+          isDisabled={manage ? false : year <= 2024}
         >
           <Icon as={FaAnglesLeft} />
         </Button>
         <Button
           as={Link}
-          href={`/hobby/monthly/${calcOneMonth(year, month, 'prev').join('-')}`}
+          href={`${prefix}/${calcOneMonth(year, month, 'prev').join('-')}`}
           aria-label={'go to one month ago'}
-          isDisabled={year < 2023 || (year === 2024 && month <= 7)}
+          isDisabled={
+            manage ? false : year < 2023 || (year === 2024 && month <= 7)
+          }
         >
           <Icon as={FaAngleLeft} />
         </Button>
@@ -80,21 +96,26 @@ const MonthlyNavControl = ({ yyyy, mm }: { yyyy: string; mm: string }) => {
 
         <Button
           as={Link}
-          href={`/hobby/monthly/${calcOneMonth(year, month, 'next').join('-')}`}
+          href={`${prefix}/${calcOneMonth(year, month, 'next').join('-')}`}
           aria-label={'go to one year ago'}
           isDisabled={
-            year >= today.getFullYear() && month >= today.getMonth() + 1
+            manage
+              ? false
+              : year >= today.getFullYear() && month >= today.getMonth() + 1
           }
         >
           <Icon as={FaAngleRight} />
         </Button>
         <Button
           as={Link}
-          href={`/hobby/monthly/${year + 1}-${mm}`}
+          href={`${prefix}/${year + 1}-${mm}`}
           aria-label={'go to one year ago'}
           isDisabled={
-            year >= today.getFullYear() ||
-            (year + 1 >= today.getFullYear() && month >= today.getMonth() + 1)
+            manage
+              ? false
+              : year >= today.getFullYear() ||
+                (year + 1 >= today.getFullYear() &&
+                  month >= today.getMonth() + 1)
           }
         >
           <Icon as={FaAnglesRight} />

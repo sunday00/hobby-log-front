@@ -16,12 +16,19 @@ import Link from 'next/link'
 import { Icon } from '@chakra-ui/icons'
 import { MdDeveloperMode, MdLogin, MdLogout, MdStar } from 'react-icons/md'
 import { DevHeaderHelperModal } from '@/app/(global)/(components)/dev-helper-sub/header.modal'
+import { FaPowerOff } from 'react-icons/fa6'
 
 export const LoginButton = () => {
   const [isDev, setIsDev] = useState(false)
   const [accessToken, setAccessToken] = useState('')
   const [isLogged, setIsLogged] = useState(false)
   const [name, setName] = useState('')
+
+  const today = new Date()
+  const ym =
+    today.getFullYear() +
+    '-' +
+    (today.getMonth() + 1).toString().padStart(2, '0')
 
   const {
     isOpen: headerHelperIsOpen,
@@ -72,6 +79,17 @@ export const LoginButton = () => {
               >
                 <Icon as={MdStar} />
                 <span>Logging Hobby</span>
+              </MenuItem>
+
+              <MenuItem
+                as={Link}
+                href={`/hobby/non-activate/${ym}`}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Icon as={FaPowerOff} />
+                <span>Manage NonActivated</span>
               </MenuItem>
 
               {isDev ? (

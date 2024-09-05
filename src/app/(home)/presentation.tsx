@@ -1,11 +1,10 @@
 'use client'
 
-import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
-
+import { Emoticonal2dHome } from '@/app/(home)/(components)/emoticonal.2d.home'
 const HomePresentation = () => {
   return (
     <>
-      <BreadcrumbWarp name="home" />
+      <Emoticonal2dHome />
     </>
   )
 }
