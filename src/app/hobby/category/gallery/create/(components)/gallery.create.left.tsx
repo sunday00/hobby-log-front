@@ -1,6 +1,5 @@
-import { Category, Gallery, GalleryType } from '@/gql/types'
+import { Category, Gallery, GalleryInput, GalleryType } from '@/gql/types'
 import {
-  Box,
   Flex,
   FormControl,
   FormHelperText,
@@ -11,7 +10,7 @@ import {
   theme,
 } from '@chakra-ui/react'
 import { galleryTypeToKor } from '@/libs/conv.util'
-import { ChangeEvent, useContext } from 'react'
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import GlobalContext from '@/libs/store.context'
 import { generateDefaultSrc } from '@/libs/url.grnerate.util'
 import { Input } from '@chakra-ui/input'
@@ -19,15 +18,24 @@ import { Input } from '@chakra-ui/input'
 const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
   const global = useContext(GlobalContext)
 
-  const handleChangeGalleryType = (e: ChangeEvent<HTMLSelectElement>) => {
-    global.gallery.galleryInput.galleryType = GalleryType[
-      e.target.value as keyof typeof GalleryType
-    ] as unknown as undefined
-  }
+  const [localInput, setLocalInput] = useState<Partial<GalleryInput>>({
+    galleryType: gallery?.galleryType ?? GalleryType.Solo,
+    thumbnail: gallery?.thumbnail ?? '',
+    ratings: gallery?.ratings ?? 0,
+  })
 
-  const handleChangeThumbnailUrl = (e: ChangeEvent<HTMLInputElement>) => {
-    global.gallery.galleryInput.thumbnail = e.target
+  const handleFormChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const curr = { ...localInput }
+    curr[e.target.name as keyof Partial<GalleryInput>] = e.target
       .value as unknown as undefined
+    setLocalInput(curr)
+
+    global.gallery.galleryInput[e.target.name as keyof GalleryInput] = (e.target
+      .type === 'number'
+      ? Number(e.target.value)
+      : e.target.value) as unknown as undefined
 
     global.update(global)
   }
@@ -40,10 +48,12 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
           <Select
             id="gallryType"
             placeholder="gallery type"
-            onChange={handleChangeGalleryType}
+            name="galleryType"
+            value={localInput.galleryType ?? GalleryType.Solo}
+            onChange={handleFormChange}
           >
             {Object.keys(GalleryType).map((item: string) => (
-              <option key={item} value={item}>
+              <option key={item} value={item.toUpperCase()}>
                 {galleryTypeToKor(item)}
               </option>
             ))}
@@ -55,8 +65,9 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
           <FormLabel htmlFor="thumbnail">thumbnail</FormLabel>
           <Input
             type="text"
+            name="thumbnail"
             value={global.gallery.galleryInput.thumbnail ?? ''}
-            onChange={handleChangeThumbnailUrl}
+            onChange={handleFormChange}
           />
 
           <Flex justifyContent="center" p={theme.space[2]}>
@@ -69,13 +80,20 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
             />
           </Flex>
 
-          <FormHelperText>thumbnail url</FormHelperText>
+          <FormHelperText>gallery poster url</FormHelperText>
         </FormControl>
 
         <FormControl>
-          <FormLabel htmlFor=""></FormLabel>
-          // ...
-          <FormHelperText>title of gallery</FormHelperText>
+          <FormLabel htmlFor="ratings">ratings</FormLabel>
+          <Input
+            type="number"
+            name="ratings"
+            min={0}
+            max={100}
+            value={global.gallery.galleryInput.ratings ?? 0}
+            onChange={handleFormChange}
+          />
+          <FormHelperText>ratings. 0-100</FormHelperText>
         </FormControl>
       </Stack>
     </>
