@@ -80,7 +80,7 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
                       localInput.thumbnail ?? '',
                       Category.Gallery,
                     )
-                  : ''
+                  : (localInput?.thumbnail ?? '')
               }
               fallbackSrc={generateDefaultSrc(Category.Gallery)}
               alt={
