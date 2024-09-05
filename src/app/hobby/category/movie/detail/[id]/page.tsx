@@ -1,7 +1,5 @@
 import { getOneMovieQuery } from '@/gql/domain/movie/movie.query.gql'
 import { client } from '@/gql/client'
-import { MovieDetailContent } from '@/app/hobby/category/movie/detail/[id]/(components)/movie.detail.content'
-import style from '@/app/(global)/(style)/movie.module.scss'
 import { MovieDetailInfo } from '@/app/hobby/category/movie/detail/[id]/(components)/movie.detail.info'
 import { theme } from '@chakra-ui/react'
 import { MovieDetailOverview } from '@/app/hobby/category/movie/detail/[id]/(components)/movie.detail.overview'
@@ -10,6 +8,7 @@ import { notFound } from 'next/navigation'
 import { generateArticleFullMeta, MetaArg } from '@/libs/head.generate'
 import { generateThumbnail } from '@/libs/url.grnerate.util'
 import { Category } from '@/gql/types'
+import { MDDetailContent } from '@/app/(global)/(components)/md.detail.content'
 
 export const fetchCache = 'force-no-store'
 
@@ -67,9 +66,8 @@ const MovieDetail = async ({ params }: { params: { id: string } }) => {
         <section>
           <MovieDetailOverview overviews={{ synopsis, originalSynopsis }} />
         </section>
-        <section className={style['markdown-body']}>
-          <MovieDetailContent content={contents}></MovieDetailContent>
-        </section>
+
+        <MDDetailContent content={contents} />
       </MovieDetailPresentation>
     </>
   )
