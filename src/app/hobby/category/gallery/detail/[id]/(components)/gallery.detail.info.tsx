@@ -1,7 +1,7 @@
 import { Category, Gallery, Status } from '@/gql/types'
 import { Box, Flex, Grid, Heading, Image, Stack, theme } from '@chakra-ui/react'
 import { galleryTypeToKor } from '@/libs/conv.util'
-import { generateDefaultSrc } from '@/libs/url.grnerate.util'
+import { generateDefaultSrc, generateThumbnail } from '@/libs/url.grnerate.util'
 
 const GalleryDetailInfo = ({
   gallery,
@@ -37,7 +37,7 @@ const GalleryDetailInfo = ({
         </Box>
         <Box>
           <Image
-            src={gallery.thumbnail ?? ''}
+            src={generateThumbnail(gallery.thumbnail ?? '', Category.Gallery)}
             alt={gallery.title + ' poster'}
             fallbackSrc={generateDefaultSrc(Category.Gallery)}
           />

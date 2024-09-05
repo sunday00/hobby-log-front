@@ -10,9 +10,9 @@ import {
   theme,
 } from '@chakra-ui/react'
 import { galleryTypeToKor } from '@/libs/conv.util'
-import { ChangeEvent, useContext, useEffect, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import GlobalContext from '@/libs/store.context'
-import { generateDefaultSrc } from '@/libs/url.grnerate.util'
+import { generateDefaultSrc, generateThumbnail } from '@/libs/url.grnerate.util'
 import { Input } from '@chakra-ui/input'
 
 const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
@@ -66,7 +66,7 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
           <Input
             type="text"
             name="thumbnail"
-            value={global.gallery.galleryInput.thumbnail ?? ''}
+            value={localInput.thumbnail ?? ''}
             onChange={handleFormChange}
           />
 
@@ -74,9 +74,19 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
             <Image
               w={'90%'}
               maxW={'300px'}
-              src={global.gallery.galleryInput.thumbnail}
+              src={
+                localInput.thumbnail?.startsWith('/images')
+                  ? generateThumbnail(
+                      localInput.thumbnail ?? '',
+                      Category.Gallery,
+                    )
+                  : ''
+              }
               fallbackSrc={generateDefaultSrc(Category.Gallery)}
-              alt={global.gallery.galleryInput.title ?? '' + ' poster'}
+              alt={
+                (global.gallery.galleryInput.title ?? gallery?.title ?? '') +
+                ' poster'
+              }
             />
           </Flex>
 
@@ -90,7 +100,7 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
             name="ratings"
             min={0}
             max={100}
-            value={global.gallery.galleryInput.ratings ?? 0}
+            value={localInput.ratings ?? 0}
             onChange={handleFormChange}
           />
           <FormHelperText>ratings. 0-100</FormHelperText>

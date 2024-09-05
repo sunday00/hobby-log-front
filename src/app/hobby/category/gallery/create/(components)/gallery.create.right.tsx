@@ -17,6 +17,17 @@ import GlobalContext from '@/libs/store.context'
 const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
   const global = useContext(GlobalContext)
 
+  let defaultDate, defaultHH, defaultMM
+
+  if (gallery) {
+    const [prevDate, prevTime] = gallery.logAt.split('T')
+    const [prevHH, prevMM, _prevSS] = prevTime.split(':')
+
+    defaultDate = prevDate
+    defaultHH = Number(prevHH)
+    defaultMM = Number(prevMM)
+  }
+
   const today = new Date()
   const [localInput, setLocalInput] = useState<
     Partial<GalleryInput> & {
@@ -31,27 +42,13 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
     content: gallery?.content ?? '',
     status: gallery?.status ?? Status.Draft,
     logAtStrDate:
+      defaultDate ??
       `${today.getFullYear()}` +
-      `-${(today.getMonth() + 1).toString().padStart(2, '0')}` +
-      `-${today.getDate().toString().padStart(2, '0')}`,
-    logAtStrHH: today.getHours(),
-    logAtStrMM: today.getMinutes(),
+        `-${(today.getMonth() + 1).toString().padStart(2, '0')}` +
+        `-${today.getDate().toString().padStart(2, '0')}`,
+    logAtStrHH: defaultHH ?? today.getHours(),
+    logAtStrMM: defaultMM ?? today.getMinutes(),
   })
-
-  useEffect(() => {
-    const curr = { ...localInput }
-
-    if (gallery) {
-      const [prevDate, prevTime] = gallery.logAt.split('T')
-      curr.logAtStrDate = prevDate
-
-      const [prevHH, prevMM, _prevSS] = prevTime.split(':')
-      curr.logAtStrHH = Number(prevHH)
-      curr.logAtStrMM = Number(prevMM)
-
-      setLocalInput(curr)
-    }
-  }, [gallery, localInput])
 
   const handleFormChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
