@@ -120,6 +120,8 @@ export type Essay = BaseSchema & {
   id?: Maybe<Scalars['String']['output']>;
   logAt?: Maybe<Scalars['DateTime']['output']>;
   ratings?: Maybe<Scalars['Int']['output']>;
+  series?: Maybe<Array<Maybe<Series>>>;
+  seriesKey?: Maybe<Scalars['String']['output']>;
   seriesName?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Status>;
   thumbnail?: Maybe<Scalars['String']['output']>;
@@ -132,6 +134,7 @@ export type EssayInput = {
   content: Scalars['String']['input'];
   id?: InputMaybe<Scalars['String']['input']>;
   logAtStr?: InputMaybe<Scalars['String']['input']>;
+  seriesKey?: InputMaybe<Scalars['String']['input']>;
   seriesName?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Status>;
   thumbnail?: InputMaybe<Scalars['String']['input']>;
@@ -363,7 +366,9 @@ export type Query = {
   getOneWalk?: Maybe<Walk>;
   monthHobby?: Maybe<Array<Maybe<Hobby>>>;
   monthNonActiveHobby?: Maybe<Array<Maybe<Hobby>>>;
+  searchHobby?: Maybe<Array<Maybe<Hobby>>>;
   searchMovies?: Maybe<MovieRawPge>;
+  searchSeries?: Maybe<Array<Maybe<Series>>>;
   sign?: Maybe<Auth>;
   yearByCategory?: Maybe<Array<Maybe<Hobby>>>;
 };
@@ -411,8 +416,19 @@ export type QueryMonthNonActiveHobbyArgs = {
 };
 
 
+export type QuerySearchHobbyArgs = {
+  page?: InputMaybe<Scalars['Long']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QuerySearchMoviesArgs = {
   page?: InputMaybe<Scalars['Long']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QuerySearchSeriesArgs = {
   search?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -476,6 +492,15 @@ export enum Role {
   RoleGuest = 'ROLE_GUEST',
   RoleUser = 'ROLE_USER'
 }
+
+export type Series = {
+  __typename?: 'Series';
+  id?: Maybe<Scalars['String']['output']>;
+  logAt?: Maybe<Scalars['DateTime']['output']>;
+  seriesKey?: Maybe<Scalars['String']['output']>;
+  seriesName?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+};
 
 export enum Status {
   Active = 'ACTIVE',
@@ -614,7 +639,9 @@ export const essay = {
   status: undefined,
   content: undefined,
   writingType: undefined,
+  seriesKey: undefined,
   seriesName: undefined,
+  series: undefined,
 }
 
 export const essayInput = {
@@ -623,6 +650,7 @@ export const essayInput = {
   content: undefined,
   writingType: undefined,
   seriesName: undefined,
+  seriesKey: undefined,
   thumbnail: undefined,
   logAtStr: undefined,
   status: undefined,
@@ -760,7 +788,9 @@ export const query = {
   getOneWalk: undefined,
   monthHobby: undefined,
   monthNonActiveHobby: undefined,
+  searchHobby: undefined,
   searchMovies: undefined,
+  searchSeries: undefined,
   sign: undefined,
   yearByCategory: undefined,
 }
@@ -798,6 +828,14 @@ export const result = {
   success: undefined,
   message: undefined,
   status: undefined,
+}
+
+export const series = {
+  id: undefined,
+  seriesName: undefined,
+  seriesKey: undefined,
+  title: undefined,
+  logAt: undefined,
 }
 
 export const updateStatusInput = {

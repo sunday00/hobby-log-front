@@ -41,7 +41,7 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
       .value as unknown as undefined
     setLocalInput(curr)
 
-    global.gallery.galleryInput[e.target.name as keyof GalleryInput] = e.target
+    global.gallery.input[e.target.name as keyof GalleryInput] = e.target
       .value as unknown as undefined
     global.update(global)
   }
@@ -56,8 +56,8 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
     ) as never
     setLocalInput(curr)
 
-    global.gallery.galleryInput.logAtStr = updateLogAtStr(
-      global.gallery.galleryInput.logAtStr as unknown as string,
+    global.gallery.input.logAtStr = updateLogAtStr(
+      global.gallery.input.logAtStr as unknown as string,
       part,
       v,
     ) as unknown as undefined

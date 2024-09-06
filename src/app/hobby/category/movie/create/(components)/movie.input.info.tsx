@@ -8,11 +8,11 @@ const MovieInputInfo = () => {
   const [movieId, setMovieId] = useState(0)
 
   useEffect(() => {
-    if (global.movie.movieInput.movieId) {
+    if (global.movie.input.movieId) {
       setTitle(global.movie.inputTitle)
-      setMovieId(global.movie.movieInput.movieId)
+      setMovieId(global.movie.input.movieId)
     }
-  }, [global.movie.movieInput.movieId, global.movie.inputTitle])
+  }, [global.movie.input.movieId, global.movie.inputTitle])
 
   return (
     <>

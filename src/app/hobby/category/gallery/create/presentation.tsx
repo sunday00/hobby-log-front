@@ -18,21 +18,21 @@ const GalleryCreatePresentation = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!global.gallery.galleryInput.galleryType) {
-      global.gallery.galleryInput.galleryType =
+    if (!global.gallery.input.galleryType) {
+      global.gallery.input.galleryType =
         GalleryType.Solo as unknown as undefined
     }
 
-    if (!global.gallery.galleryInput.status) {
-      global.gallery.galleryInput.status = Status.Draft as unknown as undefined
+    if (!global.gallery.input.status) {
+      global.gallery.input.status = Status.Draft as unknown as undefined
     }
 
-    if (!global.gallery.galleryInput.ratings) {
-      global.gallery.galleryInput.ratings = 75 as unknown as undefined
+    if (!global.gallery.input.ratings) {
+      global.gallery.input.ratings = 75 as unknown as undefined
     }
 
     const { data, errors } = await logGallery({
-      variables: { input: global.gallery.galleryInput },
+      variables: { input: global.gallery.input },
     })
 
     //TODO: more elegant handle error

@@ -5,9 +5,10 @@ import {
   Select,
   Stack,
 } from '@chakra-ui/react'
-import { Essay, EssayInput, WritingType } from '@/gql/types'
+import { Category, Essay, EssayInput, WritingType } from '@/gql/types'
 import { ChangeEvent, useContext, useState } from 'react'
 import GlobalContext from '@/libs/store.context'
+import { ThumbnailCropper } from '@/app/(global)/(components)/thumbnail.cropper'
 
 const EssayCreateLeft = ({ essay }: { essay?: Essay }) => {
   const global = useContext(GlobalContext)
@@ -26,8 +27,8 @@ const EssayCreateLeft = ({ essay }: { essay?: Essay }) => {
       .value as unknown as undefined
     setLocalInput(curr)
 
-    global.essay.essayInput[e.target.name as keyof EssayInput] = (e.target
-      .type === 'number'
+    global.essay.input[e.target.name as keyof EssayInput] = (e.target.type ===
+    'number'
       ? Number(e.target.value)
       : e.target.value) as unknown as undefined
 
@@ -53,6 +54,11 @@ const EssayCreateLeft = ({ essay }: { essay?: Essay }) => {
             ))}
           </Select>
           <FormHelperText>writing type</FormHelperText>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel htmlFor="thumbnail">thumbnail</FormLabel>
+          <ThumbnailCropper category={Category.Essay} />
         </FormControl>
       </Stack>
     </>

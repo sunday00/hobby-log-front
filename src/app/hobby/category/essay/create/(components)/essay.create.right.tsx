@@ -1,4 +1,5 @@
 import {
+  Button,
   Flex,
   FormControl,
   FormHelperText,
@@ -7,16 +8,11 @@ import {
   theme,
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/input'
-import React, { ChangeEvent, useContext, useState } from 'react'
-import { Essay, EssayInput, GalleryInput } from '@/gql/types'
-import GlobalContext from '@/libs/store.context'
-import { LogStrs, splitDDHHMM, updateLogAtStr } from '@/libs/conv.util'
+import React, { ChangeEvent, useState } from 'react'
+import { Essay, EssayInput } from '@/gql/types'
+import { LogStrs } from '@/libs/conv.util'
 
 const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
-  const global = useContext(GlobalContext)
-
-  const { DD, HH, MM } = splitDDHHMM(essay?.logAt)
-
   const [localInput, setLocalInput] = useState<Partial<EssayInput & LogStrs>>({
     title: essay?.title ?? '',
   })
@@ -28,10 +24,6 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
     curr[e.target.name as keyof Partial<EssayInput>] = e.target
       .value as unknown as undefined
     setLocalInput(curr)
-
-    global.essay.essayInput[e.target.name as keyof EssayInput] = e.target
-      .value as unknown as undefined
-    global.update(global)
   }
 
   const handleDateTimeChange = (
@@ -43,13 +35,6 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
       part === 'DD' ? String(v) : Number(v)
     ) as never
     setLocalInput(curr)
-
-    global.essay.essayInput.logAtStr = updateLogAtStr(
-      global.essay.essayInput.logAtStr as unknown as string,
-      part,
-      v,
-    ) as unknown as undefined
-    global.update(global)
   }
 
   return (
@@ -105,6 +90,10 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
           </Flex>
           <FormHelperText>YYYY-MM-DD H:m</FormHelperText>
         </FormControl>
+
+        <Button type="submit" colorScheme="blue">
+          {essay ? 'UPDATE' : 'LOG MY HOBBY'}
+        </Button>
       </Stack>
     </>
   )
