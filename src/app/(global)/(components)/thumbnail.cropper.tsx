@@ -53,21 +53,21 @@ const ThumbnailCropper = ({ category }: { category: Category }) => {
   return (
     <Stack>
       <RadioGroup onChange={handleFileTypeChange} value={fileType}>
+        <input type="hidden" name="thumbnail-type" value={fileType} />
         <Flex gap={theme.space['2']}>
           <Radio value="url">url</Radio>
-          <>
-            <input type="hidden" name="thumbnail-url" value={url} />
-            <Input
-              type="text"
-              name="thumbnail"
-              value={url}
-              onChange={(e) => handleUrlChange(e.target.value)}
-            />
-          </>
+          <input type="hidden" name="thumbnail-url" value={url} />
+          <Input
+            type="text"
+            name="thumbnail"
+            value={url}
+            onChange={(e) => handleUrlChange(e.target.value)}
+          />
         </Flex>
 
         <Flex gap={theme.space['2']} mt={theme.space['4']}>
           <Radio value="cropper">cropper</Radio>
+          <input type="hidden" name="thumbnail-crop" value={crop} />
           <FileUploader
             handleChange={handleFileChange}
             name="file"
@@ -83,7 +83,6 @@ const ThumbnailCropper = ({ category }: { category: Category }) => {
           overflow="hidden"
           h={fileType === 'url' ? 0 : 'unset'}
         >
-          <input type="hidden" name="thumbnail-crop" value={crop} />
           <ReactCropper
             ref={cropperRef}
             initialAspectRatio={1}
@@ -103,7 +102,6 @@ const ThumbnailCropper = ({ category }: { category: Category }) => {
           overflow="hidden"
           h={fileType === 'cropper' ? 0 : 'unset'}
         >
-          <input type="hidden" name="thumbnail-type" value={fileType} />
           <Image
             src={url}
             alt="prepareting"

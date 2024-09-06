@@ -4,18 +4,27 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  Select,
   Stack,
+  Textarea,
   theme,
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/input'
 import React, { ChangeEvent, useState } from 'react'
-import { Essay, EssayInput } from '@/gql/types'
-import { LogStrs } from '@/libs/conv.util'
+import { Essay, EssayInput, Status } from '@/gql/types'
+import { LogStrs, splitDDHHMM } from '@/libs/conv.util'
 import { EssaySeriesInput } from '@/app/hobby/category/essay/create/(components)/essay.series.input'
 
 const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
+  const { DD, HH, MM } = splitDDHHMM(essay?.logAt)
+
   const [localInput, setLocalInput] = useState<Partial<EssayInput & LogStrs>>({
     title: essay?.title ?? '',
+    content: '',
+    status: Status.Draft,
+    logAtStrDD: DD,
+    logAtStrHH: Number(HH),
+    logAtStrMM: Number(MM),
   })
 
   const handleFormChange = (
@@ -92,6 +101,36 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
             />
           </Flex>
           <FormHelperText>YYYY-MM-DD H:m</FormHelperText>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel htmlFor="content">content</FormLabel>
+          <Textarea
+            rows={15}
+            id="content"
+            name="content"
+            value={localInput.content ?? ''}
+            onChange={handleFormChange}
+          ></Textarea>
+          <FormHelperText>content body of essay</FormHelperText>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel htmlFor="status">status</FormLabel>
+          <Select
+            id="status"
+            placeholder="status"
+            name="status"
+            onChange={handleFormChange}
+            value={(localInput.status as Status) ?? Status.Draft}
+          >
+            {Object.keys(Status).map((item: string) => (
+              <option key={item} value={item.toUpperCase()}>
+                {item}
+              </option>
+            ))}
+          </Select>
+          <FormHelperText>status</FormHelperText>
         </FormControl>
 
         <Button type="submit" colorScheme="blue">

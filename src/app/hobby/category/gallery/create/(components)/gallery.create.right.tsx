@@ -155,7 +155,7 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
         </FormControl>
 
         <FormControl>
-          <FormLabel htmlFor="gallryType">status</FormLabel>
+          <FormLabel htmlFor="status">status</FormLabel>
           <Select
             id="status"
             placeholder="status"
