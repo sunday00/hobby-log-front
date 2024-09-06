@@ -16,6 +16,4 @@ input EssayInput {
 }
 
 #    content: String!
-#    seriesName: String
-#    seriesKey: String
 #    status: Status

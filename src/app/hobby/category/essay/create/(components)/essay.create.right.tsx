@@ -11,6 +11,7 @@ import { Input } from '@chakra-ui/input'
 import React, { ChangeEvent, useState } from 'react'
 import { Essay, EssayInput } from '@/gql/types'
 import { LogStrs } from '@/libs/conv.util'
+import { EssaySeriesInput } from '@/app/hobby/category/essay/create/(components)/essay.series.input'
 
 const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
   const [localInput, setLocalInput] = useState<Partial<EssayInput & LogStrs>>({
@@ -40,6 +41,8 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
   return (
     <>
       <Stack>
+        <EssaySeriesInput />
+
         <FormControl>
           <FormLabel htmlFor="title">title</FormLabel>
           <Input

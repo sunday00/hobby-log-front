@@ -20,6 +20,7 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
 
   if (loading) return <Spinner />
 
+  // TODO: elegance error handle
   if (error) {
     return (
       <>
