@@ -22,6 +22,7 @@ const MovieSearchResults = ({
 
   if (loading) return <Spinner />
 
+  // TODO: elegant error handle
   if (error) {
     return (
       <>

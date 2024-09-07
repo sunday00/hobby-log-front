@@ -15,7 +15,7 @@ export const fetchCache = 'force-no-store'
 export const generateMetadata = async ({
   params: { id },
 }: {
-  params: { id: number }
+  params: { id: string }
 }) => {
   try {
     const { data, loading, error } = await client.query({

@@ -43,8 +43,10 @@ const GalleryDetailPresentation = ({
         category="Gallery"
         dddd={dateFormat(logAt, 'YYYY-MM')}
       />
-      <Box mt={theme.space['8']}>{children}</Box>
-      {my && <GalleryDetailUserButton id={id} status={status} />}
+      <Box maxW="8xl" mx="auto">
+        <Box mt={theme.space['8']}>{children}</Box>
+        {my && <GalleryDetailUserButton id={id} status={status} />}
+      </Box>
     </>
   )
 }
