@@ -20,8 +20,8 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
 
   const [localInput, setLocalInput] = useState<Partial<EssayInput & LogStrs>>({
     title: essay?.title ?? '',
-    content: '',
-    status: Status.Draft,
+    content: essay?.content ?? '',
+    status: essay?.status ?? Status.Draft,
     logAtStrDD: DD,
     logAtStrHH: Number(HH),
     logAtStrMM: Number(MM),
@@ -50,7 +50,7 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
   return (
     <>
       <Stack>
-        <EssaySeriesInput />
+        <EssaySeriesInput essay={essay} />
 
         <FormControl>
           <FormLabel htmlFor="title">title</FormLabel>

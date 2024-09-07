@@ -9,11 +9,11 @@ import { EssaySeriesSearch } from '@/app/hobby/category/essay/create/(components
 import { EssaySeriesResult } from '@/app/hobby/category/essay/create/(components)/(series)/essay.series.result'
 import { Input } from '@chakra-ui/input'
 import { useState } from 'react'
-import { Series } from '@/gql/types'
+import { Essay, Series } from '@/gql/types'
 
-const EssaySeriesInput = () => {
-  const [seriesKey, setSeriesKey] = useState('')
-  const [seriesName, setSeriesName] = useState('')
+const EssaySeriesInput = ({ essay }: { essay?: Essay }) => {
+  const [seriesKey, setSeriesKey] = useState(essay?.seriesKey ?? '')
+  const [seriesName, setSeriesName] = useState(essay?.seriesName ?? '')
 
   const [searchResults, setSearchResults] = useState<Series[]>([])
 

@@ -112,9 +112,19 @@ const EssayDetailUserButton = ({ essay }: { essay: Essay }) => {
           onClick={() => handleDelete()}
         >
           <Icon as={IoMdTrash} />
-          <span>DELETE</span>
+          <span>
+            {essay.id === essay.seriesKey ? 'DELETE SERIES' : 'DELETE'}
+          </span>
         </Button>
       </Flex>
+      {essay.id === essay.seriesKey && (
+        <Flex justifyContent="end" p={theme.space['2']}>
+          <span>
+            if you want to keep other in this series, edit series this essay,
+            then delete.
+          </span>
+        </Flex>
+      )}
     </>
   )
 }

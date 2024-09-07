@@ -15,10 +15,16 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactCropper, { ReactCropperElement } from 'react-cropper'
 import '@/app/(global)/(style)/cropper.css'
 import { Input } from '@chakra-ui/input'
-import { generateDefaultSrc } from '@/libs/url.grnerate.util'
-import { Category } from '@/gql/types'
+import { generateDefaultSrc, generateThumbnail } from '@/libs/url.grnerate.util'
+import { Category, Hobby } from '@/gql/types'
 
-const ThumbnailCropper = ({ category }: { category: Category }) => {
+const ThumbnailCropper = ({
+  category,
+  hobby,
+}: {
+  category: Category
+  hobby?: Hobby
+}) => {
   const cropperRef = useRef<ReactCropperElement>(null)
 
   const [src, setSrc] = useState('')
@@ -28,6 +34,13 @@ const ThumbnailCropper = ({ category }: { category: Category }) => {
   const [url, setUrl] = useState('')
 
   const [fileType, setFileType] = useState<'url' | 'cropper'>('url')
+
+  useEffect(() => {
+    if (hobby?.thumbnail) {
+      setUrl(generateThumbnail(hobby.thumbnail, category))
+      setFileType('url')
+    }
+  }, [hobby?.thumbnail, category])
 
   const handleFileChange = (uploadFile: File) => {
     setSrc(URL.createObjectURL(uploadFile) ?? '')

@@ -1,4 +1,4 @@
-import { Series, Status } from '@/gql/types'
+import { Series } from '@/gql/types'
 import {
   FormControl,
   FormHelperText,
@@ -25,6 +25,12 @@ const EssaySeriesResult = ({
   })
 
   const handleLocalSetSeries = (seriesKey: string) => {
+    if (seriesKey === '') {
+      setSelectedSeries('')
+      handleSetSeries({ seriesName: '', seriesKey: '' })
+      return
+    }
+
     const series = searchResults.find((s) => s.seriesKey === seriesKey)
 
     if (series) {
@@ -36,7 +42,9 @@ const EssaySeriesResult = ({
   return (
     <>
       <FormControl>
-        <FormLabel htmlFor="select-search">series</FormLabel>
+        <FormLabel htmlFor="select-search">
+          series({searchResults.length})
+        </FormLabel>
         <Select
           id="select-search"
           name="select-search"
@@ -46,7 +54,10 @@ const EssaySeriesResult = ({
           <option value={''}>no series or create new series</option>
           {searchResultsEl}
         </Select>
-        <FormHelperText>series select</FormHelperText>
+        <FormHelperText>
+          series select [{searchResults.map((s) => s.seriesName).join(', ')}{' '}
+          ...]
+        </FormHelperText>
       </FormControl>
     </>
   )

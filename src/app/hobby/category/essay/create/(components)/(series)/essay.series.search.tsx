@@ -19,14 +19,15 @@ const EssaySeriesSearch = ({
   const [debounce, setDebounce] = useState(null as unknown as number)
 
   const handleSeriesSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.currentTarget.value as unknown as string)
+    const v = e.currentTarget.value as unknown as string
+    setSearch(v)
 
     if (debounce) clearTimeout(debounce)
 
     const newDebounce = setTimeout(async () => {
       const { data, loading, error } = await client.query({
         query: essaySearchSeriesQuery,
-        variables: { search },
+        variables: { search: v },
       })
 
       if (loading) return <Spinner />
@@ -42,7 +43,7 @@ const EssaySeriesSearch = ({
       }
 
       setSearchResults(data.searchSeries)
-    }, 200)
+    }, 300)
 
     setDebounce(newDebounce as unknown as number)
   }

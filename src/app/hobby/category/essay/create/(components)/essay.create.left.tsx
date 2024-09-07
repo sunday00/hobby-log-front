@@ -5,7 +5,7 @@ import {
   Select,
   Stack,
 } from '@chakra-ui/react'
-import { Category, Essay, EssayInput, WritingType } from '@/gql/types'
+import { Category, Essay, EssayInput, Hobby, WritingType } from '@/gql/types'
 import { ChangeEvent, useContext, useState } from 'react'
 import GlobalContext from '@/libs/store.context'
 import { ThumbnailCropper } from '@/app/(global)/(components)/thumbnail.cropper'
@@ -58,7 +58,7 @@ const EssayCreateLeft = ({ essay }: { essay?: Essay }) => {
 
         <FormControl>
           <FormLabel htmlFor="thumbnail">thumbnail</FormLabel>
-          <ThumbnailCropper category={Category.Essay} />
+          <ThumbnailCropper category={Category.Essay} hobby={essay as Hobby} />
         </FormControl>
       </Stack>
     </>
