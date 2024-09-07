@@ -20,7 +20,7 @@ const EssayDetailInfo = ({ essay }: { essay: Essay }) => {
   const seriesOption = (essay?.series as Series[])?.map((series: Series) => {
     return (
       <option key={series.id} value={series.id ?? ''}>
-        {series.title}
+        {series.title} ({series.logAt.replace(/(....-..-..)T(..:..:..)/, '$1')})
       </option>
     )
   })
@@ -39,7 +39,7 @@ const EssayDetailInfo = ({ essay }: { essay: Essay }) => {
         justifyContent="space-between"
         gap={theme.space['2']}
       >
-        <Flex gap={theme.space['4']} alignItems="center">
+        <Flex gap={theme.space['4']} alignItems="center" flex={1}>
           <Heading as={'h4'} fontSize={theme.fontSizes.lg}>
             [{essay.writingType}]
           </Heading>
@@ -47,11 +47,20 @@ const EssayDetailInfo = ({ essay }: { essay: Essay }) => {
         </Flex>
 
         {essay?.seriesName && (
-          <Flex gap={theme.space['4']} alignItems="center">
-            <Heading as={'h4'} fontSize={theme.fontSizes.lg}>
+          <Flex gap={theme.space['4']} alignItems="center" flex={1}>
+            <Heading
+              as={'h4'}
+              fontSize={theme.fontSizes.lg}
+              flex={1}
+              textAlign="right"
+            >
               {essay.seriesName}
             </Heading>
-            <Select value={essay.id as string} onChange={handleSeriesMove}>
+            <Select
+              value={essay.id as string}
+              onChange={handleSeriesMove}
+              flex={1}
+            >
               {seriesOption}
             </Select>
           </Flex>
