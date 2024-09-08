@@ -31,7 +31,7 @@ export const generateMetadata = async ({
       url:
         process.env['NEXT_PUBLIC_FRONT_HOST'] +
         '/hobby/category/movie/detail/' +
-        data.getOneMovie.utl,
+        data.getOneMovie.id,
       thumbnail: generateThumbnail(data.getOneMovie.thumbnail, Category.Movie),
       description: data.getOneMovie.tagline,
       keywords: data.getOneMovie.keywords,

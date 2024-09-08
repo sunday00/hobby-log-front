@@ -26,7 +26,7 @@ export const generateMetadata = async ({
       url:
         process.env['NEXT_PUBLIC_FRONT_HOST'] +
         '/hobby/category/gallery/detail/' +
-        data.getOneGallery.utl,
+        data.getOneGallery.id,
       thumbnail: generateThumbnail(
         data.getOneGallery.thumbnail,
         Category.Gallery,

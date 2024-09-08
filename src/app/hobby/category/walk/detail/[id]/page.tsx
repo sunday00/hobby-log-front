@@ -1,13 +1,13 @@
-import { EssayDetailPresentation } from '@/app/hobby/category/essay/detail/[id]/presentation'
-import { getOneEssayQuery } from '@/gql/domain/essay/essay.query.gql'
-import { Category, Essay } from '@/gql/types'
-import { Spinner } from '@chakra-ui/react'
+import { WalkDetailPresentation } from '@/app/hobby/category/walk/detail/[id]/presentation'
 import { client } from '@/gql/client'
+import { Spinner } from '@chakra-ui/react'
+import { Category, Walk } from '@/gql/types'
+import { getOneWalkQuery } from '@/gql/domain/walk/walk.query.gql'
+import { WalkDetailInfo } from '@/app/hobby/category/walk/detail/[id]/(components)/walk.detail.info'
 import { MDDetailContent } from '@/app/(global)/(components)/md.detail.content'
 import { generateArticleFullMeta, MetaArg } from '@/libs/head.generate'
 import { generateThumbnail } from '@/libs/url.grnerate.util'
 import { notFound } from 'next/navigation'
-import { EssayDetailInfo } from '@/app/hobby/category/essay/detail/[id]/(components)/essay.detail.info'
 
 export const fetchCache = 'force-no-store'
 
@@ -18,19 +18,19 @@ export const generateMetadata = async ({
 }) => {
   try {
     const { data, loading, error } = await client.query({
-      query: getOneEssayQuery,
+      query: getOneWalkQuery,
       variables: { id },
     })
 
     const args: MetaArg = {
-      title: data.getOneEssay.title,
+      title: data.getOneWalk.title,
       url:
         process.env['NEXT_PUBLIC_FRONT_HOST'] +
         '/hobby/category/essay/detail/' +
-        data.getOneEssay.id,
-      thumbnail: generateThumbnail(data.getOneEssay.thumbnail, Category.Essay),
-      description: data.getOneEssay.title,
-      keywords: [data.getOneEssay.writingType, data.getOneEssay.seriesName],
+        data.getOneWalk.id,
+      thumbnail: generateThumbnail(data.getOneWalk.thumbnail, Category.Walk),
+      description: data.getOneWalk.title,
+      keywords: [data.getOneWalk.title],
     }
 
     return generateArticleFullMeta(args)
@@ -39,9 +39,9 @@ export const generateMetadata = async ({
   }
 }
 
-const EssayDetailPage = async ({ params }: { params: { id: string } }) => {
+const WalkDetailPage = async ({ params }: { params: { id: string } }) => {
   const { data, loading, error } = await client.query({
-    query: getOneEssayQuery,
+    query: getOneWalkQuery,
     variables: { id: params.id },
   })
 
@@ -57,19 +57,19 @@ const EssayDetailPage = async ({ params }: { params: { id: string } }) => {
     )
   }
 
-  const essay: Essay = data?.getOneEssay
+  const walk: Walk = data.getOneWalk
 
   return (
     <>
-      <EssayDetailPresentation essay={essay}>
+      <WalkDetailPresentation walk={walk}>
         <section style={{ marginBottom: '1em' }}>
-          <EssayDetailInfo essay={essay} />
+          <WalkDetailInfo walk={walk} />
         </section>
 
-        <MDDetailContent content={essay?.content ?? ''} />
-      </EssayDetailPresentation>
+        <MDDetailContent content={walk?.content ?? ''} />
+      </WalkDetailPresentation>
     </>
   )
 }
 
-export default EssayDetailPage
+export default WalkDetailPage
