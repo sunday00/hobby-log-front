@@ -26,7 +26,7 @@ export const generateMetadata = async ({
       title: data.getOneWalk.title,
       url:
         process.env['NEXT_PUBLIC_FRONT_HOST'] +
-        '/hobby/category/essay/detail/' +
+        '/hobby/category/walk/detail/' +
         data.getOneWalk.id,
       thumbnail: generateThumbnail(data.getOneWalk.thumbnail, Category.Walk),
       description: data.getOneWalk.title,

@@ -53,7 +53,7 @@ const WalkCreateLeft = ({ walk }: { walk?: Walk }) => {
       </FormControl>
 
       <FormControl>
-        <FormLabel htmlFor="distance">duration</FormLabel>
+        <FormLabel htmlFor="duration">duration</FormLabel>
         <Input
           id="duration"
           type="number"
