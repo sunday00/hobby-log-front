@@ -1,19 +1,19 @@
 'use client'
 
-import { Walk } from '@/gql/types'
+import { Draw } from '@/gql/types'
 import { ReactNode, useEffect, useState } from 'react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { dateFormat, decodeBase64 } from '@/libs/conv.util'
 import { Box, theme } from '@chakra-ui/react'
 import { LocalStorage } from '@/libs/localStorage.safely.util'
-import { WalkDetailUserButton } from '@/app/hobby/category/walk/detail/[id]/(components)/walk.detail.user'
+import { DrawDetailUserButton } from '@/app/hobby/category/draw/detail/[id]/(components)/draw.detail.user'
 
-const WalkDetailPresentation = ({
+const DrawDetailPresentation = ({
   children,
-  walk,
+  draw,
 }: {
   children: ReactNode
-  walk: Walk
+  draw: Draw
 }) => {
   const [my, setMy] = useState(false)
 
@@ -27,22 +27,22 @@ const WalkDetailPresentation = ({
 
     const { sub } = decodeBase64(at ?? '.')
 
-    setMy(sub === walk?.userId)
-  }, [walk?.userId])
+    setMy(sub === draw?.userId)
+  }, [draw?.userId])
 
   return (
     <>
       <BreadcrumbWarp
         name="category.detail"
-        category="Walk"
-        dddd={dateFormat(walk?.logAt ?? new Date().toISOString(), 'YYYY-MM')}
+        category="Draw"
+        dddd={dateFormat(draw?.logAt ?? new Date().toISOString(), 'YYYY-MM')}
       />
       <Box maxW="8xl" mx="auto">
         <Box mt={theme.space['8']}>{children}</Box>
-        {my && <WalkDetailUserButton walk={walk} />}
+        {my && <DrawDetailUserButton draw={draw} />}
       </Box>
     </>
   )
 }
 
-export { WalkDetailPresentation }
+export { DrawDetailPresentation }

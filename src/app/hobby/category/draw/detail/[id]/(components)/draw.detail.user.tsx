@@ -2,7 +2,7 @@ import { Button, Flex, theme } from '@chakra-ui/react'
 import { Icon } from '@chakra-ui/icons'
 import { FaPencil, FaPlay, FaPowerOff } from 'react-icons/fa6'
 import { IoMdTrash } from 'react-icons/io'
-import { Category, Essay, Status, UpdateStatusInput, Walk } from '@/gql/types'
+import { Category, Status, UpdateStatusInput, Draw } from '@/gql/types'
 import { useMutation } from '@apollo/client'
 import {
   deleteLogMutation,
@@ -11,7 +11,7 @@ import {
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-const WalkDetailUserButton = ({ walk }: { walk: Walk }) => {
+const DrawDetailUserButton = ({ draw }: { draw: Draw }) => {
   const [updateStatus] = useMutation(updateStatusMutation)
   const [deleteLog] = useMutation(deleteLogMutation)
   const router = useRouter()
@@ -20,8 +20,8 @@ const WalkDetailUserButton = ({ walk }: { walk: Walk }) => {
 
   const handleUpdateStatus = async (status: Status) => {
     const currentInput: UpdateStatusInput = {
-      category: Category.Walk,
-      id: walk.id,
+      category: Category.Draw,
+      id: draw.id,
       status,
     }
 
@@ -45,8 +45,8 @@ const WalkDetailUserButton = ({ walk }: { walk: Walk }) => {
   const handleDelete = async () => {
     const { data, errors } = await deleteLog({
       variables: {
-        category: Category.Walk,
-        id: walk.id,
+        category: Category.Draw,
+        id: draw.id,
       },
     })
 
@@ -76,7 +76,7 @@ const WalkDetailUserButton = ({ walk }: { walk: Walk }) => {
         gap={theme.space['4']}
         flexDirection="row-reverse"
       >
-        {walk.status !== Status.Active ? (
+        {draw.status !== Status.Active ? (
           <Button
             colorScheme={'green'}
             gap={theme.space['1']}
@@ -100,7 +100,7 @@ const WalkDetailUserButton = ({ walk }: { walk: Walk }) => {
           colorScheme={'blue'}
           gap={theme.space['1']}
           as={Link}
-          href={`/hobby/category/walk/edit/${walk.id}`}
+          href={`/hobby/category/draw/edit/${draw.id}`}
         >
           <Icon as={FaPencil} />
           <span>EDIT</span>
@@ -119,4 +119,4 @@ const WalkDetailUserButton = ({ walk }: { walk: Walk }) => {
   )
 }
 
-export { WalkDetailUserButton }
+export { DrawDetailUserButton }

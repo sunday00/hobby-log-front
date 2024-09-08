@@ -1,12 +1,12 @@
-import { WalkDetailPresentation } from '@/app/hobby/category/walk/detail/[id]/presentation'
+import { DrawDetailPresentation } from '@/app/hobby/category/draw/detail/[id]/presentation'
 import { client } from '@/gql/client'
-import { Spinner } from '@chakra-ui/react'
-import { Category, Walk } from '@/gql/types'
-import { getOneWalkQuery } from '@/gql/domain/walk/walk.query.gql'
-import { WalkDetailInfo } from '@/app/hobby/category/walk/detail/[id]/(components)/walk.detail.info'
+import { Grid, Spinner, Image, theme } from '@chakra-ui/react'
+import { Category, Draw } from '@/gql/types'
+import { getOneDrawQuery } from '@/gql/domain/draw/draw.query.gql'
+import { DrawDetailInfo } from '@/app/hobby/category/draw/detail/[id]/(components)/draw.detail.info'
 import { MDDetailContent } from '@/app/(global)/(components)/md.detail.content'
 import { generateArticleFullMeta, MetaArg } from '@/libs/head.generate'
-import { generateThumbnail } from '@/libs/url.grnerate.util'
+import { generateDefaultSrc, generateThumbnail } from '@/libs/url.grnerate.util'
 import { notFound } from 'next/navigation'
 
 export const fetchCache = 'force-no-store'
@@ -18,19 +18,19 @@ export const generateMetadata = async ({
 }) => {
   try {
     const { data, loading, error } = await client.query({
-      query: getOneWalkQuery,
+      query: getOneDrawQuery,
       variables: { id },
     })
 
     const args: MetaArg = {
-      title: data.getOneWalk.title,
+      title: data.getOneDraw.title,
       url:
         process.env['NEXT_PUBLIC_FRONT_HOST'] +
-        '/hobby/category/essay/detail/' +
-        data.getOneWalk.id,
-      thumbnail: generateThumbnail(data.getOneWalk.thumbnail, Category.Walk),
-      description: data.getOneWalk.title,
-      keywords: [data.getOneWalk.title],
+        '/hobby/category/draw/detail/' +
+        data.getOneDraw.id,
+      thumbnail: generateThumbnail(data.getOneDraw.thumbnail, Category.Draw),
+      description: data.getOneDraw.title,
+      keywords: [data.getOneDraw.title],
     }
 
     return generateArticleFullMeta(args)
@@ -39,9 +39,9 @@ export const generateMetadata = async ({
   }
 }
 
-const WalkDetailPage = async ({ params }: { params: { id: string } }) => {
+const DrawDetailPage = async ({ params }: { params: { id: string } }) => {
   const { data, loading, error } = await client.query({
-    query: getOneWalkQuery,
+    query: getOneDrawQuery,
     variables: { id: params.id },
   })
 
@@ -57,19 +57,25 @@ const WalkDetailPage = async ({ params }: { params: { id: string } }) => {
     )
   }
 
-  const walk: Walk = data.getOneWalk
+  const draw: Draw = data.getOneDraw
 
   return (
     <>
-      <WalkDetailPresentation walk={walk}>
+      <DrawDetailPresentation draw={draw}>
         <section style={{ marginBottom: '1em' }}>
-          <WalkDetailInfo walk={walk} />
+          <DrawDetailInfo draw={draw} />
         </section>
 
-        <MDDetailContent content={walk?.content ?? ''} />
-      </WalkDetailPresentation>
+        <Grid templateColumns="3fr 2fr" gap={theme.space['2']}>
+          <Image
+            src={generateThumbnail(draw?.mainImage as string, Category.Draw)}
+            alt={draw?.title + ' image'}
+          ></Image>
+          <MDDetailContent content={draw?.content ?? ''} />
+        </Grid>
+      </DrawDetailPresentation>
     </>
   )
 }
 
-export default WalkDetailPage
+export default DrawDetailPage
