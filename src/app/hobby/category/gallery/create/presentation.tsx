@@ -7,10 +7,7 @@ import { GalleryCreateRight } from '@/app/hobby/category/gallery/create/(compone
 import { FormEvent, useContext } from 'react'
 import GlobalContext from '@/libs/store.context'
 import { useMutation } from '@apollo/client'
-import {
-  logGalleryMutation,
-  updateGalleryMutation,
-} from '@/gql/domain/gallery/gallery.mutation.gql'
+import { logGalleryMutation } from '@/gql/domain/gallery/gallery.mutation.gql'
 import { GalleryType, Status } from '@/gql/types'
 
 const GalleryCreatePresentation = () => {
@@ -21,21 +18,21 @@ const GalleryCreatePresentation = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!global.gallery.galleryInput.galleryType) {
-      global.gallery.galleryInput.galleryType =
+    if (!global.gallery.input.galleryType) {
+      global.gallery.input.galleryType =
         GalleryType.Solo as unknown as undefined
     }
 
-    if (!global.gallery.galleryInput.status) {
-      global.gallery.galleryInput.status = Status.Draft as unknown as undefined
+    if (!global.gallery.input.status) {
+      global.gallery.input.status = Status.Draft as unknown as undefined
     }
 
-    if (!global.gallery.galleryInput.ratings) {
-      global.gallery.galleryInput.ratings = 75 as unknown as undefined
+    if (!global.gallery.input.ratings) {
+      global.gallery.input.ratings = 75 as unknown as undefined
     }
 
     const { data, errors } = await logGallery({
-      variables: { input: global.gallery.galleryInput },
+      variables: { input: global.gallery.input },
     })
 
     //TODO: more elegant handle error

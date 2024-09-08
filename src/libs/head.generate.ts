@@ -40,6 +40,10 @@ export const generateArticleFullMeta = (args: MetaArg): Metadata => {
     description: args.description,
     openGraph: generateArticleOgMeta(args),
     twitter: generateArticleTwitterMeta(args),
-    keywords: args.keywords?.join(', '),
+    keywords: args.keywords
+      ?.filter((k) => {
+        if (k && k !== '') return k
+      })
+      .join(', '),
   }
 }

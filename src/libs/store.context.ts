@@ -1,15 +1,31 @@
 import React from 'react'
-import { galleryInput, movieInput } from '@/gql/types'
+import { essayInput, galleryInput, movieInput } from '@/gql/types'
+import { CategoryLowerCase, ContextObj } from '@/libs/types'
 
-export const initialState = {
+export const initialState: Required<{
+  [key in CategoryLowerCase]: ContextObj
+}> & {
+  update: (data: any) => void
+} = {
   update: (date: any) => {},
   movie: {
     inputTitle: '',
-    movieInput: movieInput,
+    input: movieInput,
   },
   gallery: {
-    galleryInput: galleryInput,
+    input: galleryInput,
   },
+  essay: {
+    input: essayInput,
+    thumbnailCandidates: {
+      type: 'url',
+      cropper: '',
+      url: '',
+    },
+  },
+  draw: { input: { thumbnail: '' } },
+  read: { input: { thumbnail: '' } },
+  walk: { input: { thumbnail: '' } },
 }
 
 const GlobalContext = React.createContext(initialState)

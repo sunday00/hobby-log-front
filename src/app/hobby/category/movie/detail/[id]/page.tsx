@@ -15,7 +15,7 @@ export const fetchCache = 'force-no-store'
 export const generateMetadata = async ({
   params: { id },
 }: {
-  params: { id: number }
+  params: { id: string }
 }) => {
   try {
     const { data, loading, error } = await client.query({
@@ -31,7 +31,7 @@ export const generateMetadata = async ({
       url:
         process.env['NEXT_PUBLIC_FRONT_HOST'] +
         '/hobby/category/movie/detail/' +
-        data.getOneMovie.utl,
+        data.getOneMovie.id,
       thumbnail: generateThumbnail(data.getOneMovie.thumbnail, Category.Movie),
       description: data.getOneMovie.tagline,
       keywords: data.getOneMovie.keywords,

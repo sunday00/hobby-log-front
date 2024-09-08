@@ -20,6 +20,7 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
 
   if (loading) return <Spinner />
 
+  // TODO: elegance error handle
   if (error) {
     return (
       <>
@@ -29,7 +30,7 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
     )
   }
 
-  global.gallery.galleryInput = data.getOneGallery
+  global.gallery.input = data.getOneGallery
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -41,7 +42,7 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
       __typename: ___typename,
       ...inp
     } = {
-      ...global.gallery.galleryInput,
+      ...global.gallery.input,
       userId: '',
       category: '',
       logAt: '',
@@ -69,7 +70,7 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
 
   return (
     <>
-      <BreadcrumbWarp name="category.edit" category="Movie" />
+      <BreadcrumbWarp name="category.edit" category="Gallery" />
       <form onSubmit={handleSubmit}>
         <Grid
           mt={theme.space['4']}

@@ -47,7 +47,7 @@ const MovieInputForm = ({ movie }: { movie?: Movie }) => {
           logAtStr: `${logAtStrDate}T${logAtStrHH.toString().padStart(2, '0')}:${logAtStrMM.toString().padStart(2, '0')}:00.000Z`,
         }
       : {
-          movieId: global.movie.movieInput.movieId,
+          movieId: global.movie.input.movieId,
           content,
           ratings,
           status,

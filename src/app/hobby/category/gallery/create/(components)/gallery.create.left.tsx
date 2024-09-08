@@ -32,7 +32,7 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
       .value as unknown as undefined
     setLocalInput(curr)
 
-    global.gallery.galleryInput[e.target.name as keyof GalleryInput] = (e.target
+    global.gallery.input[e.target.name as keyof GalleryInput] = (e.target
       .type === 'number'
       ? Number(e.target.value)
       : e.target.value) as unknown as undefined
@@ -84,8 +84,7 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
               }
               fallbackSrc={generateDefaultSrc(Category.Gallery)}
               alt={
-                (global.gallery.galleryInput.title ?? gallery?.title ?? '') +
-                ' poster'
+                (global.gallery.input.title ?? gallery?.title ?? '') + ' poster'
               }
             />
           </Flex>

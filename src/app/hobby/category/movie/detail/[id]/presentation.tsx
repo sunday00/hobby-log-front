@@ -43,8 +43,10 @@ const MovieDetailPresentation = ({
         category="Movie"
         dddd={dateFormat(logAt, 'YYYY-MM')}
       />
-      <Box mt={theme.space['8']}>{children}</Box>
-      {my && <MovieDetailUserButton id={id} status={status} />}
+      <Box maxW="8xl" mx="auto">
+        <Box mt={theme.space['8']}>{children}</Box>
+        {my && <MovieDetailUserButton id={id} status={status} />}
+      </Box>
     </>
   )
 }

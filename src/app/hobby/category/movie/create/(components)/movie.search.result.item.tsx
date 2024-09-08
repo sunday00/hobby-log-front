@@ -20,7 +20,7 @@ const MovieSearchResultItem = ({ movie }: { movie: MovieRaw }) => {
   const global = useContext(GlobalContext)
 
   const setLogMovie = (id: number, title: string) => {
-    global.movie.movieInput.movieId = id as unknown as undefined
+    global.movie.input.movieId = id as unknown as undefined
     global.movie.inputTitle = title
 
     global.update(global)
