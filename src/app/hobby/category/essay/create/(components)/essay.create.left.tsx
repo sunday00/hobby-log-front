@@ -7,12 +7,9 @@ import {
 } from '@chakra-ui/react'
 import { Category, Essay, EssayInput, Hobby, WritingType } from '@/gql/types'
 import { ChangeEvent, useContext, useState } from 'react'
-import GlobalContext from '@/libs/store.context'
 import { ThumbnailCropper } from '@/app/(global)/(components)/thumbnail.cropper'
 
 const EssayCreateLeft = ({ essay }: { essay?: Essay }) => {
-  const global = useContext(GlobalContext)
-
   const [localInput, setLocalInput] = useState<Partial<EssayInput>>({
     writingType: essay?.writingType ?? WritingType.Essay,
     thumbnail: essay?.thumbnail ?? '',
@@ -26,13 +23,6 @@ const EssayCreateLeft = ({ essay }: { essay?: Essay }) => {
     curr[e.target.name as keyof Partial<EssayInput>] = e.target
       .value as unknown as undefined
     setLocalInput(curr)
-
-    global.essay.input[e.target.name as keyof EssayInput] = (e.target.type ===
-    'number'
-      ? Number(e.target.value)
-      : e.target.value) as unknown as undefined
-
-    global.update(global)
   }
 
   return (

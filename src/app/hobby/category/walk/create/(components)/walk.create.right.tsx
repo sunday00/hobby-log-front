@@ -1,3 +1,6 @@
+import { LogStrs, splitDDHHMM } from '@/libs/conv.util'
+import React, { ChangeEvent, useState } from 'react'
+import { Status, Walk, WalkInput } from '@/gql/types'
 import {
   Button,
   Flex,
@@ -10,18 +13,14 @@ import {
   theme,
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/input'
-import React, { ChangeEvent, useState } from 'react'
-import { Essay, EssayInput, Status } from '@/gql/types'
-import { LogStrs, splitDDHHMM } from '@/libs/conv.util'
-import { EssaySeriesInput } from '@/app/hobby/category/essay/create/(components)/essay.series.input'
 
-const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
-  const { DD, HH, MM } = splitDDHHMM(essay?.logAt)
+const WalkCreateRight = ({ walk }: { walk?: Walk }) => {
+  const { DD, HH, MM } = splitDDHHMM(walk?.logAt)
 
-  const [localInput, setLocalInput] = useState<Partial<EssayInput & LogStrs>>({
-    title: essay?.title ?? '',
-    content: essay?.content ?? '',
-    status: essay?.status ?? Status.Draft,
+  const [localInput, setLocalInput] = useState<Partial<WalkInput & LogStrs>>({
+    title: walk?.title ?? '',
+    content: walk?.content ?? '',
+    status: walk?.status ?? Status.Draft,
     logAtStrDD: DD,
     logAtStrHH: Number(HH),
     logAtStrMM: Number(MM),
@@ -31,7 +30,7 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const curr = { ...localInput }
-    curr[e.target.name as keyof Partial<EssayInput>] = e.target
+    curr[e.target.name as keyof Partial<WalkInput>] = e.target
       .value as unknown as undefined
     setLocalInput(curr)
   }
@@ -50,8 +49,6 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
   return (
     <>
       <Stack>
-        <EssaySeriesInput essay={essay} />
-
         <FormControl>
           <FormLabel htmlFor="title">title</FormLabel>
           <Input
@@ -61,7 +58,7 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
             value={localInput.title ?? ''}
             onChange={handleFormChange}
           />
-          <FormHelperText>title of essay</FormHelperText>
+          <FormHelperText>title of walk</FormHelperText>
         </FormControl>
 
         <FormControl>
@@ -112,7 +109,7 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
             value={localInput.content ?? ''}
             onChange={handleFormChange}
           ></Textarea>
-          <FormHelperText>content body of essay</FormHelperText>
+          <FormHelperText>content body of walk</FormHelperText>
         </FormControl>
 
         <FormControl>
@@ -134,11 +131,11 @@ const EssayCreateRight = ({ essay }: { essay?: Essay }) => {
         </FormControl>
 
         <Button type="submit" colorScheme="blue">
-          {essay ? 'UPDATE' : 'LOG MY HOBBY'}
+          {walk ? 'UPDATE' : 'LOG MY HOBBY'}
         </Button>
       </Stack>
     </>
   )
 }
 
-export { EssayCreateRight }
+export { WalkCreateRight }
