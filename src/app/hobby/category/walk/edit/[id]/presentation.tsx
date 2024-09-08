@@ -3,19 +3,17 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Grid, Spinner, theme } from '@chakra-ui/react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
-import { FormEvent, useContext } from 'react'
-import GlobalContext from '@/libs/store.context'
-import { updateEssayMutation } from '@/gql/domain/essay/essay.mutation.gql'
-import { getOneEssayQuery } from '@/gql/domain/essay/essay.query.gql'
-import { EssayCreateLeft } from '@/app/hobby/category/essay/create/(components)/essay.create.left'
-import { EssayCreateRight } from '@/app/hobby/category/essay/create/(components)/essay.create.right'
-import { EssayInput, Status, WritingType } from '@/gql/types'
+import { FormEvent } from 'react'
+import { updateWalkMutation } from '@/gql/domain/walk/walk.mutation.gql'
+import { getOneWalkQuery } from '@/gql/domain/walk/walk.query.gql'
+import { WalkCreateLeft } from '@/app/hobby/category/walk/create/(components)/walk.create.left'
+import { WalkCreateRight } from '@/app/hobby/category/walk/create/(components)/walk.create.right'
+import { WalkInput, Status } from '@/gql/types'
 
-const EssayEditPresentation = ({ id }: { id: string }) => {
-  const global = useContext(GlobalContext)
-  const [updateEssay] = useMutation(updateEssayMutation)
+const WalkEditPresentation = ({ id }: { id: string }) => {
+  const [updateWalk] = useMutation(updateWalkMutation)
 
-  const { data, loading, error } = useQuery(getOneEssayQuery, {
+  const { data, loading, error } = useQuery(getOneWalkQuery, {
     variables: { id },
   })
 
@@ -31,8 +29,6 @@ const EssayEditPresentation = ({ id }: { id: string }) => {
     )
   }
 
-  global.essay.input = data.getOneEssay
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -46,23 +42,23 @@ const EssayEditPresentation = ({ id }: { id: string }) => {
       form.get('logStrMM')?.toString().padStart(2, '0') +
       ':00.000Z'
 
-    const inp: EssayInput = {
+    const inp: WalkInput = {
       id,
       title: form.get('title') as string,
-      writingType: form.get('writingType') as WritingType,
       content: form.get('content') as string,
       logAtStr: logAt,
-      seriesKey: form.get('series-key') as string,
-      seriesName: form.get('series-name') as string,
       status: form.get('status') as Status,
       thumbnail: (form.get(
         form.get('thumbnail-type') === 'cropper'
           ? 'thumbnail-crop'
           : 'thumbnail-url',
       ) ?? '') as string,
+      steps: Number(form.get('steps') ?? 0),
+      duration: Number(form.get('duration') ?? 0),
+      distance: Number(form.get('distance') ?? 0),
     }
 
-    const { data, errors } = await updateEssay({
+    const { data, errors } = await updateWalk({
       variables: { input: inp },
     })
 
@@ -72,30 +68,30 @@ const EssayEditPresentation = ({ id }: { id: string }) => {
     }
 
     //TODO: more elegant handle error
-    if (!data?.updateEssayLog.success) {
-      console.error(data?.updateEssayLog.message ?? 'something went wrong')
+    if (!data?.updateWalkLog.success) {
+      console.error(data?.updateWalkLog.message ?? 'something went wrong')
     }
 
-    if (data?.updateEssayLog.success) {
-      location.href = `/hobby/category/essay/detail/${data?.updateEssayLog.id}`
+    if (data?.updateWalkLog.success) {
+      location.href = `/hobby/category/walk/detail/${data?.updateWalkLog.id}`
     }
   }
 
   return (
     <>
-      <BreadcrumbWarp name="category.edit" category="Essay" />
+      <BreadcrumbWarp name="category.edit" category="Walk" />
       <form onSubmit={handleSubmit}>
         <Grid
           mt={theme.space['4']}
           gap={theme.space['4']}
           templateColumns="1fr 2fr"
         >
-          <EssayCreateLeft essay={data.getOneEssay} />
-          <EssayCreateRight essay={data.getOneEssay} />
+          <WalkCreateLeft walk={data.getOneWalk} />
+          <WalkCreateRight walk={data.getOneWalk} />
         </Grid>
       </form>
     </>
   )
 }
 
-export { EssayEditPresentation }
+export { WalkEditPresentation }

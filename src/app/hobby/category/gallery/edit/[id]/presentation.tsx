@@ -70,7 +70,7 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
 
   return (
     <>
-      <BreadcrumbWarp name="category.edit" category="Movie" />
+      <BreadcrumbWarp name="category.edit" category="Gallery" />
       <form onSubmit={handleSubmit}>
         <Grid
           mt={theme.space['4']}

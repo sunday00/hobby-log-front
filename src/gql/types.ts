@@ -518,7 +518,7 @@ export type Walk = BaseSchema & {
   __typename?: 'Walk';
   category?: Maybe<Category>;
   content?: Maybe<Scalars['String']['output']>;
-  distance?: Maybe<Scalars['Int']['output']>;
+  distance?: Maybe<Scalars['Float']['output']>;
   duration?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['String']['output']>;
   logAt?: Maybe<Scalars['DateTime']['output']>;
@@ -532,7 +532,7 @@ export type Walk = BaseSchema & {
 
 export type WalkInput = {
   content?: InputMaybe<Scalars['String']['input']>;
-  distance?: InputMaybe<Scalars['Int']['input']>;
+  distance?: InputMaybe<Scalars['Float']['input']>;
   duration?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   logAtStr?: InputMaybe<Scalars['String']['input']>;
