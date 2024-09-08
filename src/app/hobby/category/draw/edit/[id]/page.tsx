@@ -1,11 +1,11 @@
-import { WalkEditPresentation } from '@/app/hobby/category/walk/edit/[id]/presentation'
+import { DrawEditPresentation } from '@/app/hobby/category/draw/edit/[id]/presentation'
 
-const WalkEditPage = ({ params }: { params: { id: string } }) => {
+const DrawEditPage = ({ params }: { params: { id: string } }) => {
   return (
     <>
-      <WalkEditPresentation id={params.id} />
+      <DrawEditPresentation id={params.id} />
     </>
   )
 }
 
-export default WalkEditPage
+export default DrawEditPage

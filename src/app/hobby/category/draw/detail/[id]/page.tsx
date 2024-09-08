@@ -70,7 +70,7 @@ const DrawDetailPage = async ({ params }: { params: { id: string } }) => {
           <Image
             src={generateThumbnail(draw?.mainImage as string, Category.Draw)}
             alt={draw?.title + ' image'}
-          ></Image>
+          />
           <MDDetailContent content={draw?.content ?? ''} />
         </Grid>
       </DrawDetailPresentation>

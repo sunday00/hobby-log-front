@@ -1,6 +1,6 @@
 import { LogStrs, splitDDHHMM } from '@/libs/conv.util'
 import React, { ChangeEvent, useState } from 'react'
-import { Status, Draw, DrawInput, DrawType } from '@/gql/types'
+import { Status, Draw, DrawInput, DrawType, Category } from '@/gql/types'
 import {
   Button,
   Flex,
@@ -17,6 +17,7 @@ import {
 import { Input } from '@chakra-ui/input'
 import { FileUploader } from 'react-drag-drop-files'
 import { fileMimeTypes } from '@/libs/types'
+import { generateThumbnail } from '@/libs/url.grnerate.util'
 
 const DrawCreateRight = ({ draw }: { draw?: Draw }) => {
   const { DD, HH, MM } = splitDDHHMM(draw?.logAt)
@@ -28,7 +29,9 @@ const DrawCreateRight = ({ draw }: { draw?: Draw }) => {
     logAtStrDD: DD,
     logAtStrHH: Number(HH),
     logAtStrMM: Number(MM),
-    mainImage: draw?.mainImage ?? '',
+    mainImage: draw?.mainImage
+      ? generateThumbnail(draw?.mainImage as string, Category.Draw)
+      : '',
     drawType: draw?.drawType ?? DrawType.Cg,
   })
 

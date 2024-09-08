@@ -4,16 +4,16 @@ import { useMutation, useQuery } from '@apollo/client'
 import { Grid, Spinner, theme } from '@chakra-ui/react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { FormEvent } from 'react'
-import { updateWalkMutation } from '@/gql/domain/walk/walk.mutation.gql'
-import { getOneWalkQuery } from '@/gql/domain/walk/walk.query.gql'
-import { WalkCreateLeft } from '@/app/hobby/category/walk/create/(components)/walk.create.left'
-import { WalkCreateRight } from '@/app/hobby/category/walk/create/(components)/walk.create.right'
-import { WalkInput, Status } from '@/gql/types'
+import { updateDrawMutation } from '@/gql/domain/draw/draw.mutation.gql'
+import { getOneDrawQuery } from '@/gql/domain/draw/draw.query.gql'
+import { DrawCreateLeft } from '@/app/hobby/category/draw/create/(components)/draw.create.left'
+import { DrawCreateRight } from '@/app/hobby/category/draw/create/(components)/draw.create.right'
+import { DrawInput, DrawType, Status } from '@/gql/types'
 
-const WalkEditPresentation = ({ id }: { id: string }) => {
-  const [updateWalk] = useMutation(updateWalkMutation)
+const DrawEditPresentation = ({ id }: { id: string }) => {
+  const [updateDraw] = useMutation(updateDrawMutation)
 
-  const { data, loading, error } = useQuery(getOneWalkQuery, {
+  const { data, loading, error } = useQuery(getOneDrawQuery, {
     variables: { id },
   })
 
@@ -42,23 +42,18 @@ const WalkEditPresentation = ({ id }: { id: string }) => {
       form.get('logStrMM')?.toString().padStart(2, '0') +
       ':00.000Z'
 
-    const inp: WalkInput = {
+    const inp: DrawInput = {
       id,
       title: form.get('title') as string,
       content: form.get('content') as string,
       logAtStr: logAt,
       status: form.get('status') as Status,
-      thumbnail: (form.get(
-        form.get('thumbnail-type') === 'cropper'
-          ? 'thumbnail-crop'
-          : 'thumbnail-url',
-      ) ?? '') as string,
-      steps: Number(form.get('steps') ?? 0),
-      duration: Number(form.get('duration') ?? 0),
-      distance: Number(form.get('distance') ?? 0),
+      thumbnail: (form.get('thumbnail-crop') ?? '') as string,
+      mainImage: form.get('mainImage') as string,
+      drawType: form.get('drawType') as DrawType,
     }
 
-    const { data, errors } = await updateWalk({
+    const { data, errors } = await updateDraw({
       variables: { input: inp },
     })
 
@@ -68,30 +63,30 @@ const WalkEditPresentation = ({ id }: { id: string }) => {
     }
 
     //TODO: more elegant handle error
-    if (!data?.updateWalkLog.success) {
-      console.error(data?.updateWalkLog.message ?? 'something went wrong')
+    if (!data?.updateDrawLog.success) {
+      console.error(data?.updateDrawLog.message ?? 'something went wrong')
     }
 
-    if (data?.updateWalkLog.success) {
-      location.href = `/hobby/category/walk/detail/${data?.updateWalkLog.id}`
+    if (data?.updateDrawLog.success) {
+      location.href = `/hobby/category/draw/detail/${data?.updateDrawLog.id}`
     }
   }
 
   return (
     <>
-      <BreadcrumbWarp name="category.edit" category="Walk" />
+      <BreadcrumbWarp name="category.edit" category="Draw" />
       <form onSubmit={handleSubmit}>
         <Grid
           mt={theme.space['4']}
           gap={theme.space['4']}
           templateColumns="1fr 2fr"
         >
-          <WalkCreateLeft walk={data.getOneWalk} />
-          <WalkCreateRight walk={data.getOneWalk} />
+          <DrawCreateLeft draw={data.getOneDraw} />
+          <DrawCreateRight draw={data.getOneDraw} />
         </Grid>
       </form>
     </>
   )
 }
 
-export { WalkEditPresentation }
+export { DrawEditPresentation }
