@@ -1,6 +1,6 @@
 import { Category, Movie } from '@/gql/types'
 import { Divider, Heading, Image, Stack, theme } from '@chakra-ui/react'
-import { generateThumbnail } from '@/libs/url.grnerate.util'
+import { generateDefaultSrc, generateThumbnail } from '@/libs/url.grnerate.util'
 
 const MovieEditReadonly = ({ movie }: { movie: Movie }) => {
   return (
@@ -15,6 +15,7 @@ const MovieEditReadonly = ({ movie }: { movie: Movie }) => {
         <Image
           src={generateThumbnail(movie.thumbnail, Category.Movie)}
           alt={movie.title + ' poster'}
+          fallbackSrc={generateDefaultSrc(Category.Movie)}
         />
         <Stack>
           <p>{movie.id}</p>
