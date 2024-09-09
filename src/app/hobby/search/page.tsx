@@ -16,7 +16,10 @@ const HobbySearchPage = async ({
     variables: {
       search: search,
       page: page,
-      category: category?.toUpperCase() as Category,
+      category:
+        !category || category === ''
+          ? null
+          : (category.toUpperCase() as Category),
     },
   })
 
