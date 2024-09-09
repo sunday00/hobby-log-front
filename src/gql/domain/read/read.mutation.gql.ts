@@ -1,17 +1,17 @@
 import { gql } from '@apollo/client'
 
-export const logWalkMutation = gql`
-  mutation LogWalk($input: WalkInput!) {
-    createWalkLog(walkInput: $input) {
+export const logReadMutation = gql`
+  mutation LogRead($input: ReadInput!) {
+    createReadLog(readInput: $input) {
       id
       success
     }
   }
 `
 
-export const updateWalkMutation = gql`
-  mutation UpdateWalk($input: WalkInput) {
-    updateWalkLog(walkInput: $input) {
+export const updateReadMutation = gql`
+  mutation UpdateRead($input: ReadInput) {
+    updateReadLog(readInput: $input) {
       id
       success
     }

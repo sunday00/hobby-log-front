@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client'
-import { walk } from '@/gql/types'
+import { read } from '@/gql/types'
 
-export const getOneWalkQuery = gql`
-    query GetOneWalk($id: String) {
-        getOneWalk(id: $id) {
-            ${Object.keys(walk).join(' ')}
+export const getOneReadQuery = gql`
+    query GetOneRead($id: String) {
+        getOneRead(id: $id) {
+            ${Object.keys(read).join(' ')}
         }
     }
 `
