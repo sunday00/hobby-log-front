@@ -12,6 +12,7 @@ import {
   MdMenu,
   MdNote,
   MdPerson,
+  MdSearch,
   MdStar,
 } from 'react-icons/md'
 import { IconType } from 'react-icons'
@@ -42,6 +43,18 @@ const crumbMap: { [k: string]: CrumbMapItem } = {
     href: '/hobby/monthly/{%dddd%}',
     icon: MdCalendarMonth,
     path: ['monthly'],
+  },
+  yearly: {
+    name: 'yearly',
+    href: '/hobby/category/{%category%}/year/{%dddd%}',
+    icon: MdCalendarMonth,
+    path: ['yearly'],
+  },
+  search: {
+    name: 'search',
+    href: '/hobby/search',
+    icon: MdSearch,
+    path: ['search'],
   },
   nonActivate: {
     name: 'nonActivate',

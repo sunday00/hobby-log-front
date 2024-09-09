@@ -34,6 +34,10 @@ export const Navigation = () => {
 
         <CategoryButton />
 
+        <Box as={Link} href={`/hobby/search`}>
+          <p>Search</p>
+        </Box>
+
         <LoginButton />
 
         <DarkModeButton />

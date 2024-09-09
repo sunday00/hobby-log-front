@@ -17,6 +17,7 @@ import { Icon } from '@chakra-ui/icons'
 import { MdDeveloperMode, MdLogin, MdLogout, MdStar } from 'react-icons/md'
 import { DevHeaderHelperModal } from '@/app/(global)/(components)/dev-helper-sub/header.modal'
 import { FaPowerOff } from 'react-icons/fa6'
+import { WalkFactory } from '@/app/(global)/(components)/dev-helper-sub/walk.factory'
 
 export const LoginButton = () => {
   const [isDev, setIsDev] = useState(false)
@@ -34,6 +35,12 @@ export const LoginButton = () => {
     isOpen: headerHelperIsOpen,
     onOpen: headerHelperOnOpen,
     onClose: headerHelperOnClose,
+  } = useDisclosure()
+
+  const {
+    isOpen: walkFactoryHelperIsOpen,
+    onOpen: walkFactoryHelperOnOpen,
+    onClose: walkFactoryHelperOnClose,
   } = useDisclosure()
 
   useEffect(() => {
@@ -93,15 +100,26 @@ export const LoginButton = () => {
               </MenuItem>
 
               {isDev ? (
-                <MenuItem
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  onClick={headerHelperOnOpen}
-                >
-                  <Icon as={MdDeveloperMode} />
-                  <span>show dev header helper</span>
-                </MenuItem>
+                <>
+                  <MenuItem
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    onClick={headerHelperOnOpen}
+                  >
+                    <Icon as={MdDeveloperMode} />
+                    <span>show dev header helper</span>
+                  </MenuItem>
+                  <MenuItem
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    onClick={walkFactoryHelperOnOpen}
+                  >
+                    <Icon as={MdDeveloperMode} />
+                    <span>show walk factory db</span>
+                  </MenuItem>
+                </>
               ) : (
                 <></>
               )}
@@ -126,11 +144,17 @@ export const LoginButton = () => {
         )}
 
         {isDev ? (
-          <DevHeaderHelperModal
-            isOpen={headerHelperIsOpen}
-            onClose={headerHelperOnClose}
-            accessToken={accessToken}
-          />
+          <>
+            <DevHeaderHelperModal
+              isOpen={headerHelperIsOpen}
+              onClose={headerHelperOnClose}
+              accessToken={accessToken}
+            />
+            <WalkFactory
+              isOpen={walkFactoryHelperIsOpen}
+              onClose={walkFactoryHelperOnClose}
+            />
+          </>
         ) : (
           <></>
         )}

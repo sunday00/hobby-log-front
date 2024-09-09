@@ -366,7 +366,7 @@ export type Query = {
   getOneWalk?: Maybe<Walk>;
   monthHobby?: Maybe<Array<Maybe<Hobby>>>;
   monthNonActiveHobby?: Maybe<Array<Maybe<Hobby>>>;
-  searchHobby?: Maybe<Array<Maybe<Hobby>>>;
+  searchHobby?: Maybe<SearchPagination>;
   searchMovies?: Maybe<MovieRawPge>;
   searchSeries?: Maybe<Array<Maybe<Series>>>;
   sign?: Maybe<Auth>;
@@ -417,6 +417,7 @@ export type QueryMonthNonActiveHobbyArgs = {
 
 
 export type QuerySearchHobbyArgs = {
+  category?: InputMaybe<Category>;
   page?: InputMaybe<Scalars['Long']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
 };
@@ -492,6 +493,12 @@ export enum Role {
   RoleGuest = 'ROLE_GUEST',
   RoleUser = 'ROLE_USER'
 }
+
+export type SearchPagination = {
+  __typename?: 'SearchPagination';
+  hobbies?: Maybe<Array<Maybe<Hobby>>>;
+  totalCount?: Maybe<Scalars['Long']['output']>;
+};
 
 export type Series = {
   __typename?: 'Series';
@@ -828,6 +835,11 @@ export const result = {
   success: undefined,
   message: undefined,
   status: undefined,
+}
+
+export const searchPagination = {
+  hobbies: undefined,
+  totalCount: undefined,
 }
 
 export const series = {

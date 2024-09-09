@@ -73,7 +73,7 @@ const MonthlyNavControl = ({
                 w="120px"
                 type="number"
                 min="2024"
-                max="2200"
+                max={today.getFullYear()}
                 value={currentYear}
                 onChange={(e) => setCurrentYear(Number(e.target.value))}
               />
