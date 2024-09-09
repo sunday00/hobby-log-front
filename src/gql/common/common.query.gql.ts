@@ -26,9 +26,12 @@ export const yearlyHobbyQuery = gql`
 `
 
 export const searchHobbiesQuery = gql`
-    query SearchHobbies($search: String, $page: Long = 1) {
-        searchHobby(search: $search, page: $page) {
-            ${Object.keys(hobby).join(' ')}
+    query SearchHobbies($search: String, $page: Long = 1, $category: Category) {
+        searchHobby(search: $search, page: $page, category: $category) {
+            hobbies {
+                ${Object.keys(hobby).join(' ')}
+            }
+            totalCount
         }
     }
 `

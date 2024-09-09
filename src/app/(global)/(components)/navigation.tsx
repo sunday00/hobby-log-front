@@ -35,7 +35,7 @@ export const Navigation = () => {
         <CategoryButton />
 
         <Box as={Link} href={`/hobby/search`}>
-          <p>search</p>
+          <p>Search</p>
         </Box>
 
         <LoginButton />
