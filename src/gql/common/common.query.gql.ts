@@ -16,3 +16,11 @@ export const monthlyNonActivateQuery = gql`
         }
     }
 `
+
+export const yearlyHobbyQuery = gql`
+    query YearlyHobby($yyyy: String, $category: Category) {
+        yearByCategory(yyyy: $yyyy, category: $category) {
+            ${Object.keys(hobby).join(' ')}
+        }
+    }
+`

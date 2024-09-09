@@ -43,6 +43,12 @@ const crumbMap: { [k: string]: CrumbMapItem } = {
     icon: MdCalendarMonth,
     path: ['monthly'],
   },
+  yearly: {
+    name: 'yearly',
+    href: '/hobby/category/{%category%}/year/{%dddd%}',
+    icon: MdCalendarMonth,
+    path: ['yearly'],
+  },
   nonActivate: {
     name: 'nonActivate',
     href: '/hobby/non-activate/{%dddd%}',
