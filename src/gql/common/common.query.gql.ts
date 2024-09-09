@@ -24,3 +24,11 @@ export const yearlyHobbyQuery = gql`
         }
     }
 `
+
+export const searchHobbiesQuery = gql`
+    query SearchHobbies($search: String, $page: Long = 1) {
+        searchHobby(search: $search, page: $page) {
+            ${Object.keys(hobby).join(' ')}
+        }
+    }
+`
