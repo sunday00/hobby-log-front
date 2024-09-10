@@ -91,7 +91,10 @@ const DrawCreateRight = ({ draw }: { draw?: Draw }) => {
               value={localInput.drawType ?? DrawType.Cg}
             >
               {Object.keys(DrawType).map((item: string) => (
-                <option key={item} value={item.toUpperCase()}>
+                <option
+                  key={item}
+                  value={DrawType[item as keyof typeof DrawType]}
+                >
                   {item}
                 </option>
               ))}
