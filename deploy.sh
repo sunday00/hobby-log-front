@@ -8,5 +8,5 @@ echo "
 
   ps then found pid
   kill -9 {pid}
-  PORT=3021 nohup node standalone/server.js
+  PORT=3021 nohup node standalone/server.js &
 "
