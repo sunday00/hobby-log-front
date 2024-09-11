@@ -5,5 +5,8 @@ rsync -az .next/standalone sunday00@211.184.119.6:/volume1/web/hobby-log/fronten
 
 echo "
   docker exec -it hobby-log-front /bin/bash
-  kill node then run PORT=3021 node standalone/server.js on docker container
+
+  ps then found pid
+  kill -9 {pid}
+  PORT=3021 nohup node standalone/server.js
 "
