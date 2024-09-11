@@ -508,7 +508,8 @@ export type Result = {
 export enum Role {
   RoleAdmin = 'ROLE_ADMIN',
   RoleGuest = 'ROLE_GUEST',
-  RoleUser = 'ROLE_USER'
+  RoleUser = 'ROLE_USER',
+  RoleWriter = 'ROLE_WRITER'
 }
 
 export type SearchPagination = {

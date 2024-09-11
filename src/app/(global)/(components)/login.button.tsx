@@ -18,12 +18,15 @@ import { MdDeveloperMode, MdLogin, MdLogout, MdStar } from 'react-icons/md'
 import { DevHeaderHelperModal } from '@/app/(global)/(components)/dev-helper-sub/header.modal'
 import { FaPowerOff } from 'react-icons/fa6'
 import { WalkFactory } from '@/app/(global)/(components)/dev-helper-sub/walk.factory'
+import { decodeBase64 } from '@/libs/conv.util'
+import { Role } from '@/gql/types'
 
 export const LoginButton = () => {
   const [isDev, setIsDev] = useState(false)
   const [accessToken, setAccessToken] = useState('')
   const [isLogged, setIsLogged] = useState(false)
   const [name, setName] = useState('')
+  const [roles, setRoles] = useState([Role.RoleGuest])
 
   const today = new Date()
   const ym =
@@ -52,6 +55,9 @@ export const LoginButton = () => {
       setName(name!)
       setIsLogged(true)
       setAccessToken(LocalStorage.getItem('accessToken') ?? '')
+
+      const { roles: tokenRoles } = decodeBase64(accessToken)
+      setRoles(tokenRoles ?? [])
     }
 
     if (process.env.NODE_ENV === 'development') {
@@ -77,27 +83,33 @@ export const LoginButton = () => {
                 <span>Logout</span>
               </MenuItem>
 
-              <MenuItem
-                as={Link}
-                href="/hobby/create"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Icon as={MdStar} />
-                <span>Logging Hobby</span>
-              </MenuItem>
+              {roles.includes(Role.RoleWriter) ? (
+                <>
+                  <MenuItem
+                    as={Link}
+                    href="/hobby/create"
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Icon as={MdStar} />
+                    <span>Logging Hobby</span>
+                  </MenuItem>
 
-              <MenuItem
-                as={Link}
-                href={`/hobby/non-activate/${ym}`}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Icon as={FaPowerOff} />
-                <span>Manage NonActivated</span>
-              </MenuItem>
+                  <MenuItem
+                    as={Link}
+                    href={`/hobby/non-activate/${ym}`}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Icon as={FaPowerOff} />
+                    <span>Manage NonActivated</span>
+                  </MenuItem>
+                </>
+              ) : (
+                <></>
+              )}
 
               {isDev ? (
                 <>
@@ -118,6 +130,14 @@ export const LoginButton = () => {
                   >
                     <Icon as={MdDeveloperMode} />
                     <span>show walk factory db</span>
+                  </MenuItem>
+                  <MenuItem
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    onClick={walkFactoryHelperOnOpen}
+                  >
+                    <span>{roles.join(' | ')}</span>
                   </MenuItem>
                 </>
               ) : (
