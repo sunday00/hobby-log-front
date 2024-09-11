@@ -1,5 +1,14 @@
 import { Category, Gallery, Status } from '@/gql/types'
-import { Box, Flex, Grid, Heading, Image, Stack, theme } from '@chakra-ui/react'
+import {
+  Box,
+  Divider,
+  Flex,
+  Grid,
+  Heading,
+  Image,
+  Stack,
+  theme,
+} from '@chakra-ui/react'
 import { galleryTypeToKor } from '@/libs/conv.util'
 import { generateDefaultSrc, generateThumbnail } from '@/libs/url.grnerate.util'
 
@@ -33,6 +42,9 @@ const GalleryDetailInfo = ({
             <p>{status}</p>
           </Grid>
           <p>{gallery.location}</p>
+
+          <Divider borderWidth="2px" my={theme.space['4']} />
+
           <p>{gallery.overview}</p>
         </Box>
         <Box>
