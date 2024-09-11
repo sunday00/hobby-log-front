@@ -5,15 +5,16 @@ import { Grid, Spinner, theme } from '@chakra-ui/react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { FormEvent } from 'react'
 import { updateDrawMutation } from '@/gql/domain/draw/draw.mutation.gql'
-import { getOneDrawQuery } from '@/gql/domain/draw/draw.query.gql'
+import { getOneDrawWithSubImagesQuery } from '@/gql/domain/draw/draw.query.gql'
 import { DrawCreateLeft } from '@/app/hobby/category/draw/create/(components)/draw.create.left'
 import { DrawCreateRight } from '@/app/hobby/category/draw/create/(components)/draw.create.right'
 import { DrawInput, DrawType, Status } from '@/gql/types'
+import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
 
 const DrawEditPresentation = ({ id }: { id: string }) => {
   const [updateDraw] = useMutation(updateDrawMutation)
 
-  const { data, loading, error } = useQuery(getOneDrawQuery, {
+  const { data, loading, error } = useQuery(getOneDrawWithSubImagesQuery, {
     variables: { id },
   })
 
@@ -81,10 +82,20 @@ const DrawEditPresentation = ({ id }: { id: string }) => {
           gap={theme.space['4']}
           templateColumns="1fr 2fr"
         >
-          <DrawCreateLeft draw={data.getOneDraw} />
-          <DrawCreateRight draw={data.getOneDraw} />
+          <DrawCreateLeft draw={data?.getOneDraw} />
+          <DrawCreateRight draw={data?.getOneDraw} />
         </Grid>
       </form>
+      {data?.getOneDraw && (
+        <Grid
+          mt={theme.space['4']}
+          gap={theme.space['4']}
+          templateColumns="1fr 2fr"
+        >
+          <div></div>
+          <SubImageUploader hobby={data?.getOneDraw} />
+        </Grid>
+      )}
     </>
   )
 }

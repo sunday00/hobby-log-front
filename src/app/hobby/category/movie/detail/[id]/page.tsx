@@ -24,7 +24,7 @@ export const generateMetadata = async ({
     })
 
     const { contents, synopsis, originalSynopsis, userId, status, ...info } =
-      data.getOneMovie
+      data?.getOneMovie
 
     const args: MetaArg = {
       title: data.getOneMovie.title,

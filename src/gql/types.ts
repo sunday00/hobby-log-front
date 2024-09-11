@@ -17,8 +17,9 @@ export type Scalars = {
 };
 
 export type AddSubImageInput = {
-  folder?: InputMaybe<Scalars['String']['input']>;
+  category?: InputMaybe<Category>;
   id?: InputMaybe<Scalars['String']['input']>;
+  logAtStr?: InputMaybe<Scalars['String']['input']>;
   subId?: InputMaybe<Scalars['Int']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
   width?: InputMaybe<Scalars['Int']['input']>;
@@ -35,6 +36,7 @@ export type BaseSchema = {
   logAt?: Maybe<Scalars['DateTime']['output']>;
   ratings?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<Status>;
+  subImages?: Maybe<Array<Maybe<ImageEntity>>>;
   thumbnail?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
@@ -89,6 +91,7 @@ export type Draw = BaseSchema & {
   mainImage?: Maybe<Scalars['String']['output']>;
   ratings?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<Status>;
+  subImages?: Maybe<Array<Maybe<ImageEntity>>>;
   thumbnail?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
@@ -124,6 +127,7 @@ export type Essay = BaseSchema & {
   seriesKey?: Maybe<Scalars['String']['output']>;
   seriesName?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Status>;
+  subImages?: Maybe<Array<Maybe<ImageEntity>>>;
   thumbnail?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
@@ -153,6 +157,7 @@ export type Gallery = BaseSchema & {
   overview?: Maybe<Scalars['String']['output']>;
   ratings?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<Status>;
+  subImages?: Maybe<Array<Maybe<ImageEntity>>>;
   thumbnail?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
@@ -186,9 +191,19 @@ export type Hobby = BaseSchema & {
   logAt?: Maybe<Scalars['DateTime']['output']>;
   ratings?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<Status>;
+  subImages?: Maybe<Array<Maybe<ImageEntity>>>;
   thumbnail?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ImageEntity = {
+  __typename?: 'ImageEntity';
+  flag?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  path?: Maybe<Scalars['String']['output']>;
+  usedAs?: Maybe<UsedAs>;
+  usedBy?: Maybe<Scalars['String']['output']>;
 };
 
 export type Movie = BaseSchema & {
@@ -216,6 +231,7 @@ export type Movie = BaseSchema & {
   revenue?: Maybe<Scalars['Long']['output']>;
   runtime?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<Status>;
+  subImages?: Maybe<Array<Maybe<ImageEntity>>>;
   synopsis?: Maybe<Scalars['String']['output']>;
   tagline?: Maybe<Scalars['String']['output']>;
   thumbnail?: Maybe<Scalars['String']['output']>;
@@ -454,6 +470,7 @@ export type Read = BaseSchema & {
   ratings?: Maybe<Scalars['Int']['output']>;
   readType?: Maybe<ReadType>;
   status?: Maybe<Status>;
+  subImages?: Maybe<Array<Maybe<ImageEntity>>>;
   thumbnail?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
@@ -521,6 +538,11 @@ export type UpdateStatusInput = {
   status?: InputMaybe<Status>;
 };
 
+export enum UsedAs {
+  Main = 'MAIN',
+  Sub = 'SUB'
+}
+
 export type Walk = BaseSchema & {
   __typename?: 'Walk';
   category?: Maybe<Category>;
@@ -532,6 +554,7 @@ export type Walk = BaseSchema & {
   ratings?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<Status>;
   steps?: Maybe<Scalars['Int']['output']>;
+  subImages?: Maybe<Array<Maybe<ImageEntity>>>;
   thumbnail?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   userId?: Maybe<Scalars['String']['output']>;
@@ -561,8 +584,9 @@ export enum WritingType {
 
 export const addSubImageInput = {
   id: undefined,
-  folder: undefined,
+  category: undefined,
   url: undefined,
+  logAtStr: undefined,
   subId: undefined,
   width: undefined,
 }
@@ -580,6 +604,7 @@ export const baseSchema = {
   ratings: undefined,
   logAt: undefined,
   status: undefined,
+  subImages: undefined,
 }
 
 export const casting = {
@@ -622,6 +647,7 @@ export const draw = {
   content: undefined,
   mainImage: undefined,
   drawType: undefined,
+  subImages: undefined,
 }
 
 export const drawInput = {
@@ -649,6 +675,7 @@ export const essay = {
   seriesKey: undefined,
   seriesName: undefined,
   series: undefined,
+  subImages: undefined,
 }
 
 export const essayInput = {
@@ -676,6 +703,7 @@ export const gallery = {
   ratings: undefined,
   logAt: undefined,
   status: undefined,
+  subImages: undefined,
 }
 
 export const galleryInput = {
@@ -700,6 +728,15 @@ export const hobby = {
   ratings: undefined,
   logAt: undefined,
   status: undefined,
+  subImages: undefined,
+}
+
+export const imageEntity = {
+  id: undefined,
+  path: undefined,
+  usedBy: undefined,
+  usedAs: undefined,
+  flag: undefined,
 }
 
 export const movie = {
@@ -733,6 +770,7 @@ export const movie = {
   runtime: undefined,
   tagline: undefined,
   originalTagline: undefined,
+  subImages: undefined,
 }
 
 export const movieInput = {
@@ -815,6 +853,7 @@ export const read = {
   overview: undefined,
   content: undefined,
   readType: undefined,
+  subImages: undefined,
 }
 
 export const readInput = {
@@ -869,6 +908,7 @@ export const walk = {
   steps: undefined,
   distance: undefined,
   duration: undefined,
+  subImages: undefined,
 }
 
 export const walkInput = {

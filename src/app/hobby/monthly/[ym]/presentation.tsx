@@ -22,7 +22,7 @@ const HobbyMonthlyPresentation = ({
         (today.getMonth() + 1).toString().padStart(2, '0'),
       ]
 
-  const elementList = hobbies.map((hobby, i) => {
+  const elementList = hobbies?.map((hobby, i) => {
     return (
       <MonthlyItemWarp key={hobby.id} justify={i % 2 === 0 ? 'start' : 'end'}>
         <MonthlyItem hobby={hobby} />

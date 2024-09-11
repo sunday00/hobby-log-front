@@ -27,7 +27,7 @@ const ManageNonActivateResult = ({
     )
   }
 
-  const elements = data.monthNonActiveHobby.map((hobby: Hobby, i: number) => {
+  const elements = data?.monthNonActiveHobby.map((hobby: Hobby, i: number) => {
     return (
       <MonthlyItemWarp key={hobby.id} justify={'center'}>
         <MonthlyItem hobby={hobby} />
