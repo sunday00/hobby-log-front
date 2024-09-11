@@ -10,6 +10,7 @@ import { FormEvent, useContext } from 'react'
 import GlobalContext from '@/libs/store.context'
 import { updateGalleryMutation } from '@/gql/domain/gallery/gallery.mutation.gql'
 import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
+import { GalleryInput, GalleryType, Status } from '@/gql/types'
 
 const GalleryEditPresentation = ({ id }: { id: string }) => {
   const global = useContext(GlobalContext)
@@ -36,21 +37,29 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const {
-      userId: _userId,
-      category: _category,
-      logAt: _logAt,
-      __typename: ___typename,
-      ...inp
-    } = {
-      ...global.gallery.input,
-      userId: '',
-      category: '',
-      logAt: '',
-      __typename: 'Gallery Edit',
-    }
+    const form = new FormData(e.currentTarget)
 
-    delete inp['subImages']
+    const logAt =
+      form.get('logStrDD') +
+      'T' +
+      form.get('logStrHH')?.toString().padStart(2, '0') +
+      ':' +
+      form.get('logStrMM')?.toString().padStart(2, '0') +
+      ':00.000Z'
+
+    const inp: GalleryInput = {
+      id,
+      title: form.get('title') as string,
+      location: form.get('location') as string,
+      overview: form.get('overview') as string,
+      content: form.get('content') as string,
+      logAtStr: logAt,
+      galleryType:
+        (form.get('galleryType') as unknown as undefined) ?? GalleryType.Solo,
+      status: (form.get('status') as unknown as undefined) ?? Status.Draft,
+      ratings: Number(form.get('ratings')),
+      thumbnail: form.get('thumbnail') as string,
+    }
 
     const { data, errors } = await updateGallery({
       variables: { input: inp },
