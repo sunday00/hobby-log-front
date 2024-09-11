@@ -5,15 +5,16 @@ import { Grid, Spinner, theme } from '@chakra-ui/react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { FormEvent } from 'react'
 import { updateReadMutation } from '@/gql/domain/read/read.mutation.gql'
-import { getOneReadQuery } from '@/gql/domain/read/read.query.gql'
+import { getOneReadWithSubImagesQuery } from '@/gql/domain/read/read.query.gql'
 import { ReadCreateLeft } from '@/app/hobby/category/read/create/(components)/read.create.left'
 import { ReadCreateRight } from '@/app/hobby/category/read/create/(components)/read.create.right'
 import { ReadInput, ReadType, Status } from '@/gql/types'
+import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
 
 const ReadEditPresentation = ({ id }: { id: string }) => {
   const [updateRead] = useMutation(updateReadMutation)
 
-  const { data, loading, error } = useQuery(getOneReadQuery, {
+  const { data, loading, error } = useQuery(getOneReadWithSubImagesQuery, {
     variables: { id },
   })
 
@@ -91,6 +92,17 @@ const ReadEditPresentation = ({ id }: { id: string }) => {
           <ReadCreateRight read={data.getOneRead} />
         </Grid>
       </form>
+
+      {data?.getOneRead && (
+        <Grid
+          mt={theme.space['4']}
+          gap={theme.space['4']}
+          templateColumns="1fr 2fr"
+        >
+          <div></div>
+          <SubImageUploader hobby={data?.getOneRead} />
+        </Grid>
+      )}
     </>
   )
 }

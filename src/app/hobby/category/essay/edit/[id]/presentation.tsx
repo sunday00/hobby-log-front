@@ -6,16 +6,17 @@ import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { FormEvent, useContext } from 'react'
 import GlobalContext from '@/libs/store.context'
 import { updateEssayMutation } from '@/gql/domain/essay/essay.mutation.gql'
-import { getOneEssayQuery } from '@/gql/domain/essay/essay.query.gql'
+import { getOneEssayWithSubImagesQuery } from '@/gql/domain/essay/essay.query.gql'
 import { EssayCreateLeft } from '@/app/hobby/category/essay/create/(components)/essay.create.left'
 import { EssayCreateRight } from '@/app/hobby/category/essay/create/(components)/essay.create.right'
 import { EssayInput, Status, WritingType } from '@/gql/types'
+import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
 
 const EssayEditPresentation = ({ id }: { id: string }) => {
   const global = useContext(GlobalContext)
   const [updateEssay] = useMutation(updateEssayMutation)
 
-  const { data, loading, error } = useQuery(getOneEssayQuery, {
+  const { data, loading, error } = useQuery(getOneEssayWithSubImagesQuery, {
     variables: { id },
   })
 
@@ -94,6 +95,17 @@ const EssayEditPresentation = ({ id }: { id: string }) => {
           <EssayCreateRight essay={data.getOneEssay} />
         </Grid>
       </form>
+
+      {data?.getOneEssay && (
+        <Grid
+          mt={theme.space['4']}
+          gap={theme.space['4']}
+          templateColumns="1fr 2fr"
+        >
+          <div></div>
+          <SubImageUploader hobby={data?.getOneEssay} />
+        </Grid>
+      )}
     </>
   )
 }

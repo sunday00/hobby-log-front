@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQuery } from '@apollo/client'
-import { getOneGalleryQuery } from '@/gql/domain/gallery/gallery.query.gql'
+import { getOneGalleryWithSubImagesQuery } from '@/gql/domain/gallery/gallery.query.gql'
 import { Grid, Spinner, theme } from '@chakra-ui/react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { GalleryCreateLeft } from '@/app/hobby/category/gallery/create/(components)/gallery.create.left'
@@ -9,12 +9,13 @@ import { GalleryCreateRight } from '@/app/hobby/category/gallery/create/(compone
 import { FormEvent, useContext } from 'react'
 import GlobalContext from '@/libs/store.context'
 import { updateGalleryMutation } from '@/gql/domain/gallery/gallery.mutation.gql'
+import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
 
 const GalleryEditPresentation = ({ id }: { id: string }) => {
   const global = useContext(GlobalContext)
   const [updateGallery] = useMutation(updateGalleryMutation)
 
-  const { data, loading, error } = useQuery(getOneGalleryQuery, {
+  const { data, loading, error } = useQuery(getOneGalleryWithSubImagesQuery, {
     variables: { id },
   })
 
@@ -49,6 +50,8 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
       __typename: 'Gallery Edit',
     }
 
+    delete inp['subImages']
+
     const { data, errors } = await updateGallery({
       variables: { input: inp },
     })
@@ -81,6 +84,17 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
           <GalleryCreateRight gallery={data.getOneGallery} />
         </Grid>
       </form>
+
+      {data?.getOneGallery && (
+        <Grid
+          mt={theme.space['4']}
+          gap={theme.space['4']}
+          templateColumns="1fr 2fr"
+        >
+          <div></div>
+          <SubImageUploader hobby={data?.getOneGallery} />
+        </Grid>
+      )}
     </>
   )
 }
