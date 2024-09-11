@@ -5,15 +5,16 @@ import { Grid, Spinner, theme } from '@chakra-ui/react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { FormEvent } from 'react'
 import { updateWalkMutation } from '@/gql/domain/walk/walk.mutation.gql'
-import { getOneWalkQuery } from '@/gql/domain/walk/walk.query.gql'
+import { getOneWalkWithSubImagesQuery } from '@/gql/domain/walk/walk.query.gql'
 import { WalkCreateLeft } from '@/app/hobby/category/walk/create/(components)/walk.create.left'
 import { WalkCreateRight } from '@/app/hobby/category/walk/create/(components)/walk.create.right'
 import { WalkInput, Status } from '@/gql/types'
+import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
 
 const WalkEditPresentation = ({ id }: { id: string }) => {
   const [updateWalk] = useMutation(updateWalkMutation)
 
-  const { data, loading, error } = useQuery(getOneWalkQuery, {
+  const { data, loading, error } = useQuery(getOneWalkWithSubImagesQuery, {
     variables: { id },
   })
 
@@ -90,6 +91,17 @@ const WalkEditPresentation = ({ id }: { id: string }) => {
           <WalkCreateRight walk={data.getOneWalk} />
         </Grid>
       </form>
+
+      {data?.getOneWalk && (
+        <Grid
+          mt={theme.space['4']}
+          gap={theme.space['4']}
+          templateColumns="1fr 2fr"
+        >
+          <div></div>
+          <SubImageUploader hobby={data?.getOneWalk} />
+        </Grid>
+      )}
     </>
   )
 }

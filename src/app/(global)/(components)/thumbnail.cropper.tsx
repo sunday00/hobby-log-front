@@ -44,6 +44,10 @@ const ThumbnailCropper = ({
 
   const handleFileChange = (uploadFile: File) => {
     setSrc(URL.createObjectURL(uploadFile) ?? '')
+
+    const reader = new FileReader()
+    reader.readAsDataURL(uploadFile)
+    reader.onload = () => setCrop(reader.result as string)
   }
 
   const handleCropChange = useCallback(() => {

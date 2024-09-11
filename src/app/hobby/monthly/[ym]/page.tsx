@@ -20,7 +20,7 @@ const HobbyMonthlyPage = async ({ params }: { params: { ym: string } }) => {
 
   return (
     <>
-      <HobbyMonthlyPresentation hobbies={data.monthHobby} ym={params.ym} />
+      <HobbyMonthlyPresentation hobbies={data?.monthHobby} ym={params.ym} />
     </>
   )
 }
