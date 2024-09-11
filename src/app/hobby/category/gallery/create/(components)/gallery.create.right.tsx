@@ -33,6 +33,15 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
     },
   )
 
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const curr = { ...localInput }
+    curr.title = e.target.value as unknown as undefined
+    setLocalInput(curr)
+
+    global.gallery.input.title = e.target.value as unknown as undefined
+    global.update(global)
+  }
+
   const handleFormChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
@@ -40,10 +49,6 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
     curr[e.target.name as keyof Partial<GalleryInput>] = e.target
       .value as unknown as undefined
     setLocalInput(curr)
-
-    global.gallery.input[e.target.name as keyof GalleryInput] = e.target
-      .value as unknown as undefined
-    global.update(global)
   }
 
   const handleDateTimeChange = (
@@ -55,13 +60,6 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
       part === 'DD' ? String(v) : Number(v)
     ) as never
     setLocalInput(curr)
-
-    global.gallery.input.logAtStr = updateLogAtStr(
-      global.gallery.input.logAtStr as unknown as string,
-      part,
-      v,
-    ) as unknown as undefined
-    global.update(global)
   }
 
   return (
@@ -74,7 +72,7 @@ const GalleryCreateRight = ({ gallery }: { gallery?: Gallery }) => {
             type="text"
             name="title"
             value={localInput.title ?? ''}
-            onChange={handleFormChange}
+            onChange={handleTitleChange}
           />
           <FormHelperText>title of gallery</FormHelperText>
         </FormControl>

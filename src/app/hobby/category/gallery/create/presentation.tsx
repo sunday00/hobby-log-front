@@ -4,35 +4,42 @@ import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
 import { Grid, theme } from '@chakra-ui/react'
 import { GalleryCreateLeft } from '@/app/hobby/category/gallery/create/(components)/gallery.create.left'
 import { GalleryCreateRight } from '@/app/hobby/category/gallery/create/(components)/gallery.create.right'
-import { FormEvent, useContext } from 'react'
-import GlobalContext from '@/libs/store.context'
+import { FormEvent } from 'react'
 import { useMutation } from '@apollo/client'
 import { logGalleryMutation } from '@/gql/domain/gallery/gallery.mutation.gql'
-import { GalleryType, Status } from '@/gql/types'
+import { GalleryInput, GalleryType, Status } from '@/gql/types'
 
 const GalleryCreatePresentation = () => {
-  const global = useContext(GlobalContext)
-
   const [logGallery] = useMutation(logGalleryMutation)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!global.gallery.input.galleryType) {
-      global.gallery.input.galleryType =
-        GalleryType.Solo as unknown as undefined
-    }
+    const form = new FormData(e.currentTarget)
 
-    if (!global.gallery.input.status) {
-      global.gallery.input.status = Status.Draft as unknown as undefined
-    }
+    const logAt =
+      form.get('logStrDD') +
+      'T' +
+      form.get('logStrHH')?.toString().padStart(2, '0') +
+      ':' +
+      form.get('logStrMM')?.toString().padStart(2, '0') +
+      ':00.000Z'
 
-    if (!global.gallery.input.ratings) {
-      global.gallery.input.ratings = 75 as unknown as undefined
+    const inp: GalleryInput = {
+      title: form.get('title') as string,
+      location: form.get('location') as string,
+      overview: form.get('overview') as string,
+      content: form.get('content') as string,
+      logAtStr: logAt,
+      galleryType:
+        (form.get('galleryType') as unknown as undefined) ?? GalleryType.Solo,
+      status: (form.get('status') as unknown as undefined) ?? Status.Draft,
+      ratings: Number(form.get('ratings')),
+      thumbnail: form.get('thumbnail') as string,
     }
 
     const { data, errors } = await logGallery({
-      variables: { input: global.gallery.input },
+      variables: { input: inp },
     })
 
     //TODO: more elegant handle error

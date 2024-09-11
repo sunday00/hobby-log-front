@@ -31,13 +31,6 @@ const GalleryCreateLeft = ({ gallery }: { gallery?: Gallery }) => {
     curr[e.target.name as keyof Partial<GalleryInput>] = e.target
       .value as unknown as undefined
     setLocalInput(curr)
-
-    global.gallery.input[e.target.name as keyof GalleryInput] = (e.target
-      .type === 'number'
-      ? Number(e.target.value)
-      : e.target.value) as unknown as undefined
-
-    global.update(global)
   }
 
   return (
