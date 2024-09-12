@@ -284,6 +284,7 @@ export type Mutation = {
   createGalleryLog?: Maybe<Result>;
   createReadLog?: Maybe<Result>;
   createWalkLog?: Maybe<Result>;
+  deleteImage?: Maybe<Result>;
   deleteLog?: Maybe<Result>;
   logMovie?: Maybe<Result>;
   updateDrawLog?: Maybe<Result>;
@@ -323,6 +324,11 @@ export type MutationCreateReadLogArgs = {
 
 export type MutationCreateWalkLogArgs = {
   walkInput?: InputMaybe<WalkInput>;
+};
+
+
+export type MutationDeleteImageArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -814,6 +820,7 @@ export const mutation = {
   createGalleryLog: undefined,
   createReadLog: undefined,
   createWalkLog: undefined,
+  deleteImage: undefined,
   deleteLog: undefined,
   logMovie: undefined,
   updateDrawLog: undefined,
