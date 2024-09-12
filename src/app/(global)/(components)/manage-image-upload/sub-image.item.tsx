@@ -1,14 +1,36 @@
-import { Box, Card, Flex, Image, theme } from '@chakra-ui/react'
+import { Box, Button, Card, Flex, Image, theme } from '@chakra-ui/react'
 import { generateDefaultSrc, generateThumbnail } from '@/libs/url.grnerate.util'
-import { Category, ImageEntity } from '@/gql/types'
+import { Category, ImageEntity, Maybe } from '@/gql/types'
+import { Icon } from '@chakra-ui/icons'
+import { IoMdClose } from 'react-icons/io'
+import { useMutation } from '@apollo/client'
+import { deleteSubImageMutation } from '@/gql/common/common.mutation.gql'
 
 const SubImageItem = ({
   title,
   image,
+  removeFromList,
 }: {
   title: string
   image: ImageEntity
+  removeFromList: (path: string) => void
 }) => {
+  const [deleteImage] = useMutation(deleteSubImageMutation)
+
+  const handleDeleteImage = async () => {
+    const { data, errors } = await deleteImage({
+      variables: { path: image.path },
+    })
+
+    //TODO: more elegant handle error
+    if (errors) {
+      console.error(errors)
+      return
+    }
+
+    removeFromList(image?.path ?? '')
+  }
+
   return (
     <>
       <Card>
@@ -28,7 +50,12 @@ const SubImageItem = ({
             />
           </Box>
           <Box>
-            <p>{`<img src="${generateThumbnail(image.path, Category.Gallery)}" alt="${title}-sub${image.flag ? `-${image.flag}` : ''}" />`}</p>
+            <p>{`<img src="${generateThumbnail(image.path, Category.Gallery)}" alt="${title}-sub${image.flag ? `-${image.flag}` : ''}" width="50%" style={{ margin: '0  auto', }} />`}</p>
+          </Box>
+          <Box>
+            <Button colorScheme={'red'} onClick={handleDeleteImage}>
+              <Icon as={IoMdClose}></Icon>
+            </Button>
           </Box>
         </Flex>
       </Card>

@@ -27,3 +27,12 @@ export const deleteLogMutation = gql`
     }
   }
 `
+
+export const deleteSubImageMutation = gql`
+  mutation DeleteSubImage($path: String) {
+    deleteImage(path: $path) {
+      id
+      success
+    }
+  }
+`

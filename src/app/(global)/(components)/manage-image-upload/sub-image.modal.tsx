@@ -9,73 +9,25 @@ import {
 } from '@chakra-ui/modal'
 import { Button } from '@chakra-ui/react'
 import { ThumbnailCropper } from '@/app/(global)/(components)/thumbnail.cropper'
-import {
-  AddSubImageInput,
-  Category,
-  Hobby,
-  ImageEntity,
-  Maybe,
-} from '@/gql/types'
-import { FormEvent, useRef } from 'react'
-import { useMutation } from '@apollo/client'
-import { addSubImageMutation } from '@/gql/common/common.mutation.gql'
+import { Category, Hobby } from '@/gql/types'
+import { FormEvent } from 'react'
 
 const SubImageModal = ({
   hobby,
   isOpen,
   onClose,
-  imageList,
-  setImageList,
+  handleImageAppend,
 }: {
   hobby: Hobby
   isOpen: boolean
   onClose: () => void
-  imageList: Maybe<ImageEntity>[] | { path: string; flag: string }[]
-  setImageList: (
-    imageList: Maybe<ImageEntity>[] | { path: string; flag: string }[],
-  ) => void
+  handleImageAppend: (formData: FormData) => void
 }) => {
-  const [addSubImage] = useMutation(addSubImageMutation)
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log(e.currentTarget)
-
     const form = new FormData(e.currentTarget)
-    const flag = (hobby.subImages ?? []).length + 1 + ''
-
-    const inp: AddSubImageInput = {
-      id: hobby.id,
-      category: hobby.category,
-      url: (form.get(
-        form.get('thumbnail-type') === 'cropper'
-          ? 'thumbnail-crop'
-          : 'thumbnail-url',
-      ) ?? '') as string,
-      logAtStr: hobby.logAt + '.000Z',
-      subId: Number(flag ?? 0),
-      width: 1024,
-    }
-
-    const { data, errors } = await addSubImage({
-      variables: { input: inp },
-    })
-
-    //TODO: more elegant handle error
-    if (errors) {
-      console.error(errors)
-    }
-
-    //TODO: more elegant handle error
-    if (!data?.addSubImage.success) {
-      console.error(data?.addSubImage.message ?? 'something went wrong')
-    }
-
-    if (data?.addSubImage.success) {
-      setImageList([...imageList, { path: data?.addSubImage.message, flag }])
-      onClose()
-    }
+    handleImageAppend(form)
   }
 
   return (
