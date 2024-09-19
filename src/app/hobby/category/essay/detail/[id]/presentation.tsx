@@ -37,7 +37,7 @@ const EssayDetailPresentation = ({
         category="Essay"
         dddd={dateFormat(essay?.logAt ?? new Date().toISOString(), 'YYYY-MM')}
       />
-      <Box maxW="8xl" mx="auto">
+      <Box maxW="6xl" mx="auto">
         <Box mt={theme.space['8']}>{children}</Box>
         {my && <EssayDetailUserButton essay={essay} />}
       </Box>

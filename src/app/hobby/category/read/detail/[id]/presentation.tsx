@@ -37,7 +37,7 @@ const ReadDetailPresentation = ({
         category="Read"
         dddd={dateFormat(read?.logAt ?? new Date().toISOString(), 'YYYY-MM')}
       />
-      <Box maxW="8xl" mx="auto">
+      <Box maxW="6xl" mx="auto">
         <Box mt={theme.space['8']}>{children}</Box>
         {my && <ReadDetailUserButton read={read} />}
       </Box>
