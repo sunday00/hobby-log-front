@@ -1,5 +1,5 @@
 import { ReadDetailPresentation } from '@/app/hobby/category/read/detail/[id]/presentation'
-import { client } from '@/gql/client'
+import { getClient } from '@/gql/client'
 import { Spinner } from '@chakra-ui/react'
 import { Category, Read } from '@/gql/types'
 import { getOneReadQuery } from '@/gql/domain/read/read.query.gql'
@@ -9,15 +9,13 @@ import { generateArticleFullMeta, MetaArg } from '@/libs/head.generate'
 import { generateThumbnail } from '@/libs/url.grnerate.util'
 import { notFound } from 'next/navigation'
 
-export const fetchCache = 'force-no-store'
-
 export const generateMetadata = async ({
   params: { id },
 }: {
   params: { id: string }
 }) => {
   try {
-    const { data, loading, error } = await client.query({
+    const { data, loading, error } = await getClient().query({
       query: getOneReadQuery,
       variables: { id },
     })
@@ -40,7 +38,7 @@ export const generateMetadata = async ({
 }
 
 const ReadDetailPage = async ({ params }: { params: { id: string } }) => {
-  const { data, loading, error } = await client.query({
+  const { data, loading, error } = await getClient().query({
     query: getOneReadQuery,
     variables: { id: params.id },
   })
@@ -60,15 +58,13 @@ const ReadDetailPage = async ({ params }: { params: { id: string } }) => {
   const read: Read = data.getOneRead
 
   return (
-    <>
-      <ReadDetailPresentation read={read}>
-        <section style={{ marginBottom: '1em' }}>
-          <ReadDetailInfo read={read} />
-        </section>
+    <ReadDetailPresentation read={read}>
+      <section style={{ marginBottom: '1em' }}>
+        <ReadDetailInfo read={read} />
+      </section>
 
-        <MDDetailContent content={read?.content ?? ''} />
-      </ReadDetailPresentation>
-    </>
+      <MDDetailContent content={read?.content ?? ''} />
+    </ReadDetailPresentation>
   )
 }
 

@@ -7,7 +7,7 @@ import {
 import { Input } from '@chakra-ui/input'
 import { ChangeEvent, useState } from 'react'
 import { essaySearchSeriesQuery } from '@/gql/domain/essay/essay.query.gql'
-import { client } from '@/gql/client'
+import { getClient } from '@/gql/client'
 import { Series } from '@/gql/types'
 
 const EssaySeriesSearch = ({
@@ -25,7 +25,7 @@ const EssaySeriesSearch = ({
     if (debounce) clearTimeout(debounce)
 
     const newDebounce = setTimeout(async () => {
-      const { data, loading, error } = await client.query({
+      const { data, loading, error } = await getClient().query({
         query: essaySearchSeriesQuery,
         variables: { search: v },
       })

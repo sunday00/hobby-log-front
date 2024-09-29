@@ -7,7 +7,8 @@ import { ReadCreateRight } from '@/app/hobby/category/read/create/(components)/r
 import { Grid, theme } from '@chakra-ui/react'
 import { useMutation } from '@apollo/client'
 import { logReadMutation } from '@/gql/domain/read/read.mutation.gql'
-import { Status, ReadInput, ReadType } from '@/gql/types'
+import { ReadInput, ReadType, Status } from '@/gql/types'
+import { reValidator } from '@/libs/actions'
 
 const ReadCreatePresentation = () => {
   const [logRead] = useMutation(logReadMutation)
@@ -56,6 +57,11 @@ const ReadCreatePresentation = () => {
     }
 
     if (data?.['createReadLog']?.success) {
+      await Promise.all([
+        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+      ])
+
       location.href = `/hobby/category/read/detail/${data?.['createReadLog'].id}`
     }
   }

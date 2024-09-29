@@ -1,12 +1,10 @@
-import { client } from '@/gql/client'
+import { getClient } from '@/gql/client'
 import { monthlyHobbyQuery } from '@/gql/common/common.query.gql'
 import { HobbyMonthlyPresentation } from '@/app/hobby/monthly/[ym]/presentation'
 
-export const fetchCache = 'force-no-store'
-
 const HobbyMonthlyPage = async ({ params }: { params: { ym: string } }) => {
   const [yyyy, mm] = params.ym.split('-')
-  const { data, error } = await client.query({
+  const { data, error } = await getClient().query({
     query: monthlyHobbyQuery,
     variables: { yyyy, mm },
   })

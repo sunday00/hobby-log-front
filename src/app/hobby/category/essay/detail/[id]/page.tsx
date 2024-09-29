@@ -2,14 +2,12 @@ import { EssayDetailPresentation } from '@/app/hobby/category/essay/detail/[id]/
 import { getOneEssayQuery } from '@/gql/domain/essay/essay.query.gql'
 import { Category, Essay } from '@/gql/types'
 import { Spinner } from '@chakra-ui/react'
-import { client } from '@/gql/client'
+import { getClient } from '@/gql/client'
 import { MDDetailContent } from '@/app/(global)/(components)/md.detail.content'
 import { generateArticleFullMeta, MetaArg } from '@/libs/head.generate'
 import { generateThumbnail } from '@/libs/url.grnerate.util'
 import { notFound } from 'next/navigation'
 import { EssayDetailInfo } from '@/app/hobby/category/essay/detail/[id]/(components)/essay.detail.info'
-
-export const fetchCache = 'force-no-store'
 
 export const generateMetadata = async ({
   params: { id },
@@ -17,7 +15,7 @@ export const generateMetadata = async ({
   params: { id: string }
 }) => {
   try {
-    const { data, loading, error } = await client.query({
+    const { data, loading, error } = await getClient().query({
       query: getOneEssayQuery,
       variables: { id },
     })
@@ -40,7 +38,7 @@ export const generateMetadata = async ({
 }
 
 const EssayDetailPage = async ({ params }: { params: { id: string } }) => {
-  const { data, loading, error } = await client.query({
+  const { data, loading, error } = await getClient().query({
     query: getOneEssayQuery,
     variables: { id: params.id },
   })
@@ -60,15 +58,13 @@ const EssayDetailPage = async ({ params }: { params: { id: string } }) => {
   const essay: Essay = data?.getOneEssay
 
   return (
-    <>
-      <EssayDetailPresentation essay={essay}>
-        <section style={{ marginBottom: '1em' }}>
-          <EssayDetailInfo essay={essay} />
-        </section>
+    <EssayDetailPresentation essay={essay}>
+      <section style={{ marginBottom: '1em' }}>
+        <EssayDetailInfo essay={essay} />
+      </section>
 
-        <MDDetailContent content={essay?.content ?? ''} />
-      </EssayDetailPresentation>
-    </>
+      <MDDetailContent content={essay?.content ?? ''} />
+    </EssayDetailPresentation>
   )
 }
 

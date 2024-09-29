@@ -1,12 +1,10 @@
 'use client'
 
 import { Read } from '@/gql/types'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
-import { dateFormat, decodeBase64 } from '@/libs/conv.util'
-import { Box, theme } from '@chakra-ui/react'
-import { LocalStorage } from '@/libs/localStorage.safely.util'
-import { ReadDetailUserButton } from '@/app/hobby/category/read/detail/[id]/(components)/read.detail.user'
+import { dateFormat } from '@/libs/conv.util'
+import { FilterActiveMy } from '@/app/(global)/(components)/detail-user-controle/filter.active.my'
 
 const ReadDetailPresentation = ({
   children,
@@ -15,21 +13,6 @@ const ReadDetailPresentation = ({
   children: ReactNode
   read: Read
 }) => {
-  const [my, setMy] = useState(false)
-
-  useEffect(() => {
-    const at = LocalStorage.getItem('accessToken')
-
-    if (!at || at === '') {
-      setMy(false)
-      return
-    }
-
-    const { sub } = decodeBase64(at ?? '.')
-
-    setMy(sub === read?.userId)
-  }, [read?.userId])
-
   return (
     <>
       <BreadcrumbWarp
@@ -37,10 +20,7 @@ const ReadDetailPresentation = ({
         category="Read"
         dddd={dateFormat(read?.logAt ?? new Date().toISOString(), 'YYYY-MM')}
       />
-      <Box maxW="6xl" mx="auto">
-        <Box mt={theme.space['8']}>{children}</Box>
-        {my && <ReadDetailUserButton read={read} />}
-      </Box>
+      <FilterActiveMy content={read}>{children}</FilterActiveMy>
     </>
   )
 }

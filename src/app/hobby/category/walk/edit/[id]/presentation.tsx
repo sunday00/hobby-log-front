@@ -8,11 +8,14 @@ import { updateWalkMutation } from '@/gql/domain/walk/walk.mutation.gql'
 import { getOneWalkWithSubImagesQuery } from '@/gql/domain/walk/walk.query.gql'
 import { WalkCreateLeft } from '@/app/hobby/category/walk/create/(components)/walk.create.left'
 import { WalkCreateRight } from '@/app/hobby/category/walk/create/(components)/walk.create.right'
-import { WalkInput, Status } from '@/gql/types'
+import { Status, WalkInput } from '@/gql/types'
 import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
+import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const WalkEditPresentation = ({ id }: { id: string }) => {
   const [updateWalk] = useMutation(updateWalkMutation)
+  const pathName = usePathname()
 
   const { data, loading, error } = useQuery(getOneWalkWithSubImagesQuery, {
     variables: { id },
@@ -74,6 +77,7 @@ const WalkEditPresentation = ({ id }: { id: string }) => {
     }
 
     if (data?.updateWalkLog.success) {
+      await reValidator(pathName.replace(/\/edit\//, '/detail/'))
       location.href = `/hobby/category/walk/detail/${data?.updateWalkLog.id}`
     }
   }

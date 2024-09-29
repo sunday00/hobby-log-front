@@ -7,7 +7,8 @@ import { DrawCreateRight } from '@/app/hobby/category/draw/create/(components)/d
 import { Grid, theme } from '@chakra-ui/react'
 import { useMutation } from '@apollo/client'
 import { logDrawMutation } from '@/gql/domain/draw/draw.mutation.gql'
-import { Status, DrawInput, DrawType } from '@/gql/types'
+import { DrawInput, DrawType, Status } from '@/gql/types'
+import { reValidator } from '@/libs/actions'
 
 const DrawCreatePresentation = () => {
   const [logDraw] = useMutation(logDrawMutation)
@@ -50,6 +51,11 @@ const DrawCreatePresentation = () => {
     }
 
     if (data?.['createDrawLog']?.success) {
+      await Promise.all([
+        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+      ])
+
       location.href = `/hobby/category/draw/detail/${data?.['createDrawLog'].id}`
     }
   }

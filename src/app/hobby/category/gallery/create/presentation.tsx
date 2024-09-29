@@ -8,6 +8,7 @@ import { FormEvent } from 'react'
 import { useMutation } from '@apollo/client'
 import { logGalleryMutation } from '@/gql/domain/gallery/gallery.mutation.gql'
 import { GalleryInput, GalleryType, Status } from '@/gql/types'
+import { reValidator } from '@/libs/actions'
 
 const GalleryCreatePresentation = () => {
   const [logGallery] = useMutation(logGalleryMutation)
@@ -55,6 +56,11 @@ const GalleryCreatePresentation = () => {
     }
 
     if (data?.['createGalleryLog']?.success) {
+      await Promise.all([
+        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+      ])
+
       location.href = `/hobby/category/gallery/detail/${data?.['createGalleryLog'].id}`
     }
   }

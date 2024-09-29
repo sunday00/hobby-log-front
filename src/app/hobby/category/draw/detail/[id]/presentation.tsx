@@ -1,12 +1,11 @@
 'use client'
 
 import { Draw } from '@/gql/types'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
-import { dateFormat, decodeBase64 } from '@/libs/conv.util'
-import { Box, theme } from '@chakra-ui/react'
-import { LocalStorage } from '@/libs/localStorage.safely.util'
-import { DrawDetailUserButton } from '@/app/hobby/category/draw/detail/[id]/(components)/draw.detail.user'
+import { dateFormat } from '@/libs/conv.util'
+import { Box } from '@chakra-ui/react'
+import { FilterActiveMy } from '@/app/(global)/(components)/detail-user-controle/filter.active.my'
 
 const DrawDetailPresentation = ({
   children,
@@ -15,21 +14,6 @@ const DrawDetailPresentation = ({
   children: ReactNode
   draw: Draw
 }) => {
-  const [my, setMy] = useState(false)
-
-  useEffect(() => {
-    const at = LocalStorage.getItem('accessToken')
-
-    if (!at || at === '') {
-      setMy(false)
-      return
-    }
-
-    const { sub } = decodeBase64(at ?? '.')
-
-    setMy(sub === draw?.userId)
-  }, [draw?.userId])
-
   return (
     <>
       <BreadcrumbWarp
@@ -38,8 +22,7 @@ const DrawDetailPresentation = ({
         dddd={dateFormat(draw?.logAt ?? new Date().toISOString(), 'YYYY-MM')}
       />
       <Box maxW="6xl" mx="auto">
-        <Box mt={theme.space['8']}>{children}</Box>
-        {my && <DrawDetailUserButton draw={draw} />}
+        <FilterActiveMy content={draw}>{children}</FilterActiveMy>
       </Box>
     </>
   )

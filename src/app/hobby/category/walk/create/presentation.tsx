@@ -7,7 +7,8 @@ import { WalkCreateRight } from '@/app/hobby/category/walk/create/(components)/w
 import { Grid, theme } from '@chakra-ui/react'
 import { useMutation } from '@apollo/client'
 import { logWalkMutation } from '@/gql/domain/walk/walk.mutation.gql'
-import { Status, WalkInput, WritingType } from '@/gql/types'
+import { Status, WalkInput } from '@/gql/types'
+import { reValidator } from '@/libs/actions'
 
 const WalkCreatePresentation = () => {
   const [logWalk] = useMutation(logWalkMutation)
@@ -55,6 +56,11 @@ const WalkCreatePresentation = () => {
     }
 
     if (data?.['createWalkLog']?.success) {
+      await Promise.all([
+        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+      ])
+
       location.href = `/hobby/category/walk/detail/${data?.['createWalkLog'].id}`
     }
   }

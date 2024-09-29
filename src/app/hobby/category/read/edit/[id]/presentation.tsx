@@ -10,9 +10,12 @@ import { ReadCreateLeft } from '@/app/hobby/category/read/create/(components)/re
 import { ReadCreateRight } from '@/app/hobby/category/read/create/(components)/read.create.right'
 import { ReadInput, ReadType, Status } from '@/gql/types'
 import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
+import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const ReadEditPresentation = ({ id }: { id: string }) => {
   const [updateRead] = useMutation(updateReadMutation)
+  const pathName = usePathname()
 
   const { data, loading, error } = useQuery(getOneReadWithSubImagesQuery, {
     variables: { id },
@@ -75,6 +78,7 @@ const ReadEditPresentation = ({ id }: { id: string }) => {
     }
 
     if (data?.updateReadLog.success) {
+      await reValidator(pathName.replace(/\/edit\//, '/detail/'))
       location.href = `/hobby/category/read/detail/${data?.updateReadLog.id}`
     }
   }

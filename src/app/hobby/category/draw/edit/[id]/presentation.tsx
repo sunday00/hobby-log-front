@@ -10,9 +10,12 @@ import { DrawCreateLeft } from '@/app/hobby/category/draw/create/(components)/dr
 import { DrawCreateRight } from '@/app/hobby/category/draw/create/(components)/draw.create.right'
 import { DrawInput, DrawType, Status } from '@/gql/types'
 import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
+import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const DrawEditPresentation = ({ id }: { id: string }) => {
   const [updateDraw] = useMutation(updateDrawMutation)
+  const pathName = usePathname()
 
   const { data, loading, error } = useQuery(getOneDrawWithSubImagesQuery, {
     variables: { id },
@@ -69,6 +72,7 @@ const DrawEditPresentation = ({ id }: { id: string }) => {
     }
 
     if (data?.updateDrawLog.success) {
+      await reValidator(pathName.replace(/\/edit\//, '/detail/'))
       location.href = `/hobby/category/draw/detail/${data?.updateDrawLog.id}`
     }
   }

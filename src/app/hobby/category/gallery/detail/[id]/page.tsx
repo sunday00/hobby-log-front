@@ -1,4 +1,4 @@
-import { client } from '@/gql/client'
+import { getClient } from '@/gql/client'
 import { getOneGalleryQuery } from '@/gql/domain/gallery/gallery.query.gql'
 import { GalleryDetailPresentation } from '@/app/hobby/category/gallery/detail/[id]/presentation'
 import { MDDetailContent } from '@/app/(global)/(components)/md.detail.content'
@@ -8,15 +8,13 @@ import { generateThumbnail } from '@/libs/url.grnerate.util'
 import { Category } from '@/gql/types'
 import { notFound } from 'next/navigation'
 
-export const fetchCache = 'force-no-store'
-
 export const generateMetadata = async ({
   params: { id },
 }: {
   params: { id: string }
 }) => {
   try {
-    const { data, loading, error } = await client.query({
+    const { data, loading, error } = await getClient().query({
       query: getOneGalleryQuery,
       variables: { id },
     })
@@ -46,7 +44,7 @@ export const generateMetadata = async ({
 }
 
 const GalleryDetailPage = async ({ params }: { params: { id: string } }) => {
-  const { data, loading, error } = await client.query({
+  const { data, loading, error } = await getClient().query({
     query: getOneGalleryQuery,
     variables: { id: params.id },
   })
@@ -55,24 +53,17 @@ const GalleryDetailPage = async ({ params }: { params: { id: string } }) => {
     data.getOneGallery
 
   return (
-    <>
-      <GalleryDetailPresentation
-        logAt={logAt}
-        userId={userId}
-        id={params.id}
-        status={status}
-      >
-        <section style={{ marginBottom: '1em' }}>
-          <GalleryDetailInfo
-            gallery={galleryFields}
-            logAt={logAt}
-            status={status}
-          />
-        </section>
+    <GalleryDetailPresentation logAt={logAt} userId={userId} status={status}>
+      <section style={{ marginBottom: '1em' }}>
+        <GalleryDetailInfo
+          gallery={galleryFields}
+          logAt={logAt}
+          status={status}
+        />
+      </section>
 
-        <MDDetailContent content={content} />
-      </GalleryDetailPresentation>
-    </>
+      <MDDetailContent content={content} />
+    </GalleryDetailPresentation>
   )
 }
 

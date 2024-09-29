@@ -11,9 +11,12 @@ import { EssayCreateLeft } from '@/app/hobby/category/essay/create/(components)/
 import { EssayCreateRight } from '@/app/hobby/category/essay/create/(components)/essay.create.right'
 import { EssayInput, Status, WritingType } from '@/gql/types'
 import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
+import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const EssayEditPresentation = ({ id }: { id: string }) => {
   const global = useContext(GlobalContext)
+  const pathName = usePathname()
   const [updateEssay] = useMutation(updateEssayMutation)
 
   const { data, loading, error } = useQuery(getOneEssayWithSubImagesQuery, {
@@ -78,6 +81,7 @@ const EssayEditPresentation = ({ id }: { id: string }) => {
     }
 
     if (data?.updateEssayLog.success) {
+      await reValidator(pathName.replace(/\/edit\//, '/detail/'))
       location.href = `/hobby/category/essay/detail/${data?.updateEssayLog.id}`
     }
   }
