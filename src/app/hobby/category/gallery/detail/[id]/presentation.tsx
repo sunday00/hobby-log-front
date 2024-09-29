@@ -1,42 +1,32 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
-import { dateFormat, decodeBase64 } from '@/libs/conv.util'
+import { dateFormat } from '@/libs/conv.util'
 import { Box, theme } from '@chakra-ui/react'
-import { LocalStorage } from '@/libs/localStorage.safely.util'
-import { GalleryDetailUserButton } from '@/app/hobby/category/gallery/detail/[id]/(components)/gallery.detail.user'
 import { Status } from '@/gql/types'
+import { ControlDetail } from '@/app/(global)/(components)/detail-user-controle/control.detail'
+import NotFound from 'next/dist/client/components/not-found-error'
+import { useMy } from '@/app/(global)/(hooks)/useMy.hook'
 
 const GalleryDetailPresentation = ({
   children,
-  id,
   logAt,
   userId,
   status,
 }: {
   children: ReactNode
-  id: string
   logAt: string
   userId: string
   status: Status
 }) => {
-  const [my, setMy] = useState(false)
+  const my = useMy(userId)
 
-  useEffect(() => {
-    const at = LocalStorage.getItem('accessToken')
-
-    if (!at || at === '') {
-      setMy(false)
-      return
-    }
-
-    const { sub } = decodeBase64(at ?? '.')
-
-    setMy(sub === userId)
-  }, [userId])
-
-  return (
+  return status !== Status.Active && !my ? (
+    <Box overflow={'hidden'} h={'80vh'}>
+      <NotFound />
+    </Box>
+  ) : (
     <>
       <BreadcrumbWarp
         name="category.detail"
@@ -45,7 +35,7 @@ const GalleryDetailPresentation = ({
       />
       <Box maxW="6xl" mx="auto">
         <Box mt={theme.space['8']}>{children}</Box>
-        {my && <GalleryDetailUserButton id={id} status={status} />}
+        <ControlDetail my={my} status={status} />
       </Box>
     </>
   )

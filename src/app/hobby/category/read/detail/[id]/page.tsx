@@ -58,15 +58,13 @@ const ReadDetailPage = async ({ params }: { params: { id: string } }) => {
   const read: Read = data.getOneRead
 
   return (
-    <>
-      <ReadDetailPresentation read={read}>
-        <section style={{ marginBottom: '1em' }}>
-          <ReadDetailInfo read={read} />
-        </section>
+    <ReadDetailPresentation read={read}>
+      <section style={{ marginBottom: '1em' }}>
+        <ReadDetailInfo read={read} />
+      </section>
 
-        <MDDetailContent content={read?.content ?? ''} />
-      </ReadDetailPresentation>
-    </>
+      <MDDetailContent content={read?.content ?? ''} />
+    </ReadDetailPresentation>
   )
 }
 

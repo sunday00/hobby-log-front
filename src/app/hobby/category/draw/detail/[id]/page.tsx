@@ -1,6 +1,6 @@
 import { DrawDetailPresentation } from '@/app/hobby/category/draw/detail/[id]/presentation'
 import { getClient } from '@/gql/client'
-import { Grid, Spinner, Image, theme } from '@chakra-ui/react'
+import { Grid, Image, Spinner, theme } from '@chakra-ui/react'
 import { Category, Draw } from '@/gql/types'
 import { getOneDrawQuery } from '@/gql/domain/draw/draw.query.gql'
 import { DrawDetailInfo } from '@/app/hobby/category/draw/detail/[id]/(components)/draw.detail.info'
@@ -58,21 +58,19 @@ const DrawDetailPage = async ({ params }: { params: { id: string } }) => {
   const draw: Draw = data.getOneDraw
 
   return (
-    <>
-      <DrawDetailPresentation draw={draw}>
-        <section style={{ marginBottom: '1em' }}>
-          <DrawDetailInfo draw={draw} />
-        </section>
+    <DrawDetailPresentation draw={draw}>
+      <section style={{ marginBottom: '1em' }}>
+        <DrawDetailInfo draw={draw} />
+      </section>
 
-        <Grid templateColumns="3fr 2fr" gap={theme.space['2']}>
-          <Image
-            src={generateThumbnail(draw?.mainImage as string, Category.Draw)}
-            alt={draw?.title + ' image'}
-          />
-          <MDDetailContent content={draw?.content ?? ''} />
-        </Grid>
-      </DrawDetailPresentation>
-    </>
+      <Grid templateColumns="3fr 2fr" gap={theme.space['2']}>
+        <Image
+          src={generateThumbnail(draw?.mainImage as string, Category.Draw)}
+          alt={draw?.title + ' image'}
+        />
+        <MDDetailContent content={draw?.content ?? ''} />
+      </Grid>
+    </DrawDetailPresentation>
   )
 }
 

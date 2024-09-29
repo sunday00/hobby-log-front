@@ -47,27 +47,24 @@ const MovieDetail = async ({ params }: { params: { id: string } }) => {
     variables: { id: params.id },
   })
 
-  const { contents, synopsis, originalSynopsis, userId, status, ...info } =
-    data.getOneMovie
+  const movie = data.getOneMovie
 
   return (
-    <>
-      <MovieDetailPresentation
-        id={params.id}
-        logAt={info.logAt}
-        userId={userId}
-        status={status}
-      >
-        <section className="info" style={{ marginBottom: theme.space['8'] }}>
-          <MovieDetailInfo movie={info} status={status} />
-        </section>
-        <section>
-          <MovieDetailOverview overviews={{ synopsis, originalSynopsis }} />
-        </section>
+    <MovieDetailPresentation movie={movie}>
+      <section className="info" style={{ marginBottom: theme.space['8'] }}>
+        <MovieDetailInfo movie={movie} status={movie.status} />
+      </section>
+      <section>
+        <MovieDetailOverview
+          overviews={{
+            synopsis: movie.synopsis,
+            originalSynopsis: movie.originalSynopsis,
+          }}
+        />
+      </section>
 
-        <MDDetailContent content={contents} />
-      </MovieDetailPresentation>
-    </>
+      <MDDetailContent content={movie.contents} />
+    </MovieDetailPresentation>
   )
 }
 

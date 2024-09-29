@@ -53,24 +53,17 @@ const GalleryDetailPage = async ({ params }: { params: { id: string } }) => {
     data.getOneGallery
 
   return (
-    <>
-      <GalleryDetailPresentation
-        logAt={logAt}
-        userId={userId}
-        id={params.id}
-        status={status}
-      >
-        <section style={{ marginBottom: '1em' }}>
-          <GalleryDetailInfo
-            gallery={galleryFields}
-            logAt={logAt}
-            status={status}
-          />
-        </section>
+    <GalleryDetailPresentation logAt={logAt} userId={userId} status={status}>
+      <section style={{ marginBottom: '1em' }}>
+        <GalleryDetailInfo
+          gallery={galleryFields}
+          logAt={logAt}
+          status={status}
+        />
+      </section>
 
-        <MDDetailContent content={content} />
-      </GalleryDetailPresentation>
-    </>
+      <MDDetailContent content={content} />
+    </GalleryDetailPresentation>
   )
 }
 

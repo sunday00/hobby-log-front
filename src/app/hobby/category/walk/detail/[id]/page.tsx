@@ -58,15 +58,13 @@ const WalkDetailPage = async ({ params }: { params: { id: string } }) => {
   const walk: Walk = data.getOneWalk
 
   return (
-    <>
-      <WalkDetailPresentation walk={walk}>
-        <section style={{ marginBottom: '1em' }}>
-          <WalkDetailInfo walk={walk} />
-        </section>
+    <WalkDetailPresentation walk={walk}>
+      <section style={{ marginBottom: '1em' }}>
+        <WalkDetailInfo walk={walk} />
+      </section>
 
-        <MDDetailContent content={walk?.content ?? ''} />
-      </WalkDetailPresentation>
-    </>
+      <MDDetailContent content={walk?.content ?? ''} />
+    </WalkDetailPresentation>
   )
 }
 

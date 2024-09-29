@@ -58,15 +58,13 @@ const EssayDetailPage = async ({ params }: { params: { id: string } }) => {
   const essay: Essay = data?.getOneEssay
 
   return (
-    <>
-      <EssayDetailPresentation essay={essay}>
-        <section style={{ marginBottom: '1em' }}>
-          <EssayDetailInfo essay={essay} />
-        </section>
+    <EssayDetailPresentation essay={essay}>
+      <section style={{ marginBottom: '1em' }}>
+        <EssayDetailInfo essay={essay} />
+      </section>
 
-        <MDDetailContent content={essay?.content ?? ''} />
-      </EssayDetailPresentation>
-    </>
+      <MDDetailContent content={essay?.content ?? ''} />
+    </EssayDetailPresentation>
   )
 }
 

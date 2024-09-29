@@ -1,12 +1,10 @@
 'use client'
 
 import { Walk } from '@/gql/types'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import { BreadcrumbWarp } from '@/app/(global)/(components)/breadcrumb.warp'
-import { dateFormat, decodeBase64 } from '@/libs/conv.util'
-import { Box, theme } from '@chakra-ui/react'
-import { LocalStorage } from '@/libs/localStorage.safely.util'
-import { WalkDetailUserButton } from '@/app/hobby/category/walk/detail/[id]/(components)/walk.detail.user'
+import { dateFormat } from '@/libs/conv.util'
+import { FilterActiveMy } from '@/app/(global)/(components)/detail-user-controle/filter.active.my'
 
 const WalkDetailPresentation = ({
   children,
@@ -15,21 +13,6 @@ const WalkDetailPresentation = ({
   children: ReactNode
   walk: Walk
 }) => {
-  const [my, setMy] = useState(false)
-
-  useEffect(() => {
-    const at = LocalStorage.getItem('accessToken')
-
-    if (!at || at === '') {
-      setMy(false)
-      return
-    }
-
-    const { sub } = decodeBase64(at ?? '.')
-
-    setMy(sub === walk?.userId)
-  }, [walk?.userId])
-
   return (
     <>
       <BreadcrumbWarp
@@ -37,10 +20,7 @@ const WalkDetailPresentation = ({
         category="Walk"
         dddd={dateFormat(walk?.logAt ?? new Date().toISOString(), 'YYYY-MM')}
       />
-      <Box maxW="6xl" mx="auto">
-        <Box mt={theme.space['8']}>{children}</Box>
-        {my && <WalkDetailUserButton walk={walk} />}
-      </Box>
+      <FilterActiveMy content={walk}>{children}</FilterActiveMy>
     </>
   )
 }
