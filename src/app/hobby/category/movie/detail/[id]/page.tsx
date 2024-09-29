@@ -1,5 +1,5 @@
 import { getOneMovieQuery } from '@/gql/domain/movie/movie.query.gql'
-import { client } from '@/gql/client'
+import { getClient } from '@/gql/client'
 import { MovieDetailInfo } from '@/app/hobby/category/movie/detail/[id]/(components)/movie.detail.info'
 import { theme } from '@chakra-ui/react'
 import { MovieDetailOverview } from '@/app/hobby/category/movie/detail/[id]/(components)/movie.detail.overview'
@@ -10,15 +10,13 @@ import { generateThumbnail } from '@/libs/url.grnerate.util'
 import { Category } from '@/gql/types'
 import { MDDetailContent } from '@/app/(global)/(components)/md.detail.content'
 
-export const fetchCache = 'force-no-store'
-
 export const generateMetadata = async ({
   params: { id },
 }: {
   params: { id: string }
 }) => {
   try {
-    const { data, loading, error } = await client.query({
+    const { data, loading, error } = await getClient().query({
       query: getOneMovieQuery,
       variables: { id },
     })
@@ -44,7 +42,7 @@ export const generateMetadata = async ({
 }
 
 const MovieDetail = async ({ params }: { params: { id: string } }) => {
-  const { data, loading, error } = await client.query({
+  const { data, loading, error } = await getClient().query({
     query: getOneMovieQuery,
     variables: { id: params.id },
   })

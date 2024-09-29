@@ -1,5 +1,5 @@
 import { WalkDetailPresentation } from '@/app/hobby/category/walk/detail/[id]/presentation'
-import { client } from '@/gql/client'
+import { getClient } from '@/gql/client'
 import { Spinner } from '@chakra-ui/react'
 import { Category, Walk } from '@/gql/types'
 import { getOneWalkQuery } from '@/gql/domain/walk/walk.query.gql'
@@ -9,15 +9,13 @@ import { generateArticleFullMeta, MetaArg } from '@/libs/head.generate'
 import { generateThumbnail } from '@/libs/url.grnerate.util'
 import { notFound } from 'next/navigation'
 
-export const fetchCache = 'force-no-store'
-
 export const generateMetadata = async ({
   params: { id },
 }: {
   params: { id: string }
 }) => {
   try {
-    const { data, loading, error } = await client.query({
+    const { data, loading, error } = await getClient().query({
       query: getOneWalkQuery,
       variables: { id },
     })
@@ -40,7 +38,7 @@ export const generateMetadata = async ({
 }
 
 const WalkDetailPage = async ({ params }: { params: { id: string } }) => {
-  const { data, loading, error } = await client.query({
+  const { data, loading, error } = await getClient().query({
     query: getOneWalkQuery,
     variables: { id: params.id },
   })

@@ -3,9 +3,9 @@
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
 import React, { ReactNode, useEffect, useState } from 'react'
-import { ApolloProvider } from '@apollo/client'
-import { client } from '@/gql/client'
 import GlobalContext, { initialState } from '@/libs/store.context'
+import { ApolloNextAppProvider } from '@apollo/experimental-nextjs-app-support'
+import { client } from '@/gql/next.client'
 
 export function Providers({ children }: { children: ReactNode }) {
   const [state, setState] = useState({
@@ -30,10 +30,10 @@ export function Providers({ children }: { children: ReactNode }) {
     <CacheProvider>
       <ChakraProvider>
         <GlobalContext.Provider value={state}>
-          <ApolloProvider client={client}>
+          <ApolloNextAppProvider makeClient={client}>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />
             {children}
-          </ApolloProvider>
+          </ApolloNextAppProvider>
         </GlobalContext.Provider>
       </ChakraProvider>
     </CacheProvider>

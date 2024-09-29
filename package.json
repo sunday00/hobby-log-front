@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.5",
+    "@apollo/experimental-nextjs-app-support": "^0.11.3",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/input": "^2.1.2",
     "@chakra-ui/modal": "^2.3.1",

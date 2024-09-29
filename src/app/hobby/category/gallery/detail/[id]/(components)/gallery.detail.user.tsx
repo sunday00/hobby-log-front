@@ -8,8 +8,9 @@ import {
   deleteLogMutation,
   updateStatusMutation,
 } from '@/gql/common/common.mutation.gql'
-import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { reValidator } from '@/libs/actions'
 
 const GalleryDetailUserButton = ({
   id,
@@ -20,7 +21,7 @@ const GalleryDetailUserButton = ({
 }) => {
   const [updateStatus] = useMutation(updateStatusMutation)
   const [deleteLog] = useMutation(deleteLogMutation)
-  const router = useRouter()
+  const pathName = usePathname()
 
   const today = new Date()
 
@@ -45,7 +46,8 @@ const GalleryDetailUserButton = ({
       console.error(data?.updateStatus?.message ?? 'something went wrong')
     }
 
-    router.refresh()
+    // router.refresh()
+    await reValidator(pathName)
   }
 
   const handleDelete = async () => {

@@ -1,15 +1,13 @@
 import { DrawDetailPresentation } from '@/app/hobby/category/draw/detail/[id]/presentation'
-import { client } from '@/gql/client'
+import { getClient } from '@/gql/client'
 import { Grid, Spinner, Image, theme } from '@chakra-ui/react'
 import { Category, Draw } from '@/gql/types'
 import { getOneDrawQuery } from '@/gql/domain/draw/draw.query.gql'
 import { DrawDetailInfo } from '@/app/hobby/category/draw/detail/[id]/(components)/draw.detail.info'
 import { MDDetailContent } from '@/app/(global)/(components)/md.detail.content'
 import { generateArticleFullMeta, MetaArg } from '@/libs/head.generate'
-import { generateDefaultSrc, generateThumbnail } from '@/libs/url.grnerate.util'
+import { generateThumbnail } from '@/libs/url.grnerate.util'
 import { notFound } from 'next/navigation'
-
-export const fetchCache = 'force-no-store'
 
 export const generateMetadata = async ({
   params: { id },
@@ -17,7 +15,7 @@ export const generateMetadata = async ({
   params: { id: string }
 }) => {
   try {
-    const { data, loading, error } = await client.query({
+    const { data, loading, error } = await getClient().query({
       query: getOneDrawQuery,
       variables: { id },
     })
@@ -40,7 +38,7 @@ export const generateMetadata = async ({
 }
 
 const DrawDetailPage = async ({ params }: { params: { id: string } }) => {
-  const { data, loading, error } = await client.query({
+  const { data, loading, error } = await getClient().query({
     query: getOneDrawQuery,
     variables: { id: params.id },
   })
