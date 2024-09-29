@@ -8,6 +8,7 @@ import { FormEvent } from 'react'
 import { EssayInput, Status, WritingType } from '@/gql/types'
 import { useMutation } from '@apollo/client'
 import { logEssayMutation } from '@/gql/domain/essay/essay.mutation.gql'
+import { reValidator } from '@/libs/actions'
 
 const EssayCreatePresentation = () => {
   const [logEssay] = useMutation(logEssayMutation)
@@ -55,6 +56,11 @@ const EssayCreatePresentation = () => {
     }
 
     if (data?.['createEssayLog']?.success) {
+      await Promise.all([
+        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+      ])
+
       location.href = `/hobby/category/essay/detail/${data?.['createEssayLog'].id}`
     }
   }

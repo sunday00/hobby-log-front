@@ -18,6 +18,8 @@ import {
   logMovieMutation,
   updateMovieMutation,
 } from '@/gql/domain/movie/movie.mutation.gql'
+import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const MovieInputForm = ({ movie }: { movie?: Movie }) => {
   const today = movie ? new Date(movie?.logAt ?? null) : new Date()
@@ -31,6 +33,8 @@ const MovieInputForm = ({ movie }: { movie?: Movie }) => {
   const [status, setStatus] = useState<Status>(movie?.status ?? Status.Draft)
 
   const global = useContext(GlobalContext)
+
+  const pathName = usePathname()
 
   const [logMovie] = useMutation(movie ? updateMovieMutation : logMovieMutation)
 
@@ -72,6 +76,11 @@ const MovieInputForm = ({ movie }: { movie?: Movie }) => {
     }
 
     if (data?.[movie ? 'updateMovie' : 'logMovie']?.success) {
+      await Promise.all([
+        reValidator(`/hobby/category/monthly/${logAtStrDate.substring(0, 7)}`),
+        reValidator(`/hobby/non-activate/${logAtStrDate.substring(0, 7)}`),
+        reValidator(pathName.replace(/\/edit\//, '/detail/')),
+      ])
       location.href = `/hobby/category/movie/detail/${data?.[movie ? 'updateMovie' : 'logMovie'].id}`
     }
   }

@@ -11,9 +11,12 @@ import GlobalContext from '@/libs/store.context'
 import { updateGalleryMutation } from '@/gql/domain/gallery/gallery.mutation.gql'
 import { SubImageUploader } from '@/app/(global)/(components)/sub-image.uploader'
 import { GalleryInput, GalleryType, Status } from '@/gql/types'
+import { usePathname } from 'next/navigation'
+import { reValidator } from '@/libs/actions'
 
 const GalleryEditPresentation = ({ id }: { id: string }) => {
   const global = useContext(GlobalContext)
+  const pathName = usePathname()
   const [updateGallery] = useMutation(updateGalleryMutation)
 
   const { data, loading, error } = useQuery(getOneGalleryWithSubImagesQuery, {
@@ -76,6 +79,7 @@ const GalleryEditPresentation = ({ id }: { id: string }) => {
     }
 
     if (data?.updateGalleryLog.success) {
+      await reValidator(pathName.replace(/\/edit\//, '/detail/'))
       location.href = `/hobby/category/gallery/detail/${data?.updateGalleryLog.id}`
     }
   }
