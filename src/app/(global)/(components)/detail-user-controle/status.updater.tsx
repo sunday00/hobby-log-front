@@ -40,7 +40,13 @@ export const StatusUpdaterButton = ({ status }: { status: Status }) => {
       console.error(data?.updateStatus?.message ?? 'something went wrong')
     }
 
-    await reValidator(pathName)
+    await Promise.all([
+      reValidator(pathName),
+      reValidator(`/hobby/monthly/[ym]`, 'page'),
+      reValidator(`/hobby/category/[category]/year/[year]`, 'page'),
+      reValidator(`/hobby/non-activate/[ym]`, 'page'),
+      reValidator(`/hobby/search`),
+    ])
   }
 
   return (

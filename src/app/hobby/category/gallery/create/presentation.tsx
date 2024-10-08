@@ -9,8 +9,10 @@ import { useMutation } from '@apollo/client'
 import { logGalleryMutation } from '@/gql/domain/gallery/gallery.mutation.gql'
 import { GalleryInput, GalleryType, Status } from '@/gql/types'
 import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const GalleryCreatePresentation = () => {
+  const pathName = usePathname()
   const [logGallery] = useMutation(logGalleryMutation)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -57,8 +59,11 @@ const GalleryCreatePresentation = () => {
 
     if (data?.['createGalleryLog']?.success) {
       await Promise.all([
-        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
-        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/search`),
+        reValidator(`/hobby/monthly/[ym]`, 'page'),
+        reValidator(`/hobby/category/[category]/year/[year]`, 'page'),
+        reValidator(`/hobby/non-activate/[ym]`, 'page'),
+        reValidator(pathName.replace(/\/edit\//, '/detail/')),
       ])
 
       location.href = `/hobby/category/gallery/detail/${data?.['createGalleryLog'].id}`

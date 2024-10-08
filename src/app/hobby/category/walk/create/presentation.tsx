@@ -9,8 +9,10 @@ import { useMutation } from '@apollo/client'
 import { logWalkMutation } from '@/gql/domain/walk/walk.mutation.gql'
 import { Status, WalkInput } from '@/gql/types'
 import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const WalkCreatePresentation = () => {
+  const pathName = usePathname()
   const [logWalk] = useMutation(logWalkMutation)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -57,8 +59,11 @@ const WalkCreatePresentation = () => {
 
     if (data?.['createWalkLog']?.success) {
       await Promise.all([
-        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
-        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/search`),
+        reValidator(`/hobby/monthly/[ym]`, 'page'),
+        reValidator(`/hobby/category/[category]/year/[year]`, 'page'),
+        reValidator(`/hobby/non-activate/[ym]`, 'page'),
+        reValidator(pathName.replace(/\/edit\//, '/detail/')),
       ])
 
       location.href = `/hobby/category/walk/detail/${data?.['createWalkLog'].id}`

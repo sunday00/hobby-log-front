@@ -77,8 +77,15 @@ const MovieInputForm = ({ movie }: { movie?: Movie }) => {
 
     if (data?.[movie ? 'updateMovie' : 'logMovie']?.success) {
       await Promise.all([
-        reValidator(`/hobby/category/monthly/${logAtStrDate.substring(0, 7)}`),
+        reValidator(`/hobby/search`),
+
+        reValidator(`/hobby/monthly/[ym]`, 'page'),
+        reValidator(`/hobby/monthly/${logAtStrDate.substring(0, 7)}`),
+
+        reValidator(`/hobby/category/[category]/year/[year]`, 'page'),
+
         reValidator(`/hobby/non-activate/${logAtStrDate.substring(0, 7)}`),
+        reValidator(`/hobby/non-activate/[ym]`, 'page'),
         reValidator(pathName.replace(/\/edit\//, '/detail/')),
       ])
       location.href = `/hobby/category/movie/detail/${data?.[movie ? 'updateMovie' : 'logMovie'].id}`

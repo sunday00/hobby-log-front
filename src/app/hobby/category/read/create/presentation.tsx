@@ -9,8 +9,10 @@ import { useMutation } from '@apollo/client'
 import { logReadMutation } from '@/gql/domain/read/read.mutation.gql'
 import { ReadInput, ReadType, Status } from '@/gql/types'
 import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const ReadCreatePresentation = () => {
+  const pathName = usePathname()
   const [logRead] = useMutation(logReadMutation)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -58,8 +60,11 @@ const ReadCreatePresentation = () => {
 
     if (data?.['createReadLog']?.success) {
       await Promise.all([
-        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
-        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/search`),
+        reValidator(`/hobby/monthly/[ym]`, 'page'),
+        reValidator(`/hobby/category/[category]/year/[year]`, 'page'),
+        reValidator(`/hobby/non-activate/[ym]`, 'page'),
+        reValidator(pathName.replace(/\/edit\//, '/detail/')),
       ])
 
       location.href = `/hobby/category/read/detail/${data?.['createReadLog'].id}`

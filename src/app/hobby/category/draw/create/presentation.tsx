@@ -9,8 +9,10 @@ import { useMutation } from '@apollo/client'
 import { logDrawMutation } from '@/gql/domain/draw/draw.mutation.gql'
 import { DrawInput, DrawType, Status } from '@/gql/types'
 import { reValidator } from '@/libs/actions'
+import { usePathname } from 'next/navigation'
 
 const DrawCreatePresentation = () => {
+  const pathName = usePathname()
   const [logDraw] = useMutation(logDrawMutation)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -52,8 +54,11 @@ const DrawCreatePresentation = () => {
 
     if (data?.['createDrawLog']?.success) {
       await Promise.all([
-        reValidator(`/hobby/category/monthly/${logAt.substring(0, 7)}`),
-        reValidator(`/hobby/non-activate/${logAt.substring(0, 7)}`),
+        reValidator(`/hobby/search`),
+        reValidator(`/hobby/monthly/[ym]`, 'page'),
+        reValidator(`/hobby/category/[category]/year/[year]`, 'page'),
+        reValidator(`/hobby/non-activate/[ym]`, 'page'),
+        reValidator(pathName.replace(/\/edit\//, '/detail/')),
       ])
 
       location.href = `/hobby/category/draw/detail/${data?.['createDrawLog'].id}`
